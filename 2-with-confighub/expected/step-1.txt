@@ -1,0 +1,11 @@
+
+Everything below happens in this organization, in Spaces that start with 'wsdemo-'.
+
+$ cub context get
+Context Name         your-context
+User                 you@example.com                                                                  
+Organization ID      00000000-0000-0000-0000-000000000000
+Organization Name    Your Organization
+Server URL           https://hub.confighub.com                                                             
+Default Space        default
+Token Status         valid

@@ -73,10 +73,23 @@ run_step() {
   echo
   bold "Step $n of ${#STEPS[@]}. ${STEPS[$((n-1))]}"
   # Live, a step talks straight to the terminal. When recording, absolute paths
-  # become relative and colours are dropped, so expected/ reads the same anywhere.
+  # become relative, colours are dropped, and anything that identifies the
+  # person or organization who recorded it is replaced, so expected/ reads the
+  # same anywhere and is safe to publish.
   if [ "${DEMO_RECORD:-0}" = "1" ]; then
     "step_$n" 2>&1 | sed -e "s|$DEMO_DIR/||g" -e "s|$HOME|~|g" \
-      | tee >(sed $'s/\033\\[[0-9;]*m//g' > "$DEMO_DIR/expected/step-$n.txt")
+      | tee >(sed -E \
+          -e $'s/\033\\[[0-9;]*m//g' \
+          -e 's/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/you@example.com/g' \
+          -e 's/ --context [A-Za-z0-9_-]+//g' \
+          -e 's/^(Context Name +).*/\1your-context/' \
+          -e 's/^(Organization Name +).*/\1Your Organization/' \
+          -e 's/^(Organization ID +).*/\100000000-0000-0000-0000-000000000000/' \
+          -e 's/^(User ID +).*/\100000000-0000-0000-0000-000000000000/' \
+          -e 's/^(Default Space +).*/\1default/' \
+          -e 's/^(Token Status +).*/\1valid/' \
+          -e '/^Selected By /d' \
+          > "$DEMO_DIR/expected/step-$n.txt")
     return "${PIPESTATUS[0]}"
   fi
   "step_$n"

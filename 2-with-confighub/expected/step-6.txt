@@ -1,0 +1,38 @@
+
+Placing creates a variant of the base, bound to the target. A release belongs to its target.
+
+$ cub variant create staging wsdemo-redis-base --target wsdemo-staging/target
+Created variant space wsdemo-redis-staging (ID: 563cc63a-0ca1-4698-92be-40d44e0f2a68)
+Awaiting triggers...
+Unit redis-configuration-configmap (ca811e81-a52d-4b88-b0c8-500ebdd214a0) has validation errors: wsdemo-redis-base/require-approval/vet-approvedby
+Unit redis-headless-service (da74424b-828e-4fc6-9a91-cd766d03fe7c) has validation errors: wsdemo-redis-base/require-approval/vet-approvedby
+Unit redis-health-configmap (2189201c-ccc1-40c0-9e63-e12d98bb679e) has validation errors: wsdemo-redis-base/require-approval/vet-approvedby
+Unit redis-master (3fde1c31-c632-4147-b51b-a5a10be39fa4) has validation errors: wsdemo-redis-base/require-approval/vet-approvedby
+Unit redis-master-pdb (b3109b87-3646-4e69-9249-86165fcb1f47) has validation errors: wsdemo-redis-base/require-approval/vet-approvedby
+Unit redis-master-service (7419bea7-6177-4b79-95ab-2ca27483d501) has validation errors: wsdemo-redis-base/require-approval/vet-approvedby
+Unit redis-master-serviceaccount (d3434e2c-4b32-45f4-9871-8b7c4babdf7a) has validation errors: wsdemo-redis-base/require-approval/vet-approvedby
+Unit redis-networkpolicy (6672a34b-9b33-49b1-a3c1-48fb7288aa07) has validation errors: wsdemo-redis-base/require-approval/vet-approvedby
+Unit redis-replicas (114b28f9-fc98-4a01-b8a8-2926797d4746) has validation errors: wsdemo-redis-base/require-approval/vet-approvedby
+Unit redis-replica-serviceaccount (26c9447a-f771-4b36-8023-df435fb45243) has validation errors: wsdemo-redis-base/require-approval/vet-approvedby
+Unit redis-replicas-pdb (ccb582de-6382-4134-990b-f091996fb26e) has validation errors: wsdemo-redis-base/require-approval/vet-approvedby
+Unit redis-replicas-service (ca4742cf-dd36-4742-a715-f6017a0fd3c9) has validation errors: wsdemo-redis-base/require-approval/vet-approvedby
+Unit redis-scripts-configmap (c367a6e8-b685-4d69-87f9-78cc81b29cad) has validation errors: wsdemo-redis-base/require-approval/vet-approvedby
+
+Bulk create operation completed:
+  Success: 13 unit(s)
+
+$ cub unit list --space wsdemo-redis-staging --where "LEN(ApplyGates) > 0"
+NAME                             SPACE                   CHANGESET    TARGET    UPGRADE-NEEDED    UNRELEASED-CHANGES    VALIDATION-ERRORS                                    LAST-CHANGE-DESCRIPTION                                                        
+redis-configuration-configmap    wsdemo-redis-staging                 target    No                Yes                   wsdemo-redis-base/require-approval/vet-approvedby    Cloned from 099997cb-d0af-493a-a37a-5bbcc1225f97/redis-configuration-configmap    
+redis-headless-service           wsdemo-redis-staging                 target    No                Yes                   wsdemo-redis-base/require-approval/vet-approvedby    Cloned from 099997cb-d0af-493a-a37a-5bbcc1225f97/redis-headless-service           
+redis-health-configmap           wsdemo-redis-staging                 target    No                Yes                   wsdemo-redis-base/require-approval/vet-approvedby    Cloned from 099997cb-d0af-493a-a37a-5bbcc1225f97/redis-health-configmap           
+redis-master                     wsdemo-redis-staging                 target    No                Yes                   wsdemo-redis-base/require-approval/vet-approvedby    Cloned from 099997cb-d0af-493a-a37a-5bbcc1225f97/redis-master                     
+redis-master-pdb                 wsdemo-redis-staging                 target    No                Yes                   wsdemo-redis-base/require-approval/vet-approvedby    Cloned from 099997cb-d0af-493a-a37a-5bbcc1225f97/redis-master-pdb                 
+redis-master-service             wsdemo-redis-staging                 target    No                Yes                   wsdemo-redis-base/require-approval/vet-approvedby    Cloned from 099997cb-d0af-493a-a37a-5bbcc1225f97/redis-master-service             
+redis-master-serviceaccount      wsdemo-redis-staging                 target    No                Yes                   wsdemo-redis-base/require-approval/vet-approvedby    Cloned from 099997cb-d0af-493a-a37a-5bbcc1225f97/redis-master-serviceaccount      
+redis-networkpolicy              wsdemo-redis-staging                 target    No                Yes                   wsdemo-redis-base/require-approval/vet-approvedby    Cloned from 099997cb-d0af-493a-a37a-5bbcc1225f97/redis-networkpolicy              
+redis-replicas                   wsdemo-redis-staging                 target    No                Yes                   wsdemo-redis-base/require-approval/vet-approvedby    Cloned from 099997cb-d0af-493a-a37a-5bbcc1225f97/redis-replicas                   
+redis-replica-serviceaccount     wsdemo-redis-staging                 target    No                Yes                   wsdemo-redis-base/require-approval/vet-approvedby    Cloned from 099997cb-d0af-493a-a37a-5bbcc1225f97/redis-replica-serviceaccount     
+redis-replicas-pdb               wsdemo-redis-staging                 target    No                Yes                   wsdemo-redis-base/require-approval/vet-approvedby    Cloned from 099997cb-d0af-493a-a37a-5bbcc1225f97/redis-replicas-pdb               
+redis-replicas-service           wsdemo-redis-staging                 target    No                Yes                   wsdemo-redis-base/require-approval/vet-approvedby    Cloned from 099997cb-d0af-493a-a37a-5bbcc1225f97/redis-replicas-service           
+redis-scripts-configmap          wsdemo-redis-staging                 target    No                Yes                   wsdemo-redis-base/require-approval/vet-approvedby    Cloned from 099997cb-d0af-493a-a37a-5bbcc1225f97/redis-scripts-configmap          

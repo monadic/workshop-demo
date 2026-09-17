@@ -1,0 +1,9 @@
+
+Nobody has approved these Units, so the release is refused and the gate is named.
+
+$ cub release publish wsdemo-redis-staging
+Failed: HTTP 422 for req PgUbpEcHMXiTqXYicYPZKuocvDGymAZo: outstanding ValidationErrors; triggers re-queued for evaluation
+Metadata:
+  Validation Errors: wsdemo-redis-base/require-approval/vet-approvedby
+
+      (refused, exit code non-zero, as intended)

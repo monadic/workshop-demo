@@ -1,0 +1,11 @@
+
+A Target is where a release is delivered. Your Argo CD or Flux pulls from it.
+
+$ cub space create wsdemo-staging --label Layer=cluster
+Successfully created space wsdemo-staging (d8d864ec-c79d-4ef1-b557-bdcaf7d35fe7)
+
+$ cub worker create worker --space wsdemo-staging --is-server-worker
+Successfully created bridgeworker worker (80d0798c-10a0-4491-a0ba-973ad6ba32ad)
+
+$ cub target create target "{}" worker --space wsdemo-staging -p OCI -t Any
+Successfully created target target (54d9c9c2-b5cc-4dfa-b178-7ae2e02514bc)
