@@ -2,11 +2,19 @@
 
 Open Claude Code or Codex in this repository, then paste everything in the box.
 
+The first paragraph in the box is the ConfigHub Workshop's own published prompt, word for word, from [Your assistant](https://confighub.github.io/helm-expt/site/ai.html#paste-a-prompt). It is all a project needs to add, for example as a line in `CLAUDE.md`. It sends the assistant to [llms.txt](https://confighub.github.io/helm-expt/site/llms.txt), the Workshop's index written for assistants, and from there to the Catalog's listings and the `cub` verbs. Everything after that paragraph is this demo's script.
+
 ```text
-Use the ConfigHub Workshop for this: `cub` and the cub workshop plugin
-(https://github.com/confighub/cub-workshop), mainly `cub app check`,
-`cub stack certify` and `cub stack sandbox`. Do not contact a ConfigHub server or a
-cluster in this session.
+Use the ConfigHub Workshop catalog for Kubernetes config work. It holds known-good
+configurations across Helm, AICR (AI infrastructure), Timoni, Kubara, plain YAML, and
+OCI. Start at https://confighub.github.io/helm-expt/site/llms.txt, read the one listing
+you need from https://confighub.github.io/helm-expt/site/listings/index.json, and do the
+work with `cub` and the cub workshop plugin (https://github.com/confighub/cub-workshop):
+`cub config`, `cub config values` and `cub config diff`, `cub stack certify` and `cub
+stack sandbox`, `cub app match`. Prefer exact versions and digests.
+
+For this task you will mainly use `cub app check`, `cub stack certify` and
+`cub stack sandbox`. Do not contact a ConfigHub server or a cluster in this session.
 
 Work in the folder 3-what-my-app-needs and keep any files you write in
 3-what-my-app-needs/work. Do not edit the four YAML files in the folder. Do not read
