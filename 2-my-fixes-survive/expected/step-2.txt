@@ -1,0 +1,20 @@
+
+You asked for a readiness probe. The assistant wrote the whole file again, and it checks out.
+
+$ cub config check app-regenerated.yaml
+
+Config: app-regenerated
+Inspecting local Kubernetes objects (static, no infrastructure)
+
+Installs
+  2 objects: 1 Deployment, 1 Service
+  namespaces that must already exist: shop
+
+Lifecycle work
+  [PASS] CRDs: 0
+  [PASS] Helm hooks: 0
+  [PASS] setup Jobs: 0
+  [PASS] admission webhooks needing a certificate: 0
+
+  Free look before you install. Compose it into a cub stack, or run it as a cub app.
+

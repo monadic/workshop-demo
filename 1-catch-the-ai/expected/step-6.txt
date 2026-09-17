@@ -1,0 +1,13 @@
+
+Render the fixed values, and compare the two sets of objects.
+
+$ helm template shop-redis oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --namespace shop -f values-fixed.yaml > work/redis-fixed.yaml
+Pulled: registry-1.docker.io/cloudpirates/redis:0.34.11
+Digest: sha256:ee589d22bba1eb6de32e11e035b779d382cf0186c8a2f1585daee31b73957ab7
+
+$ cub config diff work/redis.yaml work/redis-fixed.yaml
+Configuration diff: 0 added, 0 removed, 1 changed, 6 unchanged
+  changed: apps/v1 StatefulSet shop/shop-redis
+    /spec/template/spec/containers/redis/resources/limits add: {"memory":"256Mi"}
+    /spec/volumeClaimTemplates/data/spec/resources/requests/storage replace: "8Gi" -> "1Gi"
+Local comparison only. This does not merge, protect edits or inspect a live target.

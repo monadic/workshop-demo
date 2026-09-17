@@ -1,0 +1,16 @@
+# Written by an AI assistant for the shop's Redis, from this request:
+# "a password, two replicas, a 1Gi disk, a memory limit, and metrics on"
+architecture: replication
+auth:
+  enabled: true
+  password: "change-me-demo-only"
+master:
+  persistence:
+    size: 1Gi
+  resources:
+    limits:
+      memory: 256Mi
+replica:
+  replicaCount: 2
+metrics:
+  enabled: true

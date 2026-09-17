@@ -1,0 +1,34 @@
+
+Every object, in the order it has to be applied. kubectl, Argo CD and Flux all take this file as it is.
+
+$ cub stack sandbox platform.yaml --out work/platform.yaml
+
+Stack: shop-platform  —  The platform grown to what the shop app needs, with the app adapted to the platform.
+Resolving 5 components: cert-manager, traefik, metrics-server, external-secrets, shop-web
+
+Certify
+  [PASS] no resource conflicts across components (135 objects)
+  [PASS] CRD ordering: 56 CRDs are delivered before the 2 custom resources that need them
+  [PASS] served API versions: 2 custom resource(s) match their bundled CRD; target availability is not checked
+  [PASS] app needs met: shop-web needs an ingress controller, cert-manager, external-secrets, all carried by this stack
+  [WARN] 4 admission webhook(s) need a caBundle — cert-manager is in the stack and can issue it
+  [WARN] namespaces: 0 created, 5 must already exist (cert-manager, external-secrets, kube-system, shop, traefik)
+  [WARN] target prerequisite unknown: ClusterIssuer/letsencrypt; Include ClusterIssuer/letsencrypt in the stack, or verify it exists on the selected target before delivery.
+  [WARN] target prerequisite unknown: ClusterSecretStore/platform-store; Include ClusterSecretStore/platform-store in the stack, or verify it exists on the selected target before delivery.
+  => CERTIFIED
+
+Sandbox render  (free, no infrastructure)
+  135 objects total
+      cert-manager: 46  [mgmt]
+      traefik: 31  [mgmt]
+      metrics-server: 9  [mgmt]
+      external-secrets: 44  [mgmt]
+      shop-web: 5  [workload]  [authored]
+
+  Wrote 135 objects in plane order to work/platform.yaml
+
+  Ready. `cub stack upload shop-platform --run` builds the base Spaces and links in ConfigHub.
+
+
+$ grep -c "^kind:" work/platform.yaml
+135

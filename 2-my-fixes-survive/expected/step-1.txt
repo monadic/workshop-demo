@@ -1,0 +1,7 @@
+
+This is the shop app you are running. Over two weeks you set the replicas, the database host and the memory limit.
+
+$ grep -n -E "replicas:|db.shop.internal|memory: 512Mi" app-committed.yaml
+8:  replicas: 3
+23:              value: db.shop.internal
+31:              memory: 512Mi

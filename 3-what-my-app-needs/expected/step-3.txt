@@ -1,0 +1,23 @@
+
+Certify reads every object in every part, and what the app asks for.
+
+$ cub stack certify platform-first-try.yaml
+
+Stack: shop-platform  —  The platform as first picked: cert-manager, Traefik and metrics-server, with the shop app placed on it.
+Resolving 4 components: cert-manager, traefik, metrics-server, shop-web
+
+Certify
+  [PASS] no resource conflicts across components (91 objects)
+  [PASS] CRD ordering: 31 CRDs are delivered before the 1 custom resources that need them
+  [PASS] served API versions: 1 custom resource(s) match their bundled CRD; target availability is not checked
+  [WARN] 1 custom resource(s) rely on CRDs this stack does not deliver, which must already exist: monitoring.coreos.com (1)
+  [FAIL] 2 app need(s) this stack does not meet:
+      shop-web: Ingress shop-web (class nginx) asks for class nginx, and this stack's ingress controller is traefik; change the class or add a controller that answers to it
+      shop-web: ServiceMonitor shop-web needs a Prometheus operator; add kube-prometheus-stack
+  [WARN] 2 admission webhook(s) need a caBundle — cert-manager is in the stack and can issue it
+  [WARN] namespaces: 0 created, 4 must already exist (cert-manager, kube-system, shop, traefik)
+  [WARN] target prerequisite unknown: ClusterIssuer/letsencrypt; Include ClusterIssuer/letsencrypt in the stack, or verify it exists on the selected target before delivery.
+  [WARN] target prerequisite unknown: IngressClass/nginx; Include IngressClass/nginx in the stack, or verify it exists on the selected target before delivery.
+  => REJECTED
+
+      (refused, exit code non-zero, as intended)

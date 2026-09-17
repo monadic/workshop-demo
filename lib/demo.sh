@@ -66,6 +66,25 @@ show_refusal() {
   dim "      (refused, exit code non-zero, as intended)"
 }
 
+# show_into <file> <command...>: run a command and keep what it prints in a file.
+show_into() {
+  local file=$1; shift
+  printf '\n\033[36m$ %s > %s\033[0m\n' "$(render "$@")" "$file"
+  pause
+  if ! "$@" > "$file"; then
+    echo
+    bold "That command failed, and this step expected it to succeed."
+    exit 1
+  fi
+}
+
+# show_diff <a> <b>: a plain diff of two files. diff exits non-zero when they differ.
+show_diff() {
+  printf '\n\033[36m$ diff %s %s\033[0m\n' "$1" "$2"
+  pause
+  diff "$1" "$2" || true
+}
+
 say() { echo; echo "$*"; }
 
 run_step() {

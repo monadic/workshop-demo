@@ -1,0 +1,24 @@
+
+Helm takes the file without a word. The render looks healthy.
+
+$ helm template shop-redis oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --namespace shop -f values.yaml > work/redis.yaml
+Pulled: registry-1.docker.io/cloudpirates/redis:0.34.11
+Digest: sha256:ee589d22bba1eb6de32e11e035b779d382cf0186c8a2f1585daee31b73957ab7
+
+$ cub config check work/redis.yaml
+
+Config: redis
+Inspecting local Kubernetes objects (static, no infrastructure)
+
+Installs
+  7 objects: 1 ConfigMap, 1 Secret, 4 Service, 1 StatefulSet
+  namespaces that must already exist: shop
+
+Lifecycle work
+  [PASS] CRDs: 0
+  [PASS] Helm hooks: 0
+  [PASS] setup Jobs: 0
+  [PASS] admission webhooks needing a certificate: 0
+
+  Free look before you install. Compose it into a cub stack, or run it as a cub app.
+

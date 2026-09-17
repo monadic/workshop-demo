@@ -1,0 +1,19 @@
+
+With --exit-code the same check fails a build when a value did nothing.
+
+$ cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --values values.yaml --exit-code
+
+Values: 7 set, checked against oci://registry-1.docker.io/cloudpirates/redis 0.34.11
+
+  [APPLIED]    architecture                    changed 2 objects: StatefulSet release-redis, Service release-redis-master
+  [DEFAULT]    auth.enabled                    is what the chart already uses
+  [APPLIED]    auth.password                   changed 1 object: Secret release-redis
+  [IGNORED]    master.persistence.size         this chart has no "master" section, and it changed nothing. This chart sets that at persistence.size.
+  [IGNORED]    master.resources.limits.memory  this chart has no "master" section, and it changed nothing.
+  [IGNORED]    replica.replicaCount            this chart has no "replica" section, and it changed nothing. This chart sets that at replicaCount.
+  [APPLIED]    metrics.enabled                 changed 2 objects: StatefulSet release-redis, Service release-redis-metrics
+
+  3 of 7 values did nothing.
+  Rendered locally with Helm. A value that changes nothing here may still matter under other settings, capabilities or Kubernetes versions. No value is printed.
+
+      (refused, exit code non-zero, as intended)

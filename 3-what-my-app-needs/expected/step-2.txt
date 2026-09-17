@@ -1,0 +1,10 @@
+
+Three Catalog parts pinned by digest, and the app.
+
+$ grep -E "^  name:|- name:|authored:" platform-first-try.yaml
+  name: shop-platform
+    - name: cert-manager
+    - name: traefik
+    - name: metrics-server
+    - name: shop-web
+      authored: "shop-web.yaml"

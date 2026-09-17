@@ -1,0 +1,26 @@
+
+The assistant used another chart's names. This chart reads the same settings somewhere else, and it counts every pod, so two replicas is replicaCount 3.
+
+$ diff values.yaml values-fixed.yaml
+1,2c1
+< # Written by an AI assistant for the shop's Redis, from this request:
+< # "a password, two replicas, a 1Gi disk, a memory limit, and metrics on"
+---
+> # The same request, with each setting where this chart reads it.
+7,14c6,12
+< master:
+<   persistence:
+<     size: 1Gi
+<   resources:
+<     limits:
+<       memory: 256Mi
+< replica:
+<   replicaCount: 2
+---
+> persistence:
+>   size: 1Gi
+> resources:
+>   limits:
+>     memory: 256Mi
+> # This chart counts every pod: 3 is one master and two replicas.
+> replicaCount: 3

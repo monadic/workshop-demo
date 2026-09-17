@@ -1,5 +1,0 @@
-
-One Trigger on the base. Every copy placed from this base inherits it.
-
-$ cub trigger create require-approval Mutation Kubernetes/YAML vet-approvedby 1 --space wsdemo-redis-base
-Successfully created trigger require-approval (4f3c2832-b894-4b37-af0e-0eb32ad4e0d5)

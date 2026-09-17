@@ -1,0 +1,8 @@
+
+With the three fixes restored, the only change left is the probe.
+
+$ cub config diff app-committed.yaml app-restored.yaml
+Configuration diff: 0 added, 0 removed, 1 changed, 1 unchanged
+  changed: apps/v1 Deployment shop/shop-web
+    /spec/template/spec/containers/shop-web/readinessProbe add: {"httpGet":{"path":"/healthz","port":"http"},"periodSeconds":5}
+Local comparison only. This does not merge, protect edits or inspect a live target.

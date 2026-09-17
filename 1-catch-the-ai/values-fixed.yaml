@@ -1,0 +1,14 @@
+# The same request, with each setting where this chart reads it.
+architecture: replication
+auth:
+  enabled: true
+  password: "change-me-demo-only"
+persistence:
+  size: 1Gi
+resources:
+  limits:
+    memory: 256Mi
+# This chart counts every pod: 3 is one master and two replicas.
+replicaCount: 3
+metrics:
+  enabled: true
