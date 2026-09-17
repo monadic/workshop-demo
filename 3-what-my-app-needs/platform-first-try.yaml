@@ -1,7 +1,7 @@
 apiVersion: helm-expt.confighub.com/v1alpha1
 kind: Stack
 metadata:
-  name: shop-platform
+  name: my-shop-platform
 spec:
   description: "The platform as first picked: cert-manager, Traefik and metrics-server, with the shop app placed on it."
   components:

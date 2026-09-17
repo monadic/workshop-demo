@@ -9,7 +9,7 @@ Values: 7 set, checked against oci://registry-1.docker.io/cloudpirates/redis 0.3
   [DEFAULT]    auth.enabled                    is what the chart already uses
   [APPLIED]    auth.password                   changed 1 object: Secret release-redis
   [IGNORED]    master.persistence.size         this chart has no "master" section, and it changed nothing. This chart sets that at persistence.size.
-  [IGNORED]    master.resources.limits.memory  this chart has no "master" section, and it changed nothing.
+  [IGNORED]    master.resources.limits.memory  this chart has no "master" section, and it changed nothing. This chart sets that at resources.limits.memory or volumePermissions.resources.limits.memory or sentinel.resources.limits.memory.
   [IGNORED]    replica.replicaCount            this chart has no "replica" section, and it changed nothing. This chart sets that at replicaCount.
   [APPLIED]    metrics.enabled                 changed 2 objects: StatefulSet release-redis, Service release-redis-metrics
 

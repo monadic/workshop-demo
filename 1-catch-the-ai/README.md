@@ -33,7 +33,7 @@ Helm exits 0 and the objects look healthy. This is the trap.
 cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --values values.yaml
 ```
 
-Look for `3 of 7 values did nothing.` The disk size, the memory limit and the replica count are all `IGNORED`, because this chart has no `master` or `replica` section. For two of them the report says where the chart does read that setting.
+Look for `3 of 7 values did nothing.` The disk size, the memory limit and the replica count are all `IGNORED`, because this chart has no `master` or `replica` section. For each one the report says where this chart does read that setting.
 
 **4. Put each setting where this chart reads it.** `diff values.yaml values-fixed.yaml` shows the three settings moved. One of them also changes its number. The assistant wrote `replicaCount: 2` in another chart's meaning, two replicas beside a master. This chart counts every pod, so two replicas is `replicaCount: 3`. The right place is not enough when the same word means something else.
 
@@ -64,6 +64,10 @@ At step 1 an honest assistant says the file looks plausible. At step 3 it runs `
 In our own trial the assistant read the chart's template, worked out the replica count, and corrected an earlier version of `values-fixed.yaml` in this folder that had it wrong.
 
 A run has gone wrong if the assistant declares the values wrong from memory without running the check, prints the password, or "fixes" the file without verifying it afterwards.
+
+## Without a network
+
+The first run with a network keeps a copy of the chart in `~/.cache/workshop-demo`. When the registry cannot be reached, `./run.sh` says so and uses that copy, and the commands on screen show `work/chart/redis` in place of the registry address. `DEMO_OFFLINE=1 ./run.sh` does the same without looking for the registry. The results are the same.
 
 ## Reset
 

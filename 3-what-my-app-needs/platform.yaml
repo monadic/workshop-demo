@@ -1,7 +1,7 @@
 apiVersion: helm-expt.confighub.com/v1alpha1
 kind: Stack
 metadata:
-  name: shop-platform
+  name: my-shop-platform
 spec:
   description: "The platform grown to what the shop app needs, with the app adapted to the platform."
   components:
@@ -20,11 +20,11 @@ spec:
       order: 2
       bundle: "oci://europe-west1-docker.pkg.dev/nth-fort-499605-q5/helm-expt/bundles/catalog-metrics-server-metrics-server-3-13-1-default@sha256:c4a4976f073a9f79fee82ed6c6aecf108c4f48a2481b51e8cd82178f8757fef1"
       receipt: receipts/catalog/metrics-server-3.13.1-default.yaml
-    - name: external-secrets
+    - name: kube-prometheus-stack
       plane: mgmt
       order: 3
-      bundle: "oci://europe-west1-docker.pkg.dev/nth-fort-499605-q5/helm-expt/bundles/catalog-external-secrets-external-secrets-2-8-0-default@sha256:07c59422c14c9d8eb9a7aff9bd41b747ed306a38b65ef872bb8f00ab3b6dfa81"
-      receipt: receipts/catalog/external-secrets-2.8.0-default.yaml
+      bundle: "oci://europe-west1-docker.pkg.dev/nth-fort-499605-q5/helm-expt/bundles/workshop-kube-prometheus-stack@sha256:d46ddb13b9453b54f0125035a435349b0053dde7dd945ac63249f1834eafbac2"
+      receipt: "receipts/workshop/kube-prometheus-stack.json"
     - name: shop-web
       plane: workload
       order: 4

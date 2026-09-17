@@ -1,38 +1,11 @@
 
-The app moves to the Traefik class and takes its secret from the platform. The platform gains external-secrets.
+The app changes one line, to the ingress class this platform has. The platform gains one part, the Prometheus operator the app asked for.
 
 $ diff shop-web.yaml shop-web-adapted.yaml
-14c14,17
-<           image: registry.k8s.io/e2e-test-images/agnhost:2.47
----
->           image: registry.k8s.io/e2e-test-images/agnhost:2.47@sha256:cc249acbd34692826b2b335335615e060fdb3c0bca4954507aa3a1d1194de253
->           args: ["serve-hostname", "--http=true", "--port=8080"]
->           readinessProbe:
->             httpGet: { path: /, port: 8080 }
-32c35
+32c32
 <   ingressClassName: nginx
 ---
 >   ingressClassName: traefik
-54,55c57,58
-< apiVersion: monitoring.coreos.com/v1
-< kind: ServiceMonitor
----
-> apiVersion: external-secrets.io/v1
-> kind: ExternalSecret
-57c60
-<   name: shop-web
----
->   name: shop-web-db
-60,61c63,68
-<   selector: { matchLabels: { app: shop-web } }
-<   endpoints: [{ port: web }]
----
->   refreshInterval: 1h
->   secretStoreRef: { name: platform-store, kind: ClusterSecretStore }
->   target: { name: shop-web-db }
->   data:
->     - secretKey: password
->       remoteRef: { key: shop/db, property: password }
 
 $ diff platform-first-try.yaml platform.yaml
 6c6
@@ -40,11 +13,11 @@ $ diff platform-first-try.yaml platform.yaml
 ---
 >   description: "The platform grown to what the shop app needs, with the app adapted to the platform."
 22a23,27
->     - name: external-secrets
+>     - name: kube-prometheus-stack
 >       plane: mgmt
 >       order: 3
->       bundle: "oci://europe-west1-docker.pkg.dev/nth-fort-499605-q5/helm-expt/bundles/catalog-external-secrets-external-secrets-2-8-0-default@sha256:07c59422c14c9d8eb9a7aff9bd41b747ed306a38b65ef872bb8f00ab3b6dfa81"
->       receipt: receipts/catalog/external-secrets-2.8.0-default.yaml
+>       bundle: "oci://europe-west1-docker.pkg.dev/nth-fort-499605-q5/helm-expt/bundles/workshop-kube-prometheus-stack@sha256:d46ddb13b9453b54f0125035a435349b0053dde7dd945ac63249f1834eafbac2"
+>       receipt: "receipts/workshop/kube-prometheus-stack.json"
 25,26c30,31
 <       order: 3
 <       authored: "shop-web.yaml"

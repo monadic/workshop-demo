@@ -25,7 +25,8 @@ to say "next".
 3. Certify my app on that platform. What is the verdict, and what exactly is wrong?
 4. Propose the smallest fix. You may change the app, the platform, or both. Write your
    versions to work/shop-web-mine.yaml and work/platform-mine.yaml, with the platform
-   file pointing at your app file. If you add a platform part, you may now read
+   file pointing at your app file (an `authored:` path is read relative to the platform
+   file). If your fix costs the app something it asked for, say so. If you add a platform part, you may now read
    platform.yaml and take that part's bundle and receipt lines from it; never invent a
    digest. Tell me what you changed and why.
 5. Certify your fix. If it is refused, read the reason, fix it, and certify again.

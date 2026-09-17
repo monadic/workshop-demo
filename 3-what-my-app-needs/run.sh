@@ -29,7 +29,7 @@ step_3() {
 }
 
 step_4() {
-  say "The app moves to the Traefik class and takes its secret from the platform. The platform gains external-secrets."
+  say "The app changes one line, to the ingress class this platform has. The platform gains one part, the Prometheus operator the app asked for."
   show_diff shop-web.yaml shop-web-adapted.yaml
   show_diff platform-first-try.yaml platform.yaml
 }

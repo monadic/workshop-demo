@@ -54,8 +54,8 @@ If someone asks what happens when this gets tedious, that is the opening for a C
 | 1 | "My app has an Ingress, a Certificate and a ServiceMonitor. What does that assume?" | Three needs, named |
 | 2 | "Here is the platform I picked from the Catalog." | |
 | 3 | "Will my app run on it?" | **REJECTED**, for two reasons that would have failed quietly on a cluster |
-| 4 | "Fix both sides. The app adapts, and the platform grows." | |
-| 5 | "Same command." | **CERTIFIED**, 135 objects, app needs met |
+| 4 | "Fix both sides. The app changes one line. The platform gains the Prometheus operator the app asked for." | |
+| 5 | "Same command." | **CERTIFIED**, 215 objects, all three needs from step 1 met by name |
 | 6–7 | "Every object in apply order, for kubectl, Argo CD or Flux, and a workspace I can keep editing." | |
 
 Close with this line. *Nothing was applied, and I already know it fits.*
@@ -64,5 +64,5 @@ Close with this line. *Nothing was applied, and I already know it fits.*
 
 - **A step fails.** The script stops and says which command failed. Run `./run.sh --reset`, then `./run.sh N` to pick up at step N once the cause is fixed.
 - **`cub config values` is not found.** The workshop plugin is older than 0.6.22. Run `cub plugin upgrade workshop`.
-- **The network is down.** Steps 2 and 3 run from files and the local cache once they have run once on this machine. Step 1 pulls the chart on every run, so show its `expected/` files.
+- **The network is down.** Every step still runs, as long as the rehearsal above ran on this machine since it last restarted. Step 1 keeps a copy of the chart after its first run with a network, and says so when it falls back to that copy. Step 2 reads only files. Step 3 reads Catalog bundles from a temporary cache that a restart clears, so rehearse again after a restart. `DEMO_OFFLINE=1 ./run.sh` uses the kept chart without looking for the registry.
 - **The assistant wanders off.** Say "stop, run only step N from PROMPT.md". If it keeps wandering, switch to `./run.sh N`. Both tracks run the same commands, so nothing is lost.
