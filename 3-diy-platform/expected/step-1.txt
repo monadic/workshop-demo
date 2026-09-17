@@ -1,0 +1,40 @@
+
+Each shipped stack is a list of Catalog parts, pinned by digest.
+
+$ cub stack list
+
+Available stacks
+
+  app-platform  —  A full platform for a web application: database, cache, ingress, certificates, and monitoring. The shape a Spring Boot app lands on.
+      cert-manager, ingress-nginx, postgresql, redis, kube-prometheus-stack
+  conflict-demo  —  Two components claim the same object with different content. Certify must refuse this composition.
+      team-a, team-b
+  data-services  —  A stateful data tier: cache, relational database, and message queue.
+      redis, postgresql, rabbitmq
+  eks-inference  —  The EKS inference platform as a stack: eight digest-pinned certified bundles across three planes. The keystone, spoken in the settled vocabulary.
+      platform-profile, ack-controllers, aws-network, eks-cluster, karpenter-aws, karpenter, gpu-runtime, inference-workloads
+  gitops-secrets  —  A delivery control plane: Argo CD, External Secrets, and cert-manager, three CRD-shipping components composed together.
+      cert-manager, external-secrets, argo-cd
+  kubara-gitops-shop  —  Kubara components plus the retained Argo CD controller and shop app. Static composition only; repository binding, target prerequisites and live delivery remain required.
+      cert-manager, traefik, metrics-server, external-secrets, argo-cd, shop-web
+  kubara-platform  —  A small platform of cert-manager, Traefik, and metrics-server, composed from the catalog's published certified bundles.
+      cert-manager, traefik, metrics-server
+  kubara-shop-first-try  —  The Kubara platform as first picked (cert-manager, Traefik, metrics-server) with the shop app placed on it. Certify refuses it: the app asks for things the platform does not carry.
+      cert-manager, traefik, metrics-server, shop-web
+  kubara-shop-platform  —  The Kubara platform grown to what the shop app needs: cert-manager, Traefik, metrics-server, and external-secrets, with the app adapted to it: Traefik's ingress class and a secret pulled through external-secrets.
+      cert-manager, traefik, metrics-server, external-secrets, shop-web
+  metrics-double  —  Two copies of metrics-server, composed to show the certify step catching a resource conflict.
+      metrics-server, metrics-server-again
+  observability-base  —  A base observability platform: certificates, cluster metrics, and the Prometheus stack.
+      cert-manager, metrics-server, kube-prometheus-stack
+  redis-platform  —  A managed Redis platform: the cache, its secrets, and monitoring. After the redis-platform pattern in confighub/examples.
+      redis, external-secrets, kube-prometheus-stack
+  shop-platform  —  A web platform with monitoring and a message queue, with the shop app running on it: ingress, certificates, the Prometheus stack, RabbitMQ, and shop-web.
+      cert-manager, ingress-nginx, kube-prometheus-stack, rabbitmq, shop-web
+  web-platform  —  A platform for web apps: ingress, certificates, and monitoring. Carries exactly what an app like shop-web depends on.
+      cert-manager, ingress-nginx, kube-prometheus-stack
+  web-tiny  —  A tiny two-component web stack, used to run cub stack install end to end without burning quota.
+      frontend, backend
+
+cub stack sandbox <name>   # certify and render, free
+

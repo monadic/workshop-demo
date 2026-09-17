@@ -1,0 +1,30 @@
+
+$ cub stack sandbox stack-v2.yaml --workspace work/my-platform
+
+Stack: my-platform  —  Our own data platform: a cache, a database and metrics.
+Resolving 3 components: redis, postgresql, metrics-server
+
+Certify
+  [PASS] no resource conflicts across components (30 objects)
+  [PASS] no CRDs in this stack, so no CRD-before-CR ordering to enforce
+  [PASS] no admission webhooks need a certificate
+  [WARN] namespaces: 0 created, 3 must already exist (kube-system, postgresql, redis)
+  => CERTIFIED
+
+Sandbox render  (free, no infrastructure)
+  30 objects total
+      redis: 14
+      postgresql: 7
+      metrics-server: 9
+
+  Saved editable components, stack.yaml, rendered.yaml and baseline result.json in work/my-platform
+  Resume: cub stack certify 'work/my-platform/stack.yaml' --json
+  Edit a component, then save a new result and render before sharing. Target availability is not checked.
+
+$ ls work/my-platform
+components
+rendered.yaml
+result.json
+stack.yaml
+
+With a ConfigHub account the same stack uploads as governed Spaces, and a fleet places it on clusters.

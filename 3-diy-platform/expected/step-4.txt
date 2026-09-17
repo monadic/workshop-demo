@@ -1,0 +1,8 @@
+
+The fix is to take the duplicate out. These are the only lines that change.
+
+$ diff stack-v1.yaml stack-v2.yaml
+17,19d16
+<     - name: team-b-metrics
+<       bundle: "oci://europe-west1-docker.pkg.dev/nth-fort-499605-q5/helm-expt/bundles/workshop-metrics-server@sha256:db0795803b4a7d2ac7112ef6b5939174266022d75764e757cdd11db72d265fff"
+<       receipt: "receipts/workshop/metrics-server.json"

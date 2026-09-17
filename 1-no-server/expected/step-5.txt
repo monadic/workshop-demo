@@ -1,0 +1,20 @@
+
+Two components claim the same nine objects. Certify refuses the whole stack.
+
+$ cub stack certify metrics-double
+
+Stack: metrics-double  —  Two copies of metrics-server, composed to show the certify step catching a resource conflict.
+Resolving 2 components: metrics-server, metrics-server-again
+
+Certify
+  [FAIL] 9 resource conflict(s) — the same object is claimed by more than one component:
+      v1|ServiceAccount|kube-system|metrics-server  <=  metrics-server + metrics-server-again
+      rbac.authorization.k8s.io/v1|ClusterRole||system:metrics-server-aggregated-reader  <=  metrics-server + metrics-server-again
+      rbac.authorization.k8s.io/v1|ClusterRole||system:metrics-server  <=  metrics-server + metrics-server-again
+      rbac.authorization.k8s.io/v1|ClusterRoleBinding||metrics-server:system:auth-delegator  <=  metrics-server + metrics-server-again
+  [PASS] no CRDs in this stack, so no CRD-before-CR ordering to enforce
+  [PASS] no admission webhooks need a certificate
+  [WARN] namespaces: 0 created, 1 must already exist (kube-system)
+  => REJECTED
+
+      (refused, exit code non-zero, as intended)

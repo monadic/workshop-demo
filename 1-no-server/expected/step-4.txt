@@ -1,0 +1,32 @@
+
+A stack is many parts in one manifest. This one is an AI inference platform.
+
+$ cub stack sandbox eks-inference
+
+Stack: eks-inference  —  The EKS inference platform as a stack: eight digest-pinned certified bundles across three planes. The keystone, spoken in the settled vocabulary.
+Resolving 8 components: platform-profile, ack-controllers, aws-network, eks-cluster, karpenter-aws, karpenter, gpu-runtime, inference-workloads
+
+Certify
+  [PASS] no resource conflicts across components (130 objects)
+  [WARN] 2 object(s) carried more than once inside one component with identical content; the last occurrence wins at apply:
+      apiextensions.k8s.io/v1|CustomResourceDefinition||fieldexports.services.k8s.aws  x3  inside  ack-controllers
+      apiextensions.k8s.io/v1|CustomResourceDefinition||iamroleselectors.services.k8s.aws  x3  inside  ack-controllers
+  [PASS] CRD ordering: 46 CRDs are delivered before the 25 custom resources that need them
+  [PASS] served API versions: 25 custom resource(s) match their bundled CRD; target availability is not checked
+  [PASS] no admission webhooks need a certificate
+  [WARN] namespaces: 4 created, 1 must already exist (kube-system)
+  => CERTIFIED
+
+Sandbox render  (free, no infrastructure)
+  130 objects total
+      platform-profile: 1  [hub: held in ConfigHub, never applied]
+      ack-controllers: 72  [mgmt]
+      aws-network: 14  [mgmt]
+      eks-cluster: 5  [mgmt]
+      karpenter-aws: 2  [mgmt]
+      karpenter: 23  [workload]
+      gpu-runtime: 6  [workload]
+      inference-workloads: 7  [workload]
+
+  Ready. `cub stack upload eks-inference --run` builds the base Spaces and links in ConfigHub.
+

@@ -1,0 +1,13 @@
+
+$ cub stack certify stack-v2.yaml
+
+Stack: my-platform  —  Our own data platform: a cache, a database and metrics.
+Resolving 3 components: redis, postgresql, metrics-server
+
+Certify
+  [PASS] no resource conflicts across components (30 objects)
+  [PASS] no CRDs in this stack, so no CRD-before-CR ordering to enforce
+  [PASS] no admission webhooks need a certificate
+  [WARN] namespaces: 0 created, 3 must already exist (kube-system, postgresql, redis)
+  => CERTIFIED
+

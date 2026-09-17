@@ -1,0 +1,20 @@
+
+Certify reads every object in every part before anything renders.
+
+$ cub stack certify stack-v1.yaml
+
+Stack: my-platform  —  Our own data platform: a cache, a database and metrics.
+Resolving 4 components: redis, postgresql, metrics-server, team-b-metrics
+
+Certify
+  [FAIL] 9 resource conflict(s) — the same object is claimed by more than one component:
+      v1|ServiceAccount|kube-system|metrics-server  <=  metrics-server + team-b-metrics
+      rbac.authorization.k8s.io/v1|ClusterRole||system:metrics-server-aggregated-reader  <=  metrics-server + team-b-metrics
+      rbac.authorization.k8s.io/v1|ClusterRole||system:metrics-server  <=  metrics-server + team-b-metrics
+      rbac.authorization.k8s.io/v1|ClusterRoleBinding||metrics-server:system:auth-delegator  <=  metrics-server + team-b-metrics
+  [PASS] no CRDs in this stack, so no CRD-before-CR ordering to enforce
+  [PASS] no admission webhooks need a certificate
+  [WARN] namespaces: 0 created, 3 must already exist (kube-system, postgresql, redis)
+  => REJECTED
+
+      (refused, exit code non-zero, as intended)
