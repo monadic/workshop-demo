@@ -19,6 +19,7 @@ Values: 7 set, checked against oci://registry-1.docker.io/cloudpirates/redis 0.3
   [APPLIED]    metrics.enabled                 changed 2 objects: StatefulSet release-redis, Service release-redis-metrics
 
   3 of 7 values did nothing.
+
   Rendered locally with Helm. A value that changes nothing here may still matter under other settings, capabilities or Kubernetes versions. No value is printed.
 
 

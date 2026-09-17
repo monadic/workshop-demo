@@ -1,0 +1,22 @@
+
+Argo CD renders the chart on every sync, without reading anything back from your cluster. Do that twice.
+
+    The same command, the same values, a second time, into 
+    work/bitnami-again.yaml.
+
+$ helm template shop-redis oci://registry-1.docker.io/bitnamicharts/redis --version 25.5.3 --namespace shop -f values.yaml > work/bitnami-again.yaml
+Pulled: registry-1.docker.io/bitnamicharts/redis:25.5.3
+Digest: sha256:4987cbf877710e3c083cfbb907a1a4ac4ce389803dbadb7b1f8022d8b3fcb85e
+
+    cub config diff compares the two renders field by field. A Secret's values 
+    are never printed, only a short hash of each.
+
+$ cub config diff work/bitnami.yaml work/bitnami-again.yaml
+Configuration diff: 0 added, 0 removed, 1 changed, 9 unchanged
+  changed: v1 Secret shop/shop-redis
+    /data/redis-password replace: "<redacted sha256:56cd0a48d0ee>" -> "<redacted sha256:fb50c4f76798>"
+Local comparison only. This does not merge, protect edits or inspect a live target.
+
+    Look for one changed field, the Redis password. Same chart, same values, a 
+    different password. Under Argo CD every sync writes a new one, and the shop 
+    app still holds the old one.

@@ -1,0 +1,50 @@
+
+Check the alternative the same way.
+
+    helm template renders it with the Catalog's base and your memory limit, 
+    into work/successor.yaml.
+
+$ helm template shop-redis oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --namespace shop -f values-successor.yaml > work/successor.yaml
+Pulled: registry-1.docker.io/cloudpirates/redis:0.34.11
+Digest: sha256:ee589d22bba1eb6de32e11e035b779d382cf0186c8a2f1585daee31b73957ab7
+
+    The step 2 check.
+
+$ cub config check work/successor.yaml
+
+Config: successor
+Inspecting local Kubernetes objects (static, no infrastructure)
+
+Installs
+  5 objects: 1 ConfigMap, 2 Service, 1 ServiceAccount, 1 StatefulSet
+  namespaces that must already exist: shop
+
+Lifecycle work
+  [PASS] CRDs: 0
+  [PASS] Helm hooks: 0
+  [PASS] setup Jobs: 0
+  [PASS] admission webhooks needing a certificate: 0
+  [PASS] images tagged latest or not tagged: 0
+
+  Free look before you install. Compose it into a cub stack, or run it as a cub app.
+
+
+    The step 4 check.
+
+$ cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --release shop-redis --namespace shop --values values-successor.yaml
+
+Values: 5 set, checked against oci://registry-1.docker.io/cloudpirates/redis 0.34.11
+
+  [DEFAULT]    architecture                    is what the chart already uses
+  [APPLIED]    serviceAccount.create           changed 2 objects: StatefulSet shop-redis, ServiceAccount shop-redis
+  [APPLIED]    auth.existingSecret             changed 2 objects: StatefulSet shop-redis, Secret shop-redis
+  [DEFAULT]    auth.existingSecretPasswordKey  is what the chart already uses
+  [APPLIED]    resources.limits.memory         changed 1 object: StatefulSet shop-redis
+
+  Every value you set changed the result or matches the default.
+
+  Rendered locally with Helm. A value that changes nothing here may still matter under other settings, capabilities or Kubernetes versions. No value is printed.
+
+
+    Look for images tagged latest: 0, because the image is pinned by digest. 
+    Every value applied. No preset, and nothing that changes on every render.

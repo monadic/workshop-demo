@@ -23,6 +23,11 @@ else fail "this workshop plugin is older than 0.6.22, and step 1 needs cub confi
 if cub config 2>&1 | grep -q "config diff"; then pass "cub config diff is available (steps 1 and 2)"
 else fail "this workshop plugin has no cub config diff" "run: cub plugin upgrade workshop"; fi
 
+probe="$(mktemp -d)"; printf 'apiVersion: v1\nkind: Pod\nmetadata: {name: probe, namespace: demo}\nspec: {containers: [{name: c, image: probe}]}\n' > "$probe/pod.yaml"
+if cub config check "$probe/pod.yaml" 2>&1 | grep -q "images tagged latest"; then pass "cub config check names unpinned images (step 4)"
+else fail "this workshop plugin is older than 0.6.26, and step 4 needs its image and preset notes" "run: cub plugin upgrade workshop"; fi
+rm -rf "$probe"
+
 if cub stack list >/dev/null 2>&1; then pass "cub stack answers (step 3)"
 else fail "cub stack does not answer" "run: cub plugin upgrade workshop"; fi
 
@@ -31,8 +36,11 @@ for tool in node oras; do
   else fail "$tool is not installed" "install $tool; the workshop plugin needs it on your PATH"; fi
 done
 
-if command -v helm >/dev/null 2>&1; then pass "helm is installed (step 1 renders a chart)"
-else fail "helm is not installed" "install Helm; step 1 renders a chart with it"; fi
+if command -v helm >/dev/null 2>&1; then pass "helm is installed (steps 1 and 4 render a chart)"
+else fail "helm is not installed" "install Helm; steps 1 and 4 render a chart with it"; fi
+
+if command -v curl >/dev/null 2>&1; then pass "curl is installed (step 4 reads the Workshop Catalog)"
+else fail "curl is not installed" "install curl; step 4 reads the Workshop Catalog with it"; fi
 
 echo
 if [ "$bad" = "0" ]; then echo "Ready. $ok checks passed."; else echo "$bad thing(s) to fix, $ok fine."; exit 1; fi

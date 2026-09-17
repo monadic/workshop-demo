@@ -1,0 +1,25 @@
+
+helm install hid that, because it reads the Secret back from the cluster. What else is the chart deciding for you?
+
+    cub config values renders the chart once per value you set, and now also 
+    names what the chart does that you never wrote. No value is printed.
+
+$ cub config values oci://registry-1.docker.io/bitnamicharts/redis --version 25.5.3 --release shop-redis --namespace shop --values values.yaml
+
+Values: 2 set, checked against oci://registry-1.docker.io/bitnamicharts/redis 25.5.3
+
+  [APPLIED]    architecture  changed 6 objects: StatefulSet shop-redis-master, StatefulSet shop-redis-replicas, PodDisruptionBudget shop-redis-replicas, ConfigMap shop-redis-scripts, and 2 more
+  [DEFAULT]    auth.enabled  is what the chart already uses
+
+  Every value you set changed the result or matches the default.
+
+What the chart does that you did not write
+  [NOTE]  master.resourcesPreset is "nano". The chart sets CPU and memory for StatefulSet shop-redis-master. Setting master.resources replaces the whole preset.
+  [NOTE]  1 field changes on every render: Secret shop-redis /data/redis-password.
+          Argo CD, Flux and helm template render without your cluster, so they get a new value every time. helm upgrade keeps a value only if the chart reads it back from the cluster.
+
+  Rendered locally with Helm. A value that changes nothing here may still matter under other settings, capabilities or Kubernetes versions. No value is printed.
+
+
+    Look for two NOTE lines. A resource preset called nano sets Redis's memory, 
+    192Mi, and you never chose it. The password field changes on every render.

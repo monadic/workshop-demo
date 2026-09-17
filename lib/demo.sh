@@ -37,6 +37,8 @@ render() {
   if [ "${1:-}" = "hub" ]; then shift; set -- cub "$@"; fi
   for arg in "$@"; do
     case "$arg" in
+      *\'*) out="$out \"$arg\"" ;;
+      *\"*) out="$out '$arg'" ;;
       *[!A-Za-z0-9_./:=@%+,-]*|"") out="$out \"$arg\"" ;;
       *) out="$out $arg" ;;
     esac

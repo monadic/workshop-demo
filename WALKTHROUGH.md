@@ -1,6 +1,6 @@
 # Presenter notes
 
-One story in three steps, about fifteen minutes in all. You are building a small shop app with an AI assistant. Each step has a single moment the audience should remember. Get to that moment, say the line, and move on.
+One story in four steps, about twenty minutes in all. You are building a small shop app with an AI assistant. Each step has a single moment the audience should remember. Get to that moment, say the line, and move on.
 
 Nothing here needs an account, a server or a cluster until the last two steps of part 2, and you should say so once at the start. Those two steps are optional, and they are where ConfigHub itself comes in.
 
@@ -13,6 +13,7 @@ Run these an hour before, not five minutes before.
 (cd 1-catch-the-ai       && DEMO_AUTO=1 ./run.sh && ./run.sh --reset)
 (cd 2-my-fixes-survive   && DEMO_AUTO=1 ./run.sh && ./run.sh --reset)
 (cd 3-what-my-app-needs  && DEMO_AUTO=1 ./run.sh && ./run.sh --reset)
+(cd 4-before-argo-takes-over && DEMO_AUTO=1 ./run.sh && ./run.sh --reset)
 ```
 
 The first run pulls the Redis chart and the Catalog bundles, so it is slower than the ones after it. Make the terminal font large, and keep a second tab open in the repository root.
@@ -63,6 +64,23 @@ Steps 6 and 7 need `cub auth login` beforehand, and they write one Space, `works
 | 6–7 | "Every object in apply order, for kubectl, Argo CD or Flux, and a workspace I can keep editing." | |
 
 Close with this line. *Nothing was applied, and I already know it fits.*
+
+## 4. Before Argo CD takes over (6 minutes)
+
+| Step | Say | Moment |
+| --- | --- | --- |
+| 1 | "Three lines of values. This Redis has run fine from helm install for a month. Next week Argo CD takes over." | |
+| 2 | "What does it really install?" | The image is tagged **latest** |
+| 3 | "Argo CD renders the chart on every sync. So render it twice." | **The password changes.** Same chart, same values. helm install hid it, because it reads the Secret back from the cluster |
+| 4 | "What else is the chart deciding for me?" | **A 192Mi memory preset** nobody chose, and the password again, named |
+| 5 | "Fine, pin the image to a version." | **Refused.** Versioned Bitnami images are behind a paid tier. Only an unpatched legacy copy remains |
+| 6 | "Ask the Workshop Catalog. It is data, with no account." | A reviewed Redis, pinned by digest, with a base that keeps the password in your own Secret |
+| 7 | "Same checks." | No latest image, no preset, nothing that changes on every render |
+| 8 | "And the Argo CD test." | **0 changed** |
+
+Close with this line. *helm install looked fine for a month. Two renders showed what Argo CD would have done on day one.*
+
+If someone asks whether Claude would catch this, the honest answer is sometimes. In our trial an assistant without the Workshop found the image and the preset by reading the chart for eight commands, and did not tell the developer about the Argo CD case. The Workshop gives the same answer in one command, and the same command works in CI.
 
 ## If something goes wrong
 

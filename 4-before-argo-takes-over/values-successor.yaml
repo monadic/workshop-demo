@@ -1,0 +1,12 @@
+# The Workshop Catalog's reviewed base for cloudpirates/redis 0.34.11, reuse-existing-secret:
+# https://confighub.github.io/helm-expt/site/listings/cloudpirates-redis-0-34-11-reuse-existing-secret.json
+architecture: standalone
+serviceAccount:
+  create: true
+auth:
+  existingSecret: redis-existing-secret
+  existingSecretPasswordKey: redis-password
+# Your own setting on top of the reviewed base. The old chart's preset gave Redis 192Mi.
+resources:
+  limits:
+    memory: 512Mi

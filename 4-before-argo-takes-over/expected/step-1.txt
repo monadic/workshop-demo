@@ -1,0 +1,15 @@
+
+An assistant wrote this a month ago, and helm install has run it ever since. Now the shop is moving to Argo CD.
+
+    cat prints the values file. Three lines, and nothing looks wrong.
+
+$ cat values.yaml
+# Written by an AI assistant a month ago, for the shop's Redis cache:
+# "add a Redis cache with a password, standalone is fine"
+# Installed with: helm install shop-redis oci://registry-1.docker.io/bitnamicharts/redis --version 25.5.3 -n shop -f values.yaml
+architecture: standalone
+auth:
+  enabled: true
+
+    Look for a password switched on and nothing else. The chart decides the 
+    rest.

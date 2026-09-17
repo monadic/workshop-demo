@@ -1,0 +1,18 @@
+
+You can fix the password with an existing Secret. The floating image is harder. Try to pin a Redis version.
+
+    oras asks Docker Hub, without an account, for a versioned Bitnami Redis 
+    image. This tag is the one an older release of this same chart, 20.6.0, 
+    pinned.
+
+$ oras manifest fetch docker.io/bitnami/redis:7.4.1-debian-12-r2
+Error response from registry: failed to fetch the content of "docker.io/bitnami/redis:7.4.1-debian-12-r2": docker.io/bitnami/redis:7.4.1-debian-12-r2: not found
+      (refused, exit code non-zero, as intended)
+
+    The same tag, in the repository Bitnami moved its old images to.
+
+$ oras manifest fetch --descriptor docker.io/bitnamilegacy/redis:7.4.1-debian-12-r2
+{"mediaType":"application/vnd.docker.distribution.manifest.list.v2+json","digest":"sha256:3cfa11e8fef45c006a101ed7cfaae2cdaed7a5167c8ada2a3f76a1de54488cd0","size":529}
+    Look for the first refused, the second found. Versioned Bitnami images now 
+    sit behind a paid tier, and the legacy copies get no updates. The free 
+    chart runs latest.

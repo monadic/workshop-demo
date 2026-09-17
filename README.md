@@ -1,12 +1,13 @@
 # ConfigHub Workshop demos
 
-You are building a small shop app with an AI assistant. These three demos follow that app from one chart, to the app itself, to the platform it runs on. Each takes about five minutes and ends on one result you would not have seen otherwise.
+You are building a small shop app with an AI assistant. These four demos follow that app from one chart, to the app itself, to the platform it runs on, to the day Argo CD takes over. Each takes about five minutes and ends on one result you would not have seen otherwise.
 
 | Step | The question | What you see |
 | --- | --- | --- |
 | [1. Catch the AI](1-catch-the-ai/) | The assistant wrote my Helm values. Did they do anything? | Three of seven values did nothing, and Helm never said so |
 | [2. My fixes survive the AI](2-my-fixes-survive/) | The assistant rewrote my app. Are my fixes still there? | One change you asked for, and three of your fixes undone. Then ConfigHub carries your fixes through the rewrite for you |
 | [3. What my app needs](3-what-my-app-needs/) | Will my app run on the platform I picked? | Refused for two real reasons, fixed on both sides, then certified |
+| [4. Before Argo CD takes over](4-before-argo-takes-over/) | My Redis has run fine for a month. Is it safe to hand to GitOps? | A password that changes on every sync, a floating image and a memory preset nobody chose. Then a reviewed alternative from the Catalog with none of them |
 
 Nothing here needs an account, a server or a cluster, with one exception that you choose. Everything runs on your machine and writes only to a `work/` folder inside each demo. The exception is the last two steps of part 2, which show what ConfigHub adds once you log in. Without a login the script skips them, and the first five steps stand on their own.
 

@@ -1,0 +1,32 @@
+
+So ask the Workshop Catalog. It is public, it is data, and it needs no account.
+
+    curl downloads the Catalog's listing index, one line per reviewed 
+    configuration.
+
+$ curl -s -o work/index.json https://confighub.github.io/helm-expt/site/listings/index.json
+
+    grep finds the reviewed Redis alternatives in it.
+
+$ grep -o '"id": "cloudpirates-redis[^"]*"' work/index.json
+"id": "cloudpirates-redis-0-34-11-default"
+"id": "cloudpirates-redis-0-34-11-reuse-existing-secret"
+
+    curl downloads the listing for the base that keeps the password in a Secret 
+    you create, and grep shows what it is.
+
+$ curl -s -o work/listing.json https://confighub.github.io/helm-expt/site/listings/cloudpirates-redis-0-34-11-reuse-existing-secret.json
+
+$ grep -m 3 -o -E '"(name|version|base)": "[^"]*"' work/listing.json
+"name": "cloudpirates/redis"
+"version": "0.34.11"
+"base": "reuse-existing-secret"
+
+    And the exact package the Catalog reviewed, pinned by digest.
+
+$ grep -m 1 -o '"sourcePackageRef": "[^"]*"' work/listing.json
+"sourcePackageRef": "oci://europe-west1-docker.pkg.dev/nth-fort-499605-q5/helm-expt/cloudpirates-redis:0.34.11@sha256:ed4ebe13040d1fe9c079ef6b94497cda40598bcb484789db115001f6aadcc4eb"
+
+    Look for cloudpirates/redis 0.34.11 with the base reuse-existing-secret, 
+    and the reviewed package pinned by digest. values-successor.yaml in this 
+    folder is that base's values, with your 512Mi memory limit on top.

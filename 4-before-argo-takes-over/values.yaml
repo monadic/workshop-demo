@@ -1,0 +1,6 @@
+# Written by an AI assistant a month ago, for the shop's Redis cache:
+# "add a Redis cache with a password, standalone is fine"
+# Installed with: helm install shop-redis oci://registry-1.docker.io/bitnamicharts/redis --version 25.5.3 -n shop -f values.yaml
+architecture: standalone
+auth:
+  enabled: true

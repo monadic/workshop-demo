@@ -1,0 +1,34 @@
+
+First, what does the chart really install?
+
+    helm template renders the chart with these values, the way Argo CD does, 
+    into work/bitnami.yaml. Nothing reaches a cluster.
+
+$ helm template shop-redis oci://registry-1.docker.io/bitnamicharts/redis --version 25.5.3 --namespace shop -f values.yaml > work/bitnami.yaml
+Pulled: registry-1.docker.io/bitnamicharts/redis:25.5.3
+Digest: sha256:4987cbf877710e3c083cfbb907a1a4ac4ce389803dbadb7b1f8022d8b3fcb85e
+
+    cub config check lists what that file installs, and anything that needs 
+    work before or after.
+
+$ cub config check work/bitnami.yaml
+
+Config: bitnami
+Inspecting local Kubernetes objects (static, no infrastructure)
+
+Installs
+  10 objects: 3 ConfigMap, 1 NetworkPolicy, 1 PodDisruptionBudget, 1 Secret, 2 Service, 1 ServiceAccount, 1 StatefulSet
+  namespaces that must already exist: shop
+
+Lifecycle work
+  [PASS] CRDs: 0
+  [PASS] Helm hooks: 0
+  [PASS] setup Jobs: 0
+  [PASS] admission webhooks needing a certificate: 0
+  [NOTE] images tagged latest or not tagged: 1 (registry-1.docker.io/bitnami/redis:latest). The same name can pull different bytes later
+
+  Free look before you install. Compose it into a cub stack, or run it as a cub app.
+
+
+    Look for the NOTE line. The Redis image is tagged latest, so the same name 
+    can pull a different Redis next week.
