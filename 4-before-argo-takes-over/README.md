@@ -86,6 +86,10 @@ cub config diff work/successor.yaml work/successor-again.yaml
 
 Look for `0 changed`. Argo CD would find nothing to change.
 
+## Does it really break?
+
+Yes, and [evidence/gitops-password-drift.md](evidence/gitops-password-drift.md) is the record of it on a real cluster: one sync changes the Secret, an app reading it gets `WRONGPASS` while the running Redis still holds the old password, and after the pod restarts the app that cached the old one fails instead. No password is printed there either.
+
 ## How it knows
 
 `cub config check` reads every container image in the rendered objects. `cub config values` renders the chart twice with the same values and names every field that differs. It then sets each `resourcesPreset` it finds to `none` and renders again, so it reports only a preset that is really in force. Nothing is applied and no value is printed.

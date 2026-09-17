@@ -1,0 +1,8 @@
+# What an assistant wrote for "add MySQL for the shop, one instance, with a root password".
+# It picked the chart version it knew: bitnami/mysql 14.0.3.
+# helm install shop-db oci://registry-1.docker.io/bitnamicharts/mysql --version 14.0.3 -n shop -f values.yaml
+architecture: standalone
+auth:
+  # Demo only. A real one belongs in a Secret you create.
+  rootPassword: "not-a-real-password"
+  database: shop

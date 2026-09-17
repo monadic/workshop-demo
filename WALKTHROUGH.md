@@ -1,6 +1,6 @@
 # Presenter notes
 
-One story in four steps, about twenty minutes in all. You are building a small shop app with an AI assistant. Each step has a single moment the audience should remember. Get to that moment, say the line, and move on.
+One story in five steps, about twenty-five minutes in all. You are building a small shop app with an AI assistant. Each step has a single moment the audience should remember. Get to that moment, say the line, and move on.
 
 Nothing here needs an account, a server or a cluster until the last two steps of part 2, and you should say so once at the start. Those two steps are optional, and they are where ConfigHub itself comes in.
 
@@ -14,6 +14,7 @@ Run these an hour before, not five minutes before.
 (cd 2-my-fixes-survive   && DEMO_AUTO=1 ./run.sh && ./run.sh --reset)
 (cd 3-what-my-app-needs  && DEMO_AUTO=1 ./run.sh && ./run.sh --reset)
 (cd 4-before-argo-takes-over && DEMO_AUTO=1 ./run.sh && ./run.sh --reset)
+(cd 5-it-installs-and-never-starts && DEMO_AUTO=1 ./run.sh && ./run.sh --reset)
 ```
 
 The first run pulls the Redis chart and the Catalog bundles, so it is slower than the ones after it. Make the terminal font large, and keep a second tab open in the repository root.
@@ -81,6 +82,20 @@ Close with this line. *Nothing was applied, and I already know it fits.*
 Close with this line. *helm install looked fine for a month. Two renders showed what Argo CD would have done on day one.*
 
 If someone asks whether Claude would catch this, the honest answer is sometimes. In our trial an assistant without the Workshop found the image and the preset by reading the chart for eight commands, and did not tell the developer about the Argo CD case. The Workshop gives the same answer in one command, and the same command works in CI.
+
+## 5. It installs and never starts (5 minutes, 8 with the live proof)
+
+| Step | Say | Moment |
+| --- | --- | --- |
+| 1–2 | "I asked for MySQL, this came back, and every check passes. The image is even pinned to a version." | Everything green |
+| 3 | "One thing my laptop cannot know: does that image still exist?" | **NOT FOUND**, before the install |
+| 4 | "The Workshop measured this and kept the receipt." | mysql and rabbitmq, with only unpatched legacy copies left |
+| 5 | "What did the Catalog review instead?" | A successor whose images pull |
+| 6 | "If you don't believe me." | **ImagePullBackOff** on the same image, and helm install said nothing |
+
+Close with this line. *The chart was fine. The values were fine. The image was gone, and only the registry could tell me.*
+
+Step 6 is optional and off by default. Run it with `DEMO_CLUSTER=1 ./run.sh 6`, and have the cluster already built before you present, because building it takes about two minutes. `./run.sh --reset` deletes it.
 
 ## If something goes wrong
 

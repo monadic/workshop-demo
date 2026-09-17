@@ -1,0 +1,105 @@
+
+Install the chart the assistant chose, on a cluster of its own.
+
+    kind builds a throwaway Kubernetes cluster. It touches no other cluster or 
+    kubeconfig you have.
+
+$ kind create cluster --name workshop-demo-trial --kubeconfig work/kubeconfig
+Creating cluster "workshop-demo-trial" ...
+ • Ensuring node image (kindest/node:v1.35.0) 🖼  ...
+ ✓ Ensuring node image (kindest/node:v1.35.0) 🖼
+ • Preparing nodes 📦   ...
+ ✓ Preparing nodes 📦 
+ • Writing configuration 📜  ...
+ ✓ Writing configuration 📜
+ • Starting control-plane 🕹️  ...
+ ✓ Starting control-plane 🕹️
+ • Installing CNI 🔌  ...
+ ✓ Installing CNI 🔌
+ • Installing StorageClass 💾  ...
+ ✓ Installing StorageClass 💾
+Set kubectl context to "kind-workshop-demo-trial"
+You can now use your cluster with:
+
+kubectl cluster-info --kubeconfig work/kubeconfig
+
+Not sure what to do next? 😅  Check out https://kind.sigs.k8s.io/docs/user/quick-start/
+
+$ kubectl create namespace shop
+namespace/shop created
+
+    helm install runs the chart that passed every local check. It does not 
+    wait, because the pods are not going to start.
+
+$ helm install shop-db oci://registry-1.docker.io/bitnamicharts/mysql --version 14.0.3 -n shop -f values.yaml
+Pulled: registry-1.docker.io/bitnamicharts/mysql:14.0.3
+Digest: sha256:2bbaf66e43dad7edce1eb563e19bcabd83eb8c8f79549505ad1c48e3a0cbfbba
+NAME: shop-db
+LAST DEPLOYED: Thu Sep 17 19:13:47 2026
+NAMESPACE: shop
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None
+NOTES:
+CHART NAME: mysql
+CHART VERSION: 14.0.3
+APP VERSION: 9.4.0
+
+⚠ WARNING: Since August 28th, 2025, only a limited subset of images/charts are available for free.
+    Subscribe to Bitnami Secure Images to receive continued support and security updates.
+    More info at https://bitnami.com and https://github.com/bitnami/containers/issues/83267
+
+** Please be patient while the chart is being deployed **
+
+Tip:
+
+  Watch the deployment status using the command: kubectl get pods -w --namespace shop
+
+Services:
+
+  echo Primary: shop-db-mysql.shop.svc.cluster.local:3306
+
+Execute the following to get the administrator credentials:
+
+  echo Username: root
+  MYSQL_ROOT_PASSWORD=$(kubectl get secret --namespace shop shop-db-mysql -o jsonpath="{.data.mysql-root-password}" | base64 -d)
+
+To connect to your database:
+
+  1. Run a pod that you can use as a client:
+
+      kubectl run shop-db-mysql-client --rm --tty -i --restart='Never' --image  docker.io/bitnami/mysql:9.4.0-debian-12-r1 --namespace shop --env MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD --command -- bash
+
+  2. To connect to primary service (read/write):
+
+      mysql -h shop-db-mysql.shop.svc.cluster.local -uroot -p"$MYSQL_ROOT_PASSWORD"
+
+
+
+
+
+
+WARNING: There are "resources" sections in the chart not set. Using "resourcesPreset" is not recommended for production. For production installations, please set the following values according to your workload needs:
+  - primary.resources
+  - secondary.resources
++info https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+
+    sleep gives Kubernetes half a minute to try the image.
+
+$ sleep 30
+
+$ kubectl -n shop get pods
+NAME              READY   STATUS              RESTARTS   AGE
+shop-db-mysql-0   0/1     Init:ErrImagePull   0          25s
+
+    The events say why.
+
+$ kubectl -n shop get events --field-selector reason=Failed
+LAST SEEN   TYPE      REASON   OBJECT                MESSAGE
+9s          Warning   Failed   pod/shop-db-mysql-0   Failed to pull image "docker.io/bitnami/mysql:9.4.0-debian-12-r1": rpc error: code = NotFound desc = failed to pull and unpack image "docker.io/bitnami/mysql:9.4.0-debian-12-r1": failed to resolve reference "docker.io/bitnami/mysql:9.4.0-debian-12-r1": docker.io/bitnami/mysql:9.4.0-debian-12-r1: not found
+9s          Warning   Failed   pod/shop-db-mysql-0   Error: ErrImagePull
+9s          Warning   Failed   pod/shop-db-mysql-0   Error: ImagePullBackOff
+
+    Look for ImagePullBackOff, on the same image cub config check --images 
+    called NOT FOUND. helm install said nothing.

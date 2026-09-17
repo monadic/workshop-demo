@@ -1,0 +1,33 @@
+
+Check it before installing, the way you would check any chart.
+
+    helm template renders the chart into work/mysql.yaml. The chart itself 
+    still downloads: it was never withdrawn.
+
+$ helm template shop-db oci://registry-1.docker.io/bitnamicharts/mysql --version 14.0.3 --namespace shop -f values.yaml > work/mysql.yaml
+Pulled: registry-1.docker.io/bitnamicharts/mysql:14.0.3
+Digest: sha256:2bbaf66e43dad7edce1eb563e19bcabd83eb8c8f79549505ad1c48e3a0cbfbba
+
+    cub config check lists what it installs and the work it carries.
+
+$ cub config check work/mysql.yaml
+
+Config: mysql
+Inspecting local Kubernetes objects (static, no infrastructure)
+
+Installs
+  8 objects: 1 ConfigMap, 1 NetworkPolicy, 1 PodDisruptionBudget, 1 Secret, 2 Service, 1 ServiceAccount, 1 StatefulSet
+  namespaces that must already exist: shop
+
+Lifecycle work
+  [PASS] CRDs: 0
+  [PASS] Helm hooks: 0
+  [PASS] setup Jobs: 0
+  [PASS] admission webhooks needing a certificate: 0
+  [PASS] images tagged latest or not tagged: 0
+
+  Free look before you install. Compose it into a cub stack, or run it as a cub app.
+
+
+    Look for every line passing, including the image line. The image is pinned 
+    to a version, which is what you want.

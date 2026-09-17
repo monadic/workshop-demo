@@ -1,0 +1,30 @@
+
+One thing no local check can know: whether that image still exists.
+
+    cub config check --images asks each image's own registry, without an 
+    account, whether it can be pulled. It is the one part of check that uses 
+    the network.
+
+$ cub config check work/mysql.yaml --images
+
+Config: mysql
+Inspecting local Kubernetes objects (static, no infrastructure)
+
+Installs
+  8 objects: 1 ConfigMap, 1 NetworkPolicy, 1 PodDisruptionBudget, 1 Secret, 2 Service, 1 ServiceAccount, 1 StatefulSet
+  namespaces that must already exist: shop
+
+Lifecycle work
+  [PASS] CRDs: 0
+  [PASS] Helm hooks: 0
+  [PASS] setup Jobs: 0
+  [PASS] admission webhooks needing a certificate: 0
+  [PASS] images tagged latest or not tagged: 0
+  [NOTE] images that pull anonymously: 0 of 1
+         NOT FOUND: docker.io/bitnami/mysql:9.4.0-debian-12-r1
+
+  Free look before you install. Compose it into a cub stack, or run it as a cub app.
+
+
+    Look for NOT FOUND. The chart is fine, the values are fine, and the image 
+    this chart runs is gone.

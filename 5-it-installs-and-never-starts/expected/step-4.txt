@@ -1,0 +1,39 @@
+
+The Workshop keeps a record of that, re-measured and committed.
+
+    curl downloads the receipt behind the Workshop's page on Bitnami charts.
+
+$ curl -s -o work/receipt.json https://raw.githubusercontent.com/confighub/helm-expt/main/runs/bitnami-source-fetch/all-originals-receipt.json
+
+    grep shows, for each pinned chart, the image it runs and whether that image 
+    resolves.
+
+$ grep -E '"(chart|reference|status|legacyStatus)":' work/receipt.json
+      "chart": "bitnami/redis",
+        "reference": "docker.io/bitnami/redis:latest",
+        "status": "available",
+        "legacyStatus": "available",
+      "chart": "bitnami/nginx",
+        "reference": "docker.io/bitnami/nginx:latest",
+        "status": "available",
+        "legacyStatus": "available",
+      "chart": "bitnami/postgresql",
+        "reference": "docker.io/bitnami/postgresql:latest",
+        "status": "available",
+        "legacyStatus": "available",
+      "chart": "bitnami/mysql",
+        "reference": "docker.io/bitnami/mysql:9.4.0-debian-12-r1",
+        "status": "not-found",
+        "legacyStatus": "available",
+      "chart": "bitnami/mongodb",
+        "reference": "docker.io/bitnami/mongodb:latest",
+        "status": "available",
+        "legacyStatus": "available",
+      "chart": "bitnami/rabbitmq",
+        "reference": "docker.io/bitnami/rabbitmq:4.1.3-debian-12-r1",
+        "status": "not-found",
+        "legacyStatus": "available",
+
+    Look for mysql and rabbitmq report not-found, with the same tag available 
+    under bitnamilegacy, which receives no updates. The other four run an image 
+    tagged latest.

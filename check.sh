@@ -26,6 +26,9 @@ else fail "this workshop plugin has no cub config diff" "run: cub plugin upgrade
 probe="$(mktemp -d)"; printf 'apiVersion: v1\nkind: Pod\nmetadata: {name: probe, namespace: demo}\nspec: {containers: [{name: c, image: probe}]}\n' > "$probe/pod.yaml"
 if cub config check "$probe/pod.yaml" 2>&1 | grep -q "images tagged latest"; then pass "cub config check names unpinned images (step 4)"
 else fail "this workshop plugin is older than 0.6.26, and step 4 needs its image and preset notes" "run: cub plugin upgrade workshop"; fi
+
+if cub config check --help 2>&1 | grep -q -- "--images"; then pass "cub config check --images is available (step 5)"
+else fail "this workshop plugin is older than 0.6.27, and step 5 needs cub config check --images" "run: cub plugin upgrade workshop"; fi
 rm -rf "$probe"
 
 if cub stack list >/dev/null 2>&1; then pass "cub stack answers (step 3)"

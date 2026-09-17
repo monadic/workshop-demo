@@ -1,0 +1,32 @@
+
+So ask the Catalog what it reviewed instead for MySQL.
+
+    The Catalog's successor for MySQL is the operator from Oracle's own MySQL 
+    team. Render it.
+
+$ helm template shop-db mysql-operator --repo https://mysql.github.io/mysql-operator/ --version 2.3.0 --namespace shop > work/successor.yaml
+
+    The same two checks.
+
+$ cub config check work/successor.yaml --images
+
+Config: successor
+Inspecting local Kubernetes objects (static, no infrastructure)
+
+Installs
+  8 objects: 1 ClusterKopfPeering, 3 ClusterRole, 1 ClusterRoleBinding, 1 Deployment, 1 Service, 1 ServiceAccount
+  namespaces that must already exist: shop
+
+Lifecycle work
+  [PASS] CRDs: 0
+  [PASS] Helm hooks: 0
+  [PASS] setup Jobs: 0
+  [PASS] admission webhooks needing a certificate: 0
+  [PASS] images tagged latest or not tagged: 0
+  [PASS] images that pull anonymously: 1 of 1
+
+  Free look before you install. Compose it into a cub stack, or run it as a cub app.
+
+
+    Look for the images pull. A chart is worth nothing if its images are gone, 
+    and this is the check that says so before you install.
