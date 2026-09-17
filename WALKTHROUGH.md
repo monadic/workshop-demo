@@ -2,7 +2,7 @@
 
 One story in three steps, about fifteen minutes in all. You are building a small shop app with an AI assistant. Each step has a single moment the audience should remember. Get to that moment, say the line, and move on.
 
-Nothing here needs an account, a server or a cluster, and you should say so once at the start.
+Nothing here needs an account, a server or a cluster until the last two steps of part 2, and you should say so once at the start. Those two steps are optional, and they are where ConfigHub itself comes in.
 
 ## Before you start
 
@@ -42,10 +42,14 @@ Close with this line. *Helm said nothing. The assistant said nothing. This took 
 | 3 | "Compare it with what I am running." | **Four changes.** One I asked for, and my three fixes undone |
 | 4 | "Put them back, compare again." | One change, the probe |
 | 5 | "And that review is a file I keep, and a gate I can put in CI." | |
+| 6 | "Step 4 was me, by hand, and I will be doing it again next week. So I log in, and ConfigHub keeps the assistant's file and my copy as two linked Units." | My three fixes, as a recorded revision |
+| 7 | "The assistant rewrites again. One upgrade. Same diff as before." | **One change, the probe.** Nobody put the fixes back |
 
 Close with this line. *I did not need a second environment. I needed to remember what worked yesterday.*
 
-If someone asks what happens when this gets tedious, that is the opening for a ConfigHub server: it keeps those fixes as recorded edits and carries them through the next rewrite. Say it in one sentence and move on.
+If you stop at step 5, close with the line above. If you go on to steps 6 and 7, close with this one. *The diff told me what broke. ConfigHub stopped it breaking.*
+
+Steps 6 and 7 need `cub auth login` beforehand, and they write one Space, `workshop-demo-shop`, which `./run.sh --reset` deletes. Without a login the script says so and skips them.
 
 ## 3. What my app needs (6 minutes)
 

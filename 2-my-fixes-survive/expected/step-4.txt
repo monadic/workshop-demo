@@ -1,8 +1,13 @@
 
 With the three fixes restored, the only change left is the probe.
 
+    This is the same comparison, against a file with your three fixes put back.
+
 $ cub config diff app-committed.yaml app-restored.yaml
 Configuration diff: 0 added, 0 removed, 1 changed, 1 unchanged
   changed: apps/v1 Deployment shop/shop-web
     /spec/template/spec/containers/shop-web/readinessProbe add: {"httpGet":{"path":"/healthz","port":"http"},"periodSeconds":5}
 Local comparison only. This does not merge, protect edits or inspect a live target.
+
+    Look for one changed field, the readinessProbe. That is the change you 
+    asked for, and nothing else.

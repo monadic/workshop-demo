@@ -1,4 +1,8 @@
 
+Ask the same question again.
+
+    This is the step 3 command, pointed at the fixed platform.
+
 $ cub stack certify platform.yaml
 
 Stack: my-shop-platform  —  The platform grown to what the shop app needs, with the app adapted to the platform.
@@ -14,3 +18,7 @@ Certify
   [WARN] target prerequisite unknown: ClusterIssuer/letsencrypt; Include ClusterIssuer/letsencrypt in the stack, or verify it exists on the selected target before delivery.
   => CERTIFIED
 
+
+    Look for => CERTIFIED, and the line app needs met, which names all three 
+    needs from step 1. The WARN lines say what certify cannot see from here and 
+    the cluster must already have.

@@ -1,4 +1,8 @@
 
+Ask the same question about the corrected file.
+
+    This is the step 3 command again, pointed at values-fixed.yaml.
+
 $ cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --values values-fixed.yaml
 
 Values: 7 set, checked against oci://registry-1.docker.io/cloudpirates/redis 0.34.11
@@ -14,3 +18,6 @@ Values: 7 set, checked against oci://registry-1.docker.io/cloudpirates/redis 0.3
   Every value you set changed the result or matches the default.
   Rendered locally with Helm. A value that changes nothing here may still matter under other settings, capabilities or Kubernetes versions. No value is printed.
 
+
+    Look for no IGNORED lines, and the last line, Every value you set changed 
+    the result or matches the default.

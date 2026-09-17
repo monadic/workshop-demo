@@ -1,6 +1,11 @@
 
 One change is the one you asked for. Count the others.
 
+    cub config diff compares the file you are running with the file the 
+    assistant wrote, object by object and field by field. It finds each 
+    container and each environment variable by name, so every change has an 
+    exact path.
+
 $ cub config diff app-committed.yaml app-regenerated.yaml
 Configuration diff: 0 added, 0 removed, 1 changed, 1 unchanged
   changed: apps/v1 Deployment shop/shop-web
@@ -9,3 +14,7 @@ Configuration diff: 0 added, 0 removed, 1 changed, 1 unchanged
     /spec/template/spec/containers/shop-web/readinessProbe add: {"httpGet":{"path":"/healthz","port":"http"},"periodSeconds":5}
     /spec/template/spec/containers/shop-web/resources/limits/memory replace: "512Mi" -> "128Mi"
 Local comparison only. This does not merge, protect edits or inspect a live target.
+
+    Look for four changed fields. The readinessProbe is the one you asked for. 
+    The other three are your fixes undone: replicas 3 to 1, the database host 
+    back to localhost, and the memory limit down to 128Mi.

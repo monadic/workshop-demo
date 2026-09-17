@@ -1,5 +1,10 @@
 
-The chart is rendered once with your values, then once more for each value with that value taken out.
+So which of your values did anything?
+
+    cub config values renders the chart with your values, then once more for 
+    each value with that one value taken out. If the objects come out the same 
+    either way, that value did nothing. It also reads the chart's own defaults, 
+    to say where the chart does read that setting. No value is printed.
 
 $ cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --values values.yaml
 
@@ -16,3 +21,6 @@ Values: 7 set, checked against oci://registry-1.docker.io/cloudpirates/redis 0.3
   3 of 7 values did nothing.
   Rendered locally with Helm. A value that changes nothing here may still matter under other settings, capabilities or Kubernetes versions. No value is printed.
 
+
+    Look for the three IGNORED lines, and the last line, 3 of 7 values did 
+    nothing. Your disk size, memory limit and replica count never reached Redis.

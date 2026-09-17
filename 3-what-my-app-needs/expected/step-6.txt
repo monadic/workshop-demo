@@ -1,6 +1,9 @@
 
 Every object, in the order it has to be applied. kubectl, Argo CD and Flux all take this file as it is.
 
+    cub stack sandbox renders the whole platform with the app on it into one 
+    file, work/platform.yaml. Still nothing is applied.
+
 $ cub stack sandbox platform.yaml --out work/platform.yaml
 
 Stack: my-shop-platform  —  The platform grown to what the shop app needs, with the app adapted to the platform.
@@ -29,5 +32,9 @@ Sandbox render  (free, no infrastructure)
   Ready. `cub stack upload platform.yaml --run` builds the base Spaces and links in ConfigHub.
 
 
+    grep counts the objects in that file.
+
 $ grep -c "^kind:" work/platform.yaml
 215
+
+    Look for 215, the same count certify checked.

@@ -1,0 +1,38 @@
+
+Step 4 was you, putting your fixes back by hand. It will happen again next week. ConfigHub can remember them.
+
+    cub space create makes a Space in ConfigHub, a place to keep configuration. 
+    This is the first command today that needs an account.
+
+$ cub space create workshop-demo-shop
+Successfully created space workshop-demo-shop (e62f8700-2794-44c3-9737-d19a5b20dab1)
+
+    cub unit create stores a file as a Unit. This one is what the assistant 
+    wrote two weeks ago, before you touched it. The assistant owns this Unit.
+
+$ cub unit create --space workshop-demo-shop shop-web-generated app-generated.yaml
+Successfully created unit shop-web-generated (166d8c91-49fe-4dba-a698-8042171f641a)
+
+    This makes your own copy, cloned from the assistant's. ConfigHub keeps the 
+    link between the two.
+
+$ cub unit create --space workshop-demo-shop shop-web --upstream-unit shop-web-generated --upstream-space workshop-demo-shop
+Successfully created unit shop-web (6cb26dcc-fed9-461c-a21c-79effa547798)
+
+    cub unit update puts the file you are running into your copy. ConfigHub 
+    records your three fixes as edits made on your side of that link.
+
+$ cub unit update --space workshop-demo-shop shop-web app-committed.yaml --change-desc "my three hand fixes"
+Successfully updated unit shop-web (6cb26dcc-fed9-461c-a21c-79effa547798)
+
+    cub revision list shows the history of your copy.
+
+$ cub revision list --space workshop-demo-shop shop-web
+NUM    UNIT        SOURCE        CHANGESET    CHANGEORDERS    TAGS    DESCRIPTION                                        
+3      shop-web    UpdateUnit                                         my three hand fixes                                   
+2      shop-web    CloneUnit                                          Cloned from e62f8700-2794-44c3-9737-d19a5b20dab...    
+1      shop-web    CloneUnit                                          Empty revision preceding the unit's first content     
+
+    Look for the top line, your three hand fixes, with your description on it. 
+    Under it is the copy cloned from what the assistant wrote. ConfigHub now 
+    knows which edits are yours.

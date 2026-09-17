@@ -5,34 +5,72 @@ Open Claude Code or Codex in this repository, then paste everything in the box.
 ```text
 Use the ConfigHub Workshop for this: `cub` and the cub workshop plugin
 (https://github.com/confighub/cub-workshop), mainly `cub config check` and
-`cub config diff`. Do not contact a ConfigHub server or a cluster in this session.
+`cub config diff`. Do not contact a cluster in this session, and do not contact a
+ConfigHub server before step 6.
 
 Work in the folder 2-my-fixes-survive and keep any files you write in
 2-my-fixes-survive/work. Do not edit the three app-*.yaml files, and do not read
 app-restored.yaml until step 4 asks you to.
 
 The story: app-committed.yaml is the shop app I am running today. Over the last two
-weeks I fixed a few things in it by hand. Today I asked an assistant to add a readiness
+weeks I fixed three things in it by hand. Today I asked an assistant to add a readiness
 probe, and it gave me app-regenerated.yaml.
 
 Do not read README.md, PROMPT.md, WALKTHROUGH.md, run.sh or anything under expected/ in
 this repository. They hold the answers, and I want your own work.
 
-Take the steps below one at a time. After each one, show me the command, the part of
-the output that matters, and one sentence on what it means. Then stop and wait for me
-to say "next".
+Take the steps below one at a time. After each one, show me the command you ran, the
+part of the output that matters, and one sentence on what it means. Then add a short
+part headed "By hand": the exact command I would type in a terminal in this folder to
+do the same step myself without you, in a code block, and the words "or ./run.sh N",
+where N is the step number. The steps here are numbered the same as in ./run.sh. Where
+you wrote a file yourself, the by-hand version uses the ready-made file that the step
+names. Then stop and wait for me to say "next".
 
-1. Check app-regenerated.yaml on its own. Would it deploy? Does anything look wrong?
-2. Compare it with app-committed.yaml. List every field that changed. Which one did I
-   ask for, and which did I not?
-3. For each change I did not ask for, tell me what would happen in production if I
-   applied the file as it is.
-4. Write work/app-mine.yaml: the regenerated file with my earlier fixes restored and
-   the readiness probe kept. Then compare your file with app-restored.yaml.
-5. Prove your file is right: compare it with app-committed.yaml and show that the only
-   change left is the one I asked for.
-6. Save a review record of the comparison in step 2 to work/review.json, and tell me
+1. My three hand fixes in app-committed.yaml are the replica count, the database host
+   and the memory limit. Show me those three lines.
+2. Check app-regenerated.yaml on its own. Would it deploy? Does anything look wrong?
+3. Compare it with app-committed.yaml. List every field that changed. Which one did I
+   ask for, and which did I not? For each change I did not ask for, tell me what would
+   happen in production if I applied the file as it is.
+4. Write work/app-mine.yaml: the regenerated file with my three fixes restored and the
+   readiness probe kept. Prove it is right by comparing it with app-committed.yaml and
+   showing that the only change left is the one I asked for. Then compare your file
+   with app-restored.yaml.
+5. Save a review record of the comparison in step 3 to work/review.json, and tell me
    what it holds and how I would use the same command as a gate in CI.
+
+Stop there unless I say "go on to ConfigHub". If I do, steps 6 and 7 may contact the
+ConfigHub server my current cub context points at, and nothing else. Write only to one
+Space named workshop-demo-shop, and tell me before you create it.
+
+6. app-generated.yaml is what the assistant wrote two weeks ago, before I touched it.
+   Create the Space. Store app-generated.yaml as a Unit named shop-web-generated. Create
+   my own Unit, shop-web, cloned from it with --upstream-unit and --upstream-space. Then
+   update shop-web with app-committed.yaml, described as "my three hand fixes", and
+   show me its revisions.
+7. Today's rewrite arrives: update shop-web-generated with app-regenerated.yaml. Then
+   bring that into my copy with cub unit update --upgrade. Save my copy's data to
+   work/from-confighub.yaml and compare it with app-committed.yaml. What changed, and
+   what happened to my three fixes?
 ```
+
+## The same steps by hand
+
+Both tracks have the same steps with the same numbers. The assistant tells you the by-hand command after each step. Here they all are, so you can check it or take over.
+
+Start the script with `./run.sh`, with the dot and the slash. It pauses before each command, and Enter runs it. `./run.sh --list` names the steps and `./run.sh --reset` cleans up.
+
+| Step | By hand, from this folder | With the script |
+| --- | --- | --- |
+| 1 | `grep -n -E "replicas:\|db.shop.internal\|memory: 512Mi" app-committed.yaml` | `./run.sh 1` |
+| 2 | `cub config check app-regenerated.yaml` | `./run.sh 2` |
+| 3 | `cub config diff app-committed.yaml app-regenerated.yaml` | `./run.sh 3` |
+| 4 | `cub config diff app-committed.yaml app-restored.yaml` | `./run.sh 4` |
+| 5 | `cub config diff app-committed.yaml app-regenerated.yaml --exit-code --out work/review.json` | `./run.sh 5` |
+| 6 | the five `cub space`, `cub unit` and `cub revision` commands under step 6 of the [README](README.md) | `./run.sh 6` |
+| 7 | the four commands under step 7 of the [README](README.md) | `./run.sh 7` |
+
+The one real difference is step 4. By hand you compare a restored file that is already written, `app-restored.yaml`. The assistant does the restoring itself, in `work/app-mine.yaml`, and the same diff checks its work.
 
 The README in this folder says what a good run looks like. Read it yourself; the assistant is told not to.

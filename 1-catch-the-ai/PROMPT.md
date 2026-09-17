@@ -18,9 +18,13 @@ version 0.34.11, release name shop-redis, namespace shop.
 Do not read README.md, PROMPT.md, WALKTHROUGH.md, run.sh or anything under expected/ in
 this repository. They hold the answers, and I want your own work.
 
-Take the steps below one at a time. After each one, show me the command, the part of
-the output that matters, and one sentence on what it means. Then stop and wait for me
-to say "next".
+Take the steps below one at a time. After each one, show me the command you ran, the
+part of the output that matters, and one sentence on what it means. Then add a short
+part headed "By hand": the exact command I would type in a terminal in this folder to
+do the same step myself without you, in a code block, and the words "or ./run.sh N",
+where N is the step number. The steps here are numbered the same as in ./run.sh. Where
+you wrote a file yourself, the by-hand version uses the ready-made file that the step
+names. Then stop and wait for me to say "next".
 
 1. Read values.yaml. Another assistant wrote it for "a password, two replicas, a 1Gi
    disk, a memory limit, and metrics on". From reading it alone, does it look right?
@@ -36,5 +40,23 @@ to say "next".
 7. Give me one line I could add to CI so this cannot happen again, and show that it
    fails on values.yaml.
 ```
+
+## The same steps by hand
+
+Both tracks have the same steps with the same numbers. The assistant tells you the by-hand command after each step. Here they all are, so you can check it or take over.
+
+Start the script with `./run.sh`, with the dot and the slash. It pauses before each command, and Enter runs it. `./run.sh --list` names the steps and `./run.sh --reset` cleans up.
+
+| Step | By hand, from this folder | With the script |
+| --- | --- | --- |
+| 1 | `cat values.yaml` | `./run.sh 1` |
+| 2 | `helm template shop-redis oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --namespace shop -f values.yaml > work/redis.yaml` then `cub config check work/redis.yaml` | `./run.sh 2` |
+| 3 | `cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --values values.yaml` | `./run.sh 3` |
+| 4 | `diff values.yaml values-fixed.yaml` | `./run.sh 4` |
+| 5 | `cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --values values-fixed.yaml` | `./run.sh 5` |
+| 6 | `helm template shop-redis oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --namespace shop -f values-fixed.yaml > work/redis-fixed.yaml` then `cub config diff work/redis.yaml work/redis-fixed.yaml` | `./run.sh 6` |
+| 7 | `cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --values values.yaml --exit-code` | `./run.sh 7` |
+
+The one real difference is step 4. By hand you read a fix that is already written, `values-fixed.yaml`. The assistant writes its own, `work/values-mine.yaml`, and steps 5 and 6 then check the assistant's work.
 
 The README in this folder says what a good run looks like. Read it yourself; the assistant is told not to.

@@ -1,5 +1,9 @@
 
-Three Catalog parts pinned by digest, and the app.
+Here is the platform you picked from the Workshop Catalog.
+
+    grep prints the parts named in platform-first-try.yaml. The three platform 
+    parts are Catalog bundles pinned by digest. The last part is your own app 
+    file.
 
 $ grep -E "^  name:|- name:|authored:" platform-first-try.yaml
   name: my-shop-platform
@@ -8,3 +12,5 @@ $ grep -E "^  name:|- name:|authored:" platform-first-try.yaml
     - name: metrics-server
     - name: shop-web
       authored: "shop-web.yaml"
+
+    Look for cert-manager, traefik and metrics-server, then shop-web.

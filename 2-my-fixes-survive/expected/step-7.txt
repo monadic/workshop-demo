@@ -1,0 +1,32 @@
+
+Today the assistant rewrites the file, exactly as in step 2. This time it lands in the assistant's Unit, and yours is untouched.
+
+    cub unit update replaces the assistant's Unit with today's rewrite, the one 
+    that adds the probe and undoes your fixes.
+
+$ cub unit update --space workshop-demo-shop shop-web-generated app-regenerated.yaml --change-desc "add a readiness probe"
+Successfully updated unit shop-web-generated (166d8c91-49fe-4dba-a698-8042171f641a)
+
+    --upgrade brings the assistant's changes into your copy. ConfigHub merges 
+    them with the edits it recorded for you, field by field.
+
+$ cub unit update --space workshop-demo-shop shop-web --upgrade
+Successfully updated unit shop-web (6cb26dcc-fed9-461c-a21c-79effa547798)
+
+    cub unit data prints your copy as it now stands, into 
+    work/from-confighub.yaml.
+
+$ cub unit data --space workshop-demo-shop shop-web > work/from-confighub.yaml
+
+    This is the step 4 comparison again. The file on the right came out of 
+    ConfigHub, and nobody edited it by hand.
+
+$ cub config diff app-committed.yaml work/from-confighub.yaml
+Configuration diff: 0 added, 0 removed, 1 changed, 1 unchanged
+  changed: apps/v1 Deployment shop/shop-web
+    /spec/template/spec/containers/shop-web/readinessProbe add: {"httpGet":{"path":"/healthz","port":"http"},"periodSeconds":5}
+Local comparison only. This does not merge, protect edits or inspect a live target.
+
+    Look for one changed field, the readinessProbe. Your three replicas, your 
+    database host and your memory limit are all still there. ConfigHub did step 
+    4 for you.

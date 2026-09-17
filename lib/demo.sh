@@ -33,6 +33,8 @@ pause() {
 # render <command...>: the command as you would type it, with quotes kept.
 render() {
   local out="" arg
+  # A demo may wrap cub in a function named hub, to pick a context. Show it as cub.
+  if [ "${1:-}" = "hub" ]; then shift; set -- cub "$@"; fi
   for arg in "$@"; do
     case "$arg" in
       *[!A-Za-z0-9_./:=@%+,-]*|"") out="$out \"$arg\"" ;;
@@ -86,6 +88,13 @@ show_diff() {
 }
 
 say() { echo; echo "$*"; }
+
+# explain <sentences>: what the next command does, said before it runs.
+# look <sentences>: what to notice in the output it just printed.
+# Both wrap to the terminal and sit indented, so they read apart from real output.
+wrapped() { printf '%s\n' "$*" | fold -s -w 76 | sed 's/^/    /'; }
+explain() { echo; printf '\033[33m'; wrapped "$*"; printf '\033[0m'; }
+look()    { echo; printf '\033[32m'; wrapped "Look for $*"; printf '\033[0m'; }
 
 run_step() {
   local n=$1

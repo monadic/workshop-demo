@@ -1,6 +1,9 @@
 
 The assistant used another chart's names. This chart reads the same settings somewhere else, and it counts every pod, so two replicas is replicaCount 3.
 
+    diff compares the assistant's file with a corrected one. Lines marked < are 
+    the assistant's. Lines marked > are the fix.
+
 $ diff values.yaml values-fixed.yaml
 1,2c1
 < # Written by an AI assistant for the shop's Redis, from this request:
@@ -24,3 +27,6 @@ $ diff values.yaml values-fixed.yaml
 >     memory: 256Mi
 > # This chart counts every pod: 3 is one master and two replicas.
 > replicaCount: 3
+
+    Look for the same three settings, moved out of the master and replica 
+    sections to where this chart reads them.

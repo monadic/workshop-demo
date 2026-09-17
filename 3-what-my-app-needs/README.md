@@ -8,6 +8,8 @@
 ./run.sh
 ```
 
+Type it with the dot and the slash. It pauses before each command, and Enter runs it. `./run.sh 3` runs step 3 alone, `./run.sh --list` names the steps, and `./run.sh --reset` cleans up. The assistant track in [PROMPT.md](PROMPT.md) has the same steps with the same numbers, and the assistant shows the by-hand command after each one.
+
 ## The files
 
 [shop-web.yaml](shop-web.yaml) is the shop app as the assistant wrote it: a Deployment, a Service, an Ingress of class `nginx`, a Certificate and a ServiceMonitor.

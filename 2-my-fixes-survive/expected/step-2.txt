@@ -1,6 +1,9 @@
 
 You asked for a readiness probe. The assistant wrote the whole file again, and it checks out.
 
+    cub config check reads the file the assistant wrote today and lists what it 
+    would install. It looks at this one file alone.
+
 $ cub config check app-regenerated.yaml
 
 Config: app-regenerated
@@ -18,3 +21,6 @@ Lifecycle work
 
   Free look before you install. Compose it into a cub stack, or run it as a cub app.
 
+
+    Look for 2 objects and four PASS lines. Looked at alone, nothing is wrong 
+    with this file.

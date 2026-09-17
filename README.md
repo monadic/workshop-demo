@@ -5,15 +5,15 @@ You are building a small shop app with an AI assistant. These three demos follow
 | Step | The question | What you see |
 | --- | --- | --- |
 | [1. Catch the AI](1-catch-the-ai/) | The assistant wrote my Helm values. Did they do anything? | Three of seven values did nothing, and Helm never said so |
-| [2. My fixes survive the AI](2-my-fixes-survive/) | The assistant rewrote my app. Are my fixes still there? | One change you asked for, and three of your fixes undone |
+| [2. My fixes survive the AI](2-my-fixes-survive/) | The assistant rewrote my app. Are my fixes still there? | One change you asked for, and three of your fixes undone. Then ConfigHub carries your fixes through the rewrite for you |
 | [3. What my app needs](3-what-my-app-needs/) | Will my app run on the platform I picked? | Refused for two real reasons, fixed on both sides, then certified |
 
-Nothing here needs an account, a server or a cluster. Everything runs on your machine and writes only to a `work/` folder inside each demo.
+Nothing here needs an account, a server or a cluster, with one exception that you choose. Everything runs on your machine and writes only to a `work/` folder inside each demo. The exception is the last two steps of part 2, which show what ConfigHub adds once you log in. Without a login the script skips them, and the first five steps stand on their own.
 
 You can run every demo two ways, and the steps are the same either way.
 
-- **From the command line.** Run `./run.sh` in the demo's folder. It shows each command, waits for Enter, runs it, and moves on.
-- **With an AI assistant.** Open Claude Code or Codex in this repository and paste the demo's `PROMPT.md`. The assistant walks the same steps and runs the same commands, and you compare what it says with `expected/`.
+- **From the command line.** Run `./run.sh` in the demo's folder. It says what each command does, shows it, waits for Enter, runs it, and says what to look for in the output.
+- **With an AI assistant.** Open Claude Code or Codex in this repository and paste the demo's `PROMPT.md`. The assistant walks the same steps with the same numbers, and after each one it shows the command you would type to do that step by hand. You compare what it says with `expected/`.
 
 ## Set up once
 

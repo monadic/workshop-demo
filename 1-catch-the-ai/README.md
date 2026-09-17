@@ -8,6 +8,8 @@
 ./run.sh
 ```
 
+Type it with the dot and the slash. It pauses before each command, and Enter runs it. `./run.sh 3` runs step 3 alone, `./run.sh --list` names the steps, and `./run.sh --reset` cleans up. The assistant track in [PROMPT.md](PROMPT.md) has the same steps with the same numbers, and the assistant shows the by-hand command after each one.
+
 ## The files
 
 [values.yaml](values.yaml) is what an assistant wrote for the shop's Redis when asked for "a password, two replicas, a 1Gi disk, a memory limit, and metrics on". It looks right. [values-fixed.yaml](values-fixed.yaml) is the same request with each setting where this chart reads it.

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Started as "zsh run.sh" or "sh run.sh"? Carry on under bash, which this needs.
+[ -n "${BASH_VERSION:-}" ] && case ":${SHELLOPTS:-}:" in *:posix:*) false ;; esac || exec bash "$0" "$@"
 # Step 1. One chart. The assistant wrote the values. Did they do anything?
 # No ConfigHub server, no account, no cluster.
 source "$(dirname "$0")/../lib/demo.sh"
@@ -48,43 +50,61 @@ STEPS=(
 
 step_1() {
   say "You asked for a password, two replicas, a 1Gi disk, a memory limit and metrics. This came back."
+  explain "cat prints the values file the assistant wrote. Nothing is run or installed."
   show cat values.yaml
+  look "anything wrong. Most people find nothing. Every setting you asked for is there, in tidy YAML."
 }
 
 step_2() {
   chart_ready
   say "Helm takes the file without a word. The render looks healthy."
+  explain "helm template fetches the Redis chart from its public registry and fills it in with your values. It writes the Kubernetes objects it would install to work/redis.yaml. Nothing reaches a cluster."
   show_into "$WORK/redis.yaml" helm template shop-redis "${CHART[@]}" --namespace shop -f values.yaml
+  look "a complaint from Helm. There is none. It exits 0, and that is the trap."
+  explain "cub config check reads that file and lists what it would install, and any setup work such as CRDs, hooks or Jobs. It runs on this laptop, with no account."
   show cub config check "$WORK/redis.yaml"
+  look "7 objects and four PASS lines. By every usual sign, this is a healthy install."
 }
 
 step_3() {
   chart_ready
-  say "The chart is rendered once with your values, then once more for each value with that value taken out."
+  say "So which of your values did anything?"
+  explain "cub config values renders the chart with your values, then once more for each value with that one value taken out. If the objects come out the same either way, that value did nothing. It also reads the chart's own defaults, to say where the chart does read that setting. No value is printed."
   show cub config values "${CHART[@]}" --values values.yaml
+  look "the three IGNORED lines, and the last line, 3 of 7 values did nothing. Your disk size, memory limit and replica count never reached Redis."
 }
 
 step_4() {
   say "The assistant used another chart's names. This chart reads the same settings somewhere else, and it counts every pod, so two replicas is replicaCount 3."
+  explain "diff compares the assistant's file with a corrected one. Lines marked < are the assistant's. Lines marked > are the fix."
   show_diff values.yaml values-fixed.yaml
+  look "the same three settings, moved out of the master and replica sections to where this chart reads them."
 }
 
 step_5() {
   chart_ready
+  say "Ask the same question about the corrected file."
+  explain "This is the step 3 command again, pointed at values-fixed.yaml."
   show cub config values "${CHART[@]}" --values values-fixed.yaml
+  look "no IGNORED lines, and the last line, Every value you set changed the result or matches the default."
 }
 
 step_6() {
   chart_ready
-  say "Render the fixed values, and compare the two sets of objects."
+  say "Now see what you were really getting."
+  explain "helm template renders the chart again, this time with the corrected values, into work/redis-fixed.yaml."
   show_into "$WORK/redis-fixed.yaml" helm template shop-redis "${CHART[@]}" --namespace shop -f values-fixed.yaml
+  explain "cub config diff compares the two sets of Kubernetes objects, field by field, and names each field that differs. Generated passwords and checksums do not count."
   show cub config diff "$WORK/redis.yaml" "$WORK/redis-fixed.yaml"
+  look "two changed fields. A memory limit is added, so before there was none. Storage goes from 8Gi to 1Gi, so before you had an 8Gi disk."
 }
 
 step_7() {
   chart_ready
-  say "With --exit-code the same check fails a build when a value did nothing."
+  say "One line in CI, and this cannot happen again."
+  explain "This is the step 3 command with --exit-code added. It exits 1 when any value did nothing, which fails a build."
   show_refusal cub config values "${CHART[@]}" --values values.yaml --exit-code
+  look "the line saying it was refused. In CI that is a red build, before anything is installed."
 }
 
 reset_demo() { rm -rf "$WORK"; }

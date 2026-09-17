@@ -1,6 +1,10 @@
 
 The app changes one line, to the ingress class this platform has. The platform gains one part, the Prometheus operator the app asked for.
 
+    The first diff compares the app before and after. The second compares the 
+    platform before and after. Lines marked < are before, and lines marked > 
+    are after.
+
 $ diff shop-web.yaml shop-web-adapted.yaml
 32c32
 <   ingressClassName: nginx
@@ -24,3 +28,6 @@ $ diff platform-first-try.yaml platform.yaml
 ---
 >       order: 4
 >       authored: "shop-web-adapted.yaml"
+
+    Look for one changed line in the app, nginx to traefik. In the platform, 
+    one added part, kube-prometheus-stack from the Catalog, pinned by digest.

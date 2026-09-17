@@ -1,5 +1,10 @@
 
-Certify reads every object in every part, and what the app asks for.
+Will your app run on it?
+
+    cub stack certify pulls each Catalog bundle by digest and reads every 
+    object in every part. It checks for conflicts between parts, for CRDs 
+    arriving before the resources that use them, and for whether the platform 
+    carries what the app needs. Nothing is applied.
 
 $ cub stack certify platform-first-try.yaml
 
@@ -21,3 +26,7 @@ Certify
   => REJECTED
 
       (refused, exit code non-zero, as intended)
+
+    Look for => REJECTED, and the two reasons under FAIL. The Ingress asks for 
+    class nginx on a Traefik platform, and nothing provides a Prometheus 
+    operator. Both would have failed quietly on a real cluster.

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Started as "zsh run.sh" or "sh run.sh"? Carry on under bash, which this needs.
+[ -n "${BASH_VERSION:-}" ] && case ":${SHELLOPTS:-}:" in *:posix:*) false ;; esac || exec bash "$0" "$@"
 # Preflight for the demos. It reads and reports, and changes nothing.
 set -u
 ok=0; bad=0

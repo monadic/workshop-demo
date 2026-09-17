@@ -1,4 +1,9 @@
 
+Keep it as something you can edit.
+
+    The same command with --workspace saves an editable copy: each part as its 
+    own file, the manifest, the render and the verdict.
+
 $ cub stack sandbox platform.yaml --workspace work/shop-platform
 
 Stack: my-shop-platform  —  The platform grown to what the shop app needs, with the app adapted to the platform.
@@ -26,8 +31,13 @@ Sandbox render  (free, no infrastructure)
   Resume: cub stack certify 'work/shop-platform/stack.yaml' --json
   Edit a component, then save a new result and render before sharing. Target availability is not checked.
 
+    ls shows what was saved.
+
 $ ls work/shop-platform
 components
 rendered.yaml
 result.json
 stack.yaml
+
+    Look for components, stack.yaml, rendered.yaml and result.json. Edit a 
+    component, then run cub stack certify on that stack.yaml to check it again.

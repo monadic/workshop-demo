@@ -1,6 +1,8 @@
 
 You asked for a password, two replicas, a 1Gi disk, a memory limit and metrics. This came back.
 
+    cat prints the values file the assistant wrote. Nothing is run or installed.
+
 $ cat values.yaml
 # Written by an AI assistant for the shop's Redis, from this request:
 # "a password, two replicas, a 1Gi disk, a memory limit, and metrics on"
@@ -18,3 +20,6 @@ replica:
   replicaCount: 2
 metrics:
   enabled: true
+
+    Look for anything wrong. Most people find nothing. Every setting you asked 
+    for is there, in tidy YAML.

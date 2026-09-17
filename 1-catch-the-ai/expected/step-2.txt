@@ -1,9 +1,20 @@
 
 Helm takes the file without a word. The render looks healthy.
 
+    helm template fetches the Redis chart from its public registry and fills it 
+    in with your values. It writes the Kubernetes objects it would install to 
+    work/redis.yaml. Nothing reaches a cluster.
+
 $ helm template shop-redis oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --namespace shop -f values.yaml > work/redis.yaml
 Pulled: registry-1.docker.io/cloudpirates/redis:0.34.11
 Digest: sha256:ee589d22bba1eb6de32e11e035b779d382cf0186c8a2f1585daee31b73957ab7
+
+    Look for a complaint from Helm. There is none. It exits 0, and that is the 
+    trap.
+
+    cub config check reads that file and lists what it would install, and any 
+    setup work such as CRDs, hooks or Jobs. It runs on this laptop, with no 
+    account.
 
 $ cub config check work/redis.yaml
 
@@ -22,3 +33,6 @@ Lifecycle work
 
   Free look before you install. Compose it into a cub stack, or run it as a cub app.
 
+
+    Look for 7 objects and four PASS lines. By every usual sign, this is a 
+    healthy install.

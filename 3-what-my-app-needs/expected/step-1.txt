@@ -1,6 +1,9 @@
 
 The shop app has an Ingress, a Certificate and a ServiceMonitor. Each one needs something a platform provides.
 
+    cub app check reads the app's YAML and works out what it assumes is already 
+    on the cluster. It runs on this laptop, with no account.
+
 $ cub app check shop-web.yaml
 
 App: shop-web
@@ -21,3 +24,6 @@ Dependencies (this app needs a platform to provide these)
   Install onto a platform that carries those services (for example a cub stack such
   as web-platform), then your Argo CD or Flux reconciles it.
 
+
+    Look for three NEEDS lines: an ingress controller, cert-manager, and a 
+    Prometheus operator.
