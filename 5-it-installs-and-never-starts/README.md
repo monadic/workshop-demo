@@ -47,11 +47,13 @@ For each pinned Bitnami chart the Workshop keeps, the receipt records the image 
 **5. Check what the Catalog offers instead.**
 
 ```sh
-helm template shop-db mysql-operator --repo https://mysql.github.io/mysql-operator/ --version 2.3.0 --namespace shop > work/successor.yaml
+helm template shop-db mysql-operator --repo https://mysql.github.io/mysql-operator/ --version 2.3.0 --namespace shop --include-crds > work/successor.yaml
 cub config check work/successor.yaml --images
 ```
 
-The Catalog's reviewed successor for MySQL is the operator from Oracle's own MySQL team. Its images pull.
+The Catalog's reviewed successor for MySQL is the operator from Oracle's own MySQL team. Its images pull, and the check names the five CRDs it carries.
+
+`--include-crds` matters: `helm template` leaves a chart's CRDs out unless you ask for them, so without it this render is 8 objects and the check reads `CRDs: 0` for a chart that ships five. Say plainly what the move costs. This is an operator, so it installs a controller and not a database, and the shop then needs a custom resource and a Secret you write. None of the old values carry over.
 
 **6. Prove it on a real cluster.** Optional, and off by default.
 
@@ -71,7 +73,7 @@ Open Claude Code or Codex in this repository and paste [PROMPT.md](PROMPT.md). C
 
 ### What a good run looks like
 
-At step 2 the assistant reports that everything passes and says the image is pinned. At step 3 it reports `NOT FOUND` and is clear that the chart and the values are not the problem. At step 4 it reads the receipt and names `mysql` and `rabbitmq`, and says the `bitnamilegacy` copies are unpatched. At step 5 it finds the reviewed successor and shows that its images pull. A careful one says what the move costs: the successor is an operator, so the values do not carry over.
+At step 2 the assistant reports that everything passes and says the image is pinned. At step 3 it reports `NOT FOUND` and is clear that the chart and the values are not the problem. At step 4 it reads the receipt and names `mysql` and `rabbitmq`, and says the `bitnamilegacy` copies are unpatched. At step 5 it finds the reviewed successor, renders it with `--include-crds`, and shows that its images pull and that it carries five CRDs. A careful one says what the move costs: the successor is an operator, so it installs a controller and not a database, and none of the old values carry over.
 
 A run has gone wrong if the assistant declares the chart fine after step 2, claims from memory which images are missing instead of asking the registry, or recommends `bitnamilegacy` without saying it receives no updates.
 

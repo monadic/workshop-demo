@@ -2,9 +2,10 @@
 So ask the Catalog what it reviewed instead for MySQL.
 
     The Catalog's successor for MySQL is the operator from Oracle's own MySQL 
-    team. Render it.
+    team. Render it with --include-crds, because helm leaves a chart's CRDs out 
+    of a template render unless you ask for them.
 
-$ helm template shop-db mysql-operator --repo https://mysql.github.io/mysql-operator/ --version 2.3.0 --namespace shop > work/successor.yaml
+$ helm template shop-db mysql-operator --repo https://mysql.github.io/mysql-operator/ --version 2.3.0 --namespace shop --include-crds > work/successor.yaml
 
     The same two checks.
 
@@ -14,11 +15,11 @@ Config: successor
 Inspecting local Kubernetes objects (static, no infrastructure)
 
 Installs
-  8 objects: 1 ClusterKopfPeering, 3 ClusterRole, 1 ClusterRoleBinding, 1 Deployment, 1 Service, 1 ServiceAccount
+  13 objects: 1 ClusterKopfPeering, 3 ClusterRole, 1 ClusterRoleBinding, 5 CustomResourceDefinition, 1 Deployment, 1 Service, 1 ServiceAccount
   namespaces that must already exist: shop
 
 Lifecycle work
-  [PASS] CRDs: 0
+  [NOTE] CRDs: 5 (apply and establish before any custom resource)
   [PASS] Helm hooks: 0
   [PASS] setup Jobs: 0
   [PASS] admission webhooks needing a certificate: 0
@@ -28,5 +29,7 @@ Lifecycle work
   Free look before you install. Compose it into a cub stack, or run it as a cub app.
 
 
-    Look for the images pull. A chart is worth nothing if its images are gone, 
-    and this is the check that says so before you install.
+    Look for the images pull, and the CRDs line names five. A chart is worth 
+    nothing if its images are gone, and this is the check that says so before 
+    you install. The move is real work: this is an operator, so the shop then 
+    needs a custom resource of its own.

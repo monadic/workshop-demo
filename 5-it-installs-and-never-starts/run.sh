@@ -53,11 +53,11 @@ step_4() {
 
 step_5() {
   say "So ask the Catalog what it reviewed instead for MySQL."
-  explain "The Catalog's successor for MySQL is the operator from Oracle's own MySQL team. Render it."
-  show_into "$WORK/successor.yaml" helm template shop-db "${SUCCESSOR[@]}" --namespace shop
+  explain "The Catalog's successor for MySQL is the operator from Oracle's own MySQL team. Render it with --include-crds, because helm leaves a chart's CRDs out of a template render unless you ask for them."
+  show_into "$WORK/successor.yaml" helm template shop-db "${SUCCESSOR[@]}" --namespace shop --include-crds
   explain "The same two checks."
   show cub config check "$WORK/successor.yaml" --images
-  look "the images pull. A chart is worth nothing if its images are gone, and this is the check that says so before you install."
+  look "the images pull, and the CRDs line names five. A chart is worth nothing if its images are gone, and this is the check that says so before you install. The move is real work: this is an operator, so the shop then needs a custom resource of its own."
 }
 
 step_6() {

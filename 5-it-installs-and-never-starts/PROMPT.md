@@ -36,16 +36,18 @@ you wrote a file yourself, the by-hand version uses the ready-made file that the
 names. Then stop and wait for me to say "next".
 
 1. Read values.yaml. What does it ask for, and does anything look wrong?
-2. Render the chart with it into work/mysql.yaml and check what it would install. Would
-   you tell me to go ahead?
-3. Now check something no local render can know: whether the images this chart runs can
-   still be pulled. What do you find, and whose fault is it?
+2. Render the chart with it into work/mysql.yaml and check what it would install,
+   without asking any registry anything. Would you tell me to go ahead?
+3. Now check what a render cannot know on its own: whether the images this chart runs
+   can still be pulled. What do you find, and is the chart, the version or the values
+   to blame?
 4. The Workshop keeps a re-measured record of exactly this, at
    https://raw.githubusercontent.com/confighub/helm-expt/main/runs/bitnami-source-fetch/all-originals-receipt.json
    Read it. Which charts are affected, and what does it say about the images that are
    still there?
 5. Find what the Workshop Catalog reviewed for MySQL instead, render it, and run the
-   same check. What would the move cost me?
+   same check. Remember that helm leaves a chart's CRDs out of a template render unless
+   you ask for them. What would the move cost me?
 ```
 
 ## The same steps by hand
@@ -60,7 +62,7 @@ Start the script with `./run.sh`, with the dot and the slash. It pauses before e
 | 2 | `helm template shop-db oci://registry-1.docker.io/bitnamicharts/mysql --version 14.0.3 --namespace shop -f values.yaml > work/mysql.yaml` then `cub config check work/mysql.yaml` | `./run.sh 2` |
 | 3 | `cub config check work/mysql.yaml --images` | `./run.sh 3` |
 | 4 | the `curl` and `grep` commands under step 4 of the [README](README.md) | `./run.sh 4` |
-| 5 | `helm template shop-db mysql-operator --repo https://mysql.github.io/mysql-operator/ --version 2.3.0 --namespace shop > work/successor.yaml` then `cub config check work/successor.yaml --images` | `./run.sh 5` |
+| 5 | `helm template shop-db mysql-operator --repo https://mysql.github.io/mysql-operator/ --version 2.3.0 --namespace shop --include-crds > work/successor.yaml` then `cub config check work/successor.yaml --images` | `./run.sh 5` |
 | 6 | `DEMO_CLUSTER=1 ./run.sh 6`, which is the only way to run it | `./run.sh 6` |
 
 Step 6 is the command line only. It installs the broken chart on a throwaway cluster, and the assistant is told not to install anything.
