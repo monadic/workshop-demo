@@ -59,9 +59,9 @@ Steps 6 and 7 need `cub auth login` beforehand, and they write one Space, `works
 | --- | --- | --- |
 | 1 | "My app has an Ingress, a Certificate and a ServiceMonitor. What does that assume?" | Three needs, named |
 | 2 | "Here is the platform I picked from the Catalog." | |
-| 3 | "Will my app run on it?" | **REJECTED**, for two reasons that would have failed quietly on a cluster |
+| 3 | "Will my app run on it?" | **REFUSED**, for two reasons that would have failed quietly on a cluster |
 | 4 | "Fix both sides. The app changes one line. The platform gains the Prometheus operator the app asked for." | |
-| 5 | "Same command." | **CERTIFIED**, 215 objects, all three needs from step 1 met by name |
+| 5 | "Same command." | **CHECKED**, 215 objects, all three needs from step 1 met by name |
 | 6–7 | "Every object in apply order, for kubectl, Argo CD or Flux, and a workspace I can keep editing." | |
 
 Close with this line. *Nothing was applied, and I already know it fits.*

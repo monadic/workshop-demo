@@ -10,10 +10,10 @@ configurations across Helm, AICR (AI infrastructure), Timoni, Kubara, plain YAML
 OCI. Start at https://confighub.github.io/helm-expt/site/llms.txt, read the one listing
 you need from https://confighub.github.io/helm-expt/site/listings/index.json, and do the
 work with `cub` and the cub workshop plugin (https://github.com/confighub/cub-workshop):
-`cub config`, `cub config values` and `cub config diff`, `cub stack certify` and `cub
+`cub config`, `cub config values` and `cub config diff`, `cub stack check` and `cub
 stack sandbox`, `cub app match`. Prefer exact versions and digests.
 
-For this task you will mainly use `cub app check`, `cub stack certify` and
+For this task you will mainly use `cub app check`, `cub stack check` and
 `cub stack sandbox`. Do not contact a ConfigHub server or a cluster in this session.
 
 Work in the folder 3-what-my-app-needs and keep any files you write in
@@ -41,11 +41,11 @@ names. Then stop and wait for me to say "next".
    file). If your fix costs the app something it asked for, say so. If you add a
    platform part, you may now read platform.yaml and take that part's bundle and
    receipt lines from it; never invent a digest. Tell me what you changed and why.
-5. Certify your fix. If it is refused, read the reason, fix it, and certify again.
-6. Render the certified platform to work/platform-rendered.yaml. How many objects, from
+5. Check your fix. If it is refused, read the reason, fix it, and check again.
+6. Render the checked platform to work/platform-rendered.yaml. How many objects, from
    which parts, and in what order?
 7. Save it as an editable workspace in work/shop-platform and tell me how I would
-   re-certify after an edit.
+   check it again after an edit.
 ```
 
 ## The same steps by hand
@@ -58,12 +58,12 @@ Start the script with `./run.sh`, with the dot and the slash. It pauses before e
 | --- | --- | --- |
 | 1 | `cub app check shop-web.yaml` | `./run.sh 1` |
 | 2 | `cat platform-first-try.yaml` | `./run.sh 2` |
-| 3 | `cub stack certify platform-first-try.yaml` | `./run.sh 3` |
+| 3 | `cub stack check platform-first-try.yaml` | `./run.sh 3` |
 | 4 | `diff shop-web.yaml shop-web-adapted.yaml` then `diff platform-first-try.yaml platform.yaml` | `./run.sh 4` |
-| 5 | `cub stack certify platform.yaml` | `./run.sh 5` |
+| 5 | `cub stack check platform.yaml` | `./run.sh 5` |
 | 6 | `cub stack sandbox platform.yaml --out work/platform.yaml` | `./run.sh 6` |
 | 7 | `cub stack sandbox platform.yaml --workspace work/shop-platform` | `./run.sh 7` |
 
-The one real difference is step 4. By hand you read a fix that is already written, `shop-web-adapted.yaml` and `platform.yaml`. The assistant proposes its own, and certify decides at step 5 whether it holds.
+The one real difference is step 4. By hand you read a fix that is already written, `shop-web-adapted.yaml` and `platform.yaml`. The assistant proposes its own, and the check decides at step 5 whether it holds.
 
 The README in this folder says what a good run looks like. Read it yourself; the assistant is told not to.

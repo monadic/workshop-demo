@@ -12,7 +12,7 @@ STEPS=(
   "Fix both sides"
   "Certify again"
   "Render the platform with the app on it"
-  "Save it as a workspace you can edit and re-certify"
+  "Save it as a workspace you can edit and check again"
 )
 
 step_1() {
@@ -31,9 +31,9 @@ step_2() {
 
 step_3() {
   say "Will your app run on it?"
-  explain "cub stack certify pulls each Catalog bundle by digest and reads every object in every part. It checks for conflicts between parts, for CRDs arriving before the resources that use them, and for whether the platform carries what the app needs. Nothing is applied."
-  show_refusal cub stack certify platform-first-try.yaml
-  look "=> REJECTED, and the two reasons under FAIL. The Ingress asks for class nginx on a Traefik platform, and nothing provides a Prometheus operator. Both would have failed quietly on a real cluster."
+  explain "cub stack check pulls each Catalog bundle by digest and reads every object in every part. It checks for conflicts between parts, for CRDs arriving before the resources that use them, and for whether the platform carries what the app needs. Nothing is applied."
+  show_refusal cub stack check platform-first-try.yaml
+  look "=> REFUSED, and the two reasons under FAIL. The Ingress asks for class nginx on a Traefik platform, and nothing provides a Prometheus operator. Both would have failed quietly on a real cluster."
 }
 
 step_4() {
@@ -47,8 +47,8 @@ step_4() {
 step_5() {
   say "Ask the same question again."
   explain "This is the step 3 command, pointed at the fixed platform."
-  show cub stack certify platform.yaml
-  look "=> CERTIFIED, and the line app needs met, which names all three needs from step 1. The WARN lines say what certify cannot see from here and the cluster must already have."
+  show cub stack check platform.yaml
+  look "=> CHECKED, and the line app needs met, which names all three needs from step 1. The WARN lines say what the check cannot see from here and the cluster must already have."
 }
 
 step_6() {
@@ -57,7 +57,7 @@ step_6() {
   show cub stack sandbox platform.yaml --out "$WORK/platform.yaml"
   explain "grep counts the objects in that file."
   show grep -c "^kind:" "$WORK/platform.yaml"
-  look "215, the same count certify checked."
+  look "215, the same count the check read."
 }
 
 step_7() {
@@ -67,7 +67,7 @@ step_7() {
   show cub stack sandbox platform.yaml --workspace "$WORK/shop-platform"
   explain "ls shows what was saved."
   show ls "$WORK/shop-platform"
-  look "components, stack.yaml, rendered.yaml and result.json. Edit a component, then run cub stack certify on that stack.yaml to check it again."
+  look "components, stack.yaml, rendered.yaml and result.json. Edit a component, then run cub stack check on that stack.yaml to check it again."
 }
 
 reset_demo() { rm -rf "$WORK"; }

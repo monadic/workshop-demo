@@ -6,7 +6,7 @@ You are building a small shop app with an AI assistant. These five demos follow 
 | --- | --- | --- |
 | [1. Catch the AI](1-catch-the-ai/) | The assistant wrote my Helm values. Did they do anything? | Three of seven values did nothing, and Helm never said so |
 | [2. My fixes survive the AI](2-my-fixes-survive/) | The assistant rewrote my app. Are my fixes still there? | One change you asked for, and three of your fixes undone. Then ConfigHub carries your fixes through the rewrite for you |
-| [3. What my app needs](3-what-my-app-needs/) | Will my app run on the platform I picked? | Refused for two real reasons, fixed on both sides, then certified |
+| [3. What my app needs](3-what-my-app-needs/) | Will my app run on the platform I picked? | Refused for two real reasons, fixed on both sides, then checked |
 | [4. Before Argo CD takes over](4-before-argo-takes-over/) | My Redis has run fine for a month. Is it safe to hand to GitOps? | A password that changes on every sync, a floating image and a memory preset nobody chose. Then a reviewed alternative from the Catalog with none of them |
 | [5. It installs and never starts](5-it-installs-and-never-starts/) | Every check passes. Should I install it? | The image this chart runs no longer exists, said before the install rather than by a pod stuck in ImagePullBackOff |
 
@@ -53,7 +53,7 @@ Every demo folder holds the same things. `README.md` tells the story with each c
 Each demo leaves you with something that keeps paying off in your own repository.
 
 - **Ground your assistant.** Add the prompt from [the Workshop's agent page](https://confighub.github.io/helm-expt/site/ai.html#paste-a-prompt) to your `CLAUDE.md` or `AGENTS.md`. Every later session then checks its work with `cub` and stops guessing.
-- **Add one line to CI.** `cub config values <chart> --values values.yaml --exit-code` fails a build when a value did nothing. `cub config diff old.yaml new.yaml --exit-code` stops any change for a review. `cub stack certify platform.yaml` refuses a platform that does not hold together.
+- **Add one line to CI.** `cub config values <chart> --values values.yaml --exit-code` fails a build when a value did nothing. `cub config diff old.yaml new.yaml --exit-code` stops any change for a review. `cub stack check platform.yaml` refuses a platform that does not hold together.
 - **Commit what you reviewed.** The rendered objects, the review record and the platform workspace are plain files.
 
 ## When you want this remembered

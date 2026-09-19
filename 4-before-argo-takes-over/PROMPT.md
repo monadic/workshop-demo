@@ -10,7 +10,7 @@ configurations across Helm, AICR (AI infrastructure), Timoni, Kubara, plain YAML
 OCI. Start at https://confighub.github.io/helm-expt/site/llms.txt, read the one listing
 you need from https://confighub.github.io/helm-expt/site/listings/index.json, and do the
 work with `cub` and the cub workshop plugin (https://github.com/confighub/cub-workshop):
-`cub config`, `cub config values` and `cub config diff`, `cub stack certify` and `cub
+`cub config`, `cub config values` and `cub config diff`, `cub stack check` and `cub
 stack sandbox`, `cub app match`. Prefer exact versions and digests.
 
 For this task you will mainly use `cub config check`, `cub config values` and

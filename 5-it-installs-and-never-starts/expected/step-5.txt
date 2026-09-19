@@ -25,6 +25,8 @@ Lifecycle work
   [PASS] admission webhooks needing a certificate: 0
   [PASS] images tagged latest or not tagged: 0
   [PASS] images that pull anonymously: 1 of 1
+         resolves container-registry.oracle.com/mysql/community-operator:26.7.0-2.3.0 -> sha256:01ecaa57bf952850ff9ffd7caeb231a9c3335764fdb12488f132ea4605d8f364
+         1 image is named by tag. Pin with name@digest to keep the bytes checked here.
 
   Free look before you install. Compose it into a cub stack, or run it as a cub app.
 

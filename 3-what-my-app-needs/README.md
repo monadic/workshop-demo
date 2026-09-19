@@ -33,20 +33,20 @@ Look for three `NEEDS` lines: an ingress controller, cert-manager, and a Prometh
 **3. Certify the app on that platform, and get refused.**
 
 ```sh
-cub stack certify platform-first-try.yaml
+cub stack check platform-first-try.yaml
 ```
 
-Look for `=> REJECTED` and the two reasons. The Ingress asks for class `nginx` and this platform's controller is Traefik. The ServiceMonitor needs a Prometheus operator and nothing here provides one. Both would have failed quietly on a real cluster.
+Look for `=> REFUSED` and the two reasons. The Ingress asks for class `nginx` and this platform's controller is Traefik. The ServiceMonitor needs a Prometheus operator and nothing here provides one. Both would have failed quietly on a real cluster.
 
 **4. Fix both sides.** The app changes one line and moves to the `traefik` ingress class, because the platform already has that controller. The platform gains one part from the Catalog, kube-prometheus-stack, because the app asked for a Prometheus operator and should keep its monitoring. Two diffs show every line.
 
 **5. Certify again.**
 
 ```sh
-cub stack certify platform.yaml
+cub stack check platform.yaml
 ```
 
-Look for `=> CERTIFIED`: no conflicts across 215 objects, CRDs ordered before the resources that need them, and `app needs met` naming all three needs from step 1. Look at the warnings too. Certify says what it cannot see from here: five namespaces and a ClusterIssuer that must already exist on the cluster you deliver to.
+Look for `=> CHECKED`: no conflicts across 215 objects, CRDs ordered before the resources that need them, and `app needs met` naming all three needs from step 1. Look at the warnings too. Certify says what it cannot see from here: five namespaces and a ClusterIssuer that must already exist on the cluster you deliver to.
 
 **6. Render the platform with the app on it.**
 
@@ -56,19 +56,19 @@ cub stack sandbox platform.yaml --out work/platform.yaml
 
 Every object, in the order it has to be applied. kubectl, Argo CD and Flux all take that file as it is.
 
-**7. Save it as a workspace you can edit and re-certify.** The workspace holds the editable parts, the manifest, the render and the verdict.
+**7. Save it as a workspace you can edit and check again.** The workspace holds the editable parts, the manifest, the render and the verdict.
 
 ## The assistant track
 
-Open Claude Code or Codex in this repository and paste [PROMPT.md](PROMPT.md). In that track the assistant proposes the fix itself, and certify decides whether it holds.
+Open Claude Code or Codex in this repository and paste [PROMPT.md](PROMPT.md). In that track the assistant proposes the fix itself, and the check decides whether it holds.
 
 ### What a good run looks like
 
-At step 1 the assistant reports three needs: an ingress controller, cert-manager and a Prometheus operator. At step 3 it reports `REJECTED` for two reasons: the Ingress asks for class `nginx` on a Traefik platform, and nothing provides a Prometheus operator for the ServiceMonitor. At step 4 there is more than one fix that certifies. The one in this folder moves the Ingress to the `traefik` class and adds kube-prometheus-stack to the platform, so the app keeps its monitoring. A smaller one moves the class and deletes the ServiceMonitor, and it certifies with 90 objects. A good assistant that takes the smaller one says plainly that the app loses its monitoring. At step 5 certify, not the assistant, decides whether the fix holds.
+At step 1 the assistant reports three needs: an ingress controller, cert-manager and a Prometheus operator. At step 3 it reports `REFUSED` for two reasons: the Ingress asks for class `nginx` on a Traefik platform, and nothing provides a Prometheus operator for the ServiceMonitor. At step 4 there is more than one fix that certifies. The one in this folder moves the Ingress to the `traefik` class and adds kube-prometheus-stack to the platform, so the app keeps its monitoring. A smaller one moves the class and deletes the ServiceMonitor, and it certifies with 90 objects. A good assistant that takes the smaller one says plainly that the app loses its monitoring. At step 5 the check, not the assistant, decides whether the fix holds.
 
 In our own trials the assistant took the smaller fix and did say what it cost. An earlier version of this folder fixed the app by swapping the ServiceMonitor for something unrelated, and a trial assistant pointed out that this removed the problem without solving it. The fix here now solves it.
 
-A run has gone wrong if the assistant invents a bundle digest, edits the files it was told to leave alone, or declares the platform certified without running `cub stack certify` on its own files.
+A run has gone wrong if the assistant invents a bundle digest, edits the files it was told to leave alone, or declares the platform sound without running `cub stack check` on its own files.
 
 ## Reset
 

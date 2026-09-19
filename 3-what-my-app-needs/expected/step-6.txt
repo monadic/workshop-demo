@@ -9,7 +9,7 @@ $ cub stack sandbox platform.yaml --out work/platform.yaml
 Stack: my-shop-platform  —  The platform grown to what the shop app needs, with the app adapted to the platform.
 Resolving 5 components: cert-manager, traefik, metrics-server, kube-prometheus-stack, shop-web
 
-Certify
+Check
   [PASS] no resource conflicts across components (215 objects)
   [PASS] CRD ordering: 41 CRDs are delivered before the 52 custom resources that need them
   [PASS] served API versions: 52 custom resource(s) match their bundled CRD; target availability is not checked
@@ -17,7 +17,7 @@ Certify
   [WARN] 4 admission webhook(s) need a caBundle — cert-manager is in the stack and can issue it
   [WARN] namespaces: 0 created, 5 must already exist (cert-manager, kube-system, monitoring, shop, traefik)
   [WARN] target prerequisite unknown: ClusterIssuer/letsencrypt; Include ClusterIssuer/letsencrypt in the stack, or verify it exists on the selected target before delivery.
-  => CERTIFIED
+  => CHECKED
 
 Sandbox render  (free, no infrastructure)
   215 objects total
@@ -37,4 +37,4 @@ Sandbox render  (free, no infrastructure)
 $ grep -c "^kind:" work/platform.yaml
 215
 
-    Look for 215, the same count certify checked.
+    Look for 215, the same count the check read.

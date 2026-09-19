@@ -1,17 +1,17 @@
 
 Will your app run on it?
 
-    cub stack certify pulls each Catalog bundle by digest and reads every 
-    object in every part. It checks for conflicts between parts, for CRDs 
-    arriving before the resources that use them, and for whether the platform 
-    carries what the app needs. Nothing is applied.
+    cub stack check pulls each Catalog bundle by digest and reads every object 
+    in every part. It checks for conflicts between parts, for CRDs arriving 
+    before the resources that use them, and for whether the platform carries 
+    what the app needs. Nothing is applied.
 
-$ cub stack certify platform-first-try.yaml
+$ cub stack check platform-first-try.yaml
 
 Stack: my-shop-platform  —  The platform as first picked: cert-manager, Traefik and metrics-server, with the shop app placed on it.
 Resolving 4 components: cert-manager, traefik, metrics-server, shop-web
 
-Certify
+Check
   [PASS] no resource conflicts across components (91 objects)
   [PASS] CRD ordering: 31 CRDs are delivered before the 1 custom resources that need them
   [PASS] served API versions: 1 custom resource(s) match their bundled CRD; target availability is not checked
@@ -23,10 +23,10 @@ Certify
   [WARN] namespaces: 0 created, 4 must already exist (cert-manager, kube-system, shop, traefik)
   [WARN] target prerequisite unknown: ClusterIssuer/letsencrypt; Include ClusterIssuer/letsencrypt in the stack, or verify it exists on the selected target before delivery.
   [WARN] target prerequisite unknown: IngressClass/nginx; Include IngressClass/nginx in the stack, or verify it exists on the selected target before delivery.
-  => REJECTED
+  => REFUSED
 
       (refused, exit code non-zero, as intended)
 
-    Look for => REJECTED, and the two reasons under FAIL. The Ingress asks for 
+    Look for => REFUSED, and the two reasons under FAIL. The Ingress asks for 
     class nginx on a Traefik platform, and nothing provides a Prometheus 
     operator. Both would have failed quietly on a real cluster.
