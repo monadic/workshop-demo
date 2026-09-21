@@ -2,7 +2,7 @@
 
 **The point.** When you ask an assistant for one change, it often writes the whole file again. The change you asked for is there. The fixes you made by hand last week may not be. A diff against the version you are running names every field that moved.
 
-**Time.** About four minutes, or six with ConfigHub. **Needs.** `cub` and the workshop plugin. Steps 1 to 5 need no server, no account and no cluster. Steps 6 and 7 use a ConfigHub login, and the script skips them when there is none.
+**Time.** About four minutes, or six with ConfigHub. **Needs.** `cub` and the workshop plugin. Steps 1 to 5 need no server, no account and no cluster. Steps 6 and 7 start only when you name a new Space with `DEMO_SPACE`; a ConfigHub lookup error stops and shows the error.
 
 ```sh
 ./run.sh
@@ -53,11 +53,12 @@ Look for one changed field, the probe. That is the change you asked for, and not
 **6. With ConfigHub, let it remember your fixes.** Step 4 was you, putting your fixes back by hand, and it will happen again next week. Log in with `cub auth login` first.
 
 ```sh
-cub space create workshop-demo-shop
-cub unit create --space workshop-demo-shop shop-web-generated app-generated.yaml
-cub unit create --space workshop-demo-shop shop-web --upstream-unit shop-web-generated --upstream-space workshop-demo-shop
-cub unit update --space workshop-demo-shop shop-web app-committed.yaml --change-desc "my three hand fixes"
-cub revision list --space workshop-demo-shop shop-web
+export DEMO_SPACE=my-workshop-space
+cub space create "$DEMO_SPACE"
+cub unit create --space "$DEMO_SPACE" shop-web-generated app-generated.yaml
+cub unit create --space "$DEMO_SPACE" shop-web --upstream-unit shop-web-generated --upstream-space "$DEMO_SPACE"
+cub unit update --space "$DEMO_SPACE" shop-web app-committed.yaml --change-desc "my three hand fixes"
+cub revision list --space "$DEMO_SPACE" shop-web
 ```
 
 The assistant's output lives in one Unit and your copy is cloned from it. Your three fixes are now a recorded revision on your side of that link.
@@ -65,15 +66,16 @@ The assistant's output lives in one Unit and your copy is cloned from it. Your t
 **7. Let the assistant rewrite it again.** Today's rewrite lands in the assistant's Unit, and one command brings it into yours.
 
 ```sh
-cub unit update --space workshop-demo-shop shop-web-generated app-regenerated.yaml --change-desc "add a readiness probe"
-cub unit update --space workshop-demo-shop shop-web --upgrade
-cub unit data --space workshop-demo-shop shop-web > work/from-confighub.yaml
+export DEMO_SPACE=my-workshop-space
+cub unit update --space "$DEMO_SPACE" shop-web-generated app-regenerated.yaml --change-desc "add a readiness probe"
+cub unit update --space "$DEMO_SPACE" shop-web --upgrade
+cub unit data --space "$DEMO_SPACE" shop-web > work/from-confighub.yaml
 cub config diff app-committed.yaml work/from-confighub.yaml
 ```
 
 Look for one changed field, the probe. Your three fixes are still there, and nobody put them back by hand. ConfigHub did step 4 for you. The local diff from step 3 is what proves it.
 
-These two steps write to one Space, `workshop-demo-shop`, in the organization your current `cub` context points at. `DEMO_CONTEXT=name ./run.sh` picks another context. `./run.sh --reset` deletes the Space.
+These two steps write to a new Space you choose in the organization your current `cub` context points at. Set a name you own with `DEMO_SPACE=my-workshop-space ./run.sh 6`, then use the same value for step 7. The script creates the Space once and stops if that name already exists; it never deletes or reuses an existing Space. It records the Space ID and server identity locally, and step 7 checks both before changing anything. `DEMO_CONTEXT=name` picks another context. `./run.sh --reset` removes local `work/` only and leaves the Space unchanged.
 
 ## The assistant track
 
@@ -90,3 +92,5 @@ A run has gone wrong if the assistant eyeballs the two files in place of running
 ```sh
 ./run.sh --reset
 ```
+
+This removes the local review files and the record that allows step 7 to continue. It does not delete anything from ConfigHub.

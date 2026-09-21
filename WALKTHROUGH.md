@@ -51,7 +51,7 @@ Close with this line. *I did not need a second environment. I needed to remember
 
 If you stop at step 5, close with the line above. If you go on to steps 6 and 7, close with this one. *The diff told me what broke. ConfigHub stopped it breaking.*
 
-Steps 6 and 7 need `cub auth login` beforehand, and they write one Space, `workshop-demo-shop`, which `./run.sh --reset` deletes. Without a login the script says so and skips them.
+Steps 6 and 7 need `cub auth login` beforehand. Choose a new Space you own with `DEMO_SPACE=my-workshop-space ./run.sh 6`, then use the same value for step 7. The script refuses an existing Space, records its server and Space identities before it creates Units, and checks them before step 7. `./run.sh --reset` removes local work only. Without `DEMO_SPACE`, the script says so and skips them; a named Space with a ConfigHub lookup error stops and shows that error.
 
 ## 3. What my app needs (6 minutes)
 
