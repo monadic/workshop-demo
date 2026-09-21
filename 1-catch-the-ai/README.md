@@ -51,6 +51,45 @@ Look at what you were really getting. You asked for a 1Gi disk and had 8Gi. You 
 
 **7. Make it a gate.** With `--exit-code` the check fails a build when a value did nothing.
 
+## Continue with your own chart
+After this five-minute example, fix your own chart and retain its exact candidate and diagnosis
+so the next session can continue from that result. This needs unreleased cub-workshop 0.6.38. An ordinary
+installed plugin updates with `cub plugin upgrade workshop`; check `cub config values --help`
+for `--out` and `--render-out`. If they are absent, replace the installed plugin with updated
+source (`cub plugin uninstall workshop && cub plugin install --source-repo confighub/cub-workshop`)
+or a local checkout (`cub plugin uninstall workshop && cub plugin install /absolute/path/to/cub-workshop`).
+
+Start fresh so no earlier review is overwritten. Replace every quoted `<...>` placeholder below;
+use only settings you already use, omit optional flags you do not use, and use an absolute path for a local chart or values file after `cd`.
+
+```sh
+mkdir own-chart-review && cd own-chart-review
+cp "<absolute-path-to-your-private-values-file>" values.yaml
+cub config values "<your-chart-or-absolute-local-chart-path>" --version "<your-existing-version>" \
+  --namespace "<your-existing-namespace>" --release "<your-existing-release>" \
+  --values values.yaml --out diagnosis.json --render-out candidate.yaml --exit-code
+```
+
+The candidate is the explicit, flattened configuration the chart rendered from those inputs.
+Exit 1 means some values had no effect; investigate before accepting. Exit 2 means the command
+could not complete; resolve that error before drawing conclusions about the values. Keep `values.yaml` and `candidate.yaml`
+private: the candidate can contain Secrets. The diagnosis keeps requested inputs and hashes;
+the candidate is the exact render to inspect next time. If settings need repair, change a copied values
+file and repeat the command in a new directory such as `own-chart-review-fixed`; do not leave only
+a failed candidate.
+
+Next session, inspect the saved candidate without rendering, copy it before editing, then compare:
+```sh
+cub config check candidate.yaml
+cp candidate.yaml candidate-edited.yaml
+# edit candidate-edited.yaml
+cub config diff candidate.yaml candidate-edited.yaml --out candidate-diff.json
+```
+
+Editing this saved candidate does not change Helm values, so a later render will not retain that edit
+automatically. Keep the baseline and diff; for managed preservation, continue with [2. My fixes survive the AI](../2-my-fixes-survive/).
+These are static checks: they do not prove runtime behavior or make an apply safe. This local continuation does not upload anything.
+
 ## How it knows
 
 The chart is rendered with your values, then once more for each value with that one value taken out. If the objects are the same either way, the value did nothing. Charts generate passwords and checksums, so the fields that move between two renders of the same input are found first and left out of every comparison. No value is ever printed.

@@ -67,3 +67,25 @@ Start the script with `./run.sh`, with the dot and the slash. It pauses before e
 The one real difference is step 4. By hand you read a fix that is already written, `values-fixed.yaml`. The assistant writes its own, `work/values-mine.yaml`, and steps 5 and 6 then check the assistant's work.
 
 The README in this folder says what a good run looks like. Read it yourself; the assistant is told not to.
+
+## Continue with your own chart
+After the guided seven steps, use the [manual continuation](README.md#continue-with-your-own-chart).
+Paste this as a separate mission, rather than changing the seven-step exercise:
+
+```text
+I need to investigate my own Helm chart and values file. My desired outcome is:
+<describe the result I need>. My constraints are: <versions, namespace, release, policy,
+and privacy constraints I already use>.
+Reuse the chart source and settings I provide. Ask only about missing decisions that affect the
+desired result; do not reflexively ask for or invent a chart version, namespace, release, or values.
+Diagnose the supplied values first. Resolve execution errors before interpreting a report. If values
+need repair, repair a copy of them, then save
+the repaired diagnosis and candidate in fresh output names or a fresh directory so no failed result
+is overwritten or left as the only candidate. Use cub config values with --out diagnosis.json,
+--render-out candidate.yaml, and --exit-code. Explain that values and a rendered candidate may contain
+secrets and must remain private.
+Help me run cub config check on the saved candidate, then copy, edit, and diff that candidate without
+rendering again. Explain that editing it does not change Helm values or survive a later render; retain
+the baseline and diff. These checks are static: they do not prove runtime behavior or make an apply safe.
+Do not start or contact a ConfigHub server unless I explicitly ask.
+```
