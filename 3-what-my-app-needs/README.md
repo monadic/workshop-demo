@@ -75,3 +75,59 @@ A run has gone wrong if the assistant invents a bundle digest, edits the files i
 ```sh
 ./run.sh --reset
 ```
+
+## Continue with your own rendered app
+
+Start with rendered Kubernetes YAML. Use fresh directories:
+
+```sh
+set -eu
+umask 077
+mkdir work/own-app
+APP_YAML='/absolute/path/to/my-rendered-app.yaml'
+cp "$APP_YAML" work/own-app/app.yaml
+cub app check work/own-app/app.yaml
+cub config list --role ingress
+cub config list --role certificates
+cub config list --role metrics
+```
+
+For every need the app check reports, inspect the candidate and evidence.
+Choose an exact listing ID only when its retained-object verdict permits composition.
+If a candidate requires routes or is unsafe to flatten, `cub stack compose` refuses
+it. Keep that refusal: do not substitute an unrelated service or delete an app
+requirement to make a check pass.
+
+When every chosen entry is `born-flat` or `safe-to-flatten`, set each ID from the list
+output and compose it explicitly. `cub stack compose` is tested here with [source
+revision `be9275d`](https://github.com/confighub/cub-workshop/blob/be9275de7034240239987e03e7685035924fb60a/docs/catalog-compose.md)
+(0.6.38); check that your installed plugin provides the command:
+
+```sh
+: "${CHOSEN_ID:?set this to an exact ID from cub config list}"
+cub stack compose --entry "$CHOSEN_ID" --name own-app-platform --out work/own-app/platform
+cp work/own-app/app.yaml work/own-app/platform/components/99-my-app.yaml
+```
+
+Add this under `spec.components` in `work/own-app/platform/stack.yaml`, then check
+and save a new editable copy:
+
+```yaml
+    - name: my-app
+      authored: components/99-my-app.yaml
+```
+
+```sh
+cub stack check work/own-app/platform/stack.yaml
+cub stack sandbox work/own-app/platform/stack.yaml --workspace work/own-app/saved
+```
+
+This is static only: no target, readiness, or application-response check. Keep
+`work/own-app/platform/provenance.json`; the saved workspace omits listing provenance.
+An app check cannot infer every environment host, service, or authentication dependency.
+
+For an app that needs a cache, run `cub config list --role cache`.
+The confirmed one-entry compose example is
+`cloudpirates-redis-0-34-11-reuse-existing-secret`; it needs `redis-existing-secret`
+on the target and says nothing about app connectivity. For retained edits, continue
+with [demo 2](../2-my-fixes-survive/).

@@ -67,3 +67,28 @@ Start the script with `./run.sh`, with the dot and the slash. It pauses before e
 The one real difference is step 4. By hand you read a fix that is already written, `shop-web-adapted.yaml` and `platform.yaml`. The assistant proposes its own, and the check decides at step 5 whether it holds.
 
 The README in this folder says what a good run looks like. Read it yourself; the assistant is told not to.
+
+## Own-app mission
+
+Paste this as a separate request after the seven steps.
+
+```text
+Work only in 3-what-my-app-needs/work/own-app. I will give you rendered Kubernetes
+YAML for my app. Copy it to a fresh app.yaml, run `cub app check`, and show every
+reported platform need. For each, run `cub config list --role ROLE` and inspect the
+real candidates and evidence. Never invent a listing ID or digest, delete a reported
+requirement, or substitute an unrelated service just to obtain CHECKED.
+
+Use `cub stack compose` only with exact IDs you selected and only when every selected
+listing is `born-flat` or `safe-to-flatten`. A `flatten-with-routes` or
+`unsafe-to-flatten` refusal is the correct stopping point: report it and preserve the
+requirement. Do not claim a complete platform in that case. If composition is allowed,
+copy app.yaml into its new components directory, add it to stack.yaml as an `authored`
+component, run `cub stack check`, then save a fresh workspace with `cub stack sandbox
+--workspace`. Show each command and the material output. This is a static check only:
+do not contact ConfigHub or a cluster, and do not claim readiness or application health.
+Keep the original composition and its provenance.json alongside the saved workspace.
+Stop after any compose or check failure. If `stack compose` is missing, say that the
+installed plugin lacks the command tested at source revision `be9275d` (0.6.38); ask me to
+install that source before continuing.
+```
