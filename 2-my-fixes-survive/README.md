@@ -52,6 +52,8 @@ Look for one changed field, the probe. That is the change you asked for, and not
 
 **6. With ConfigHub, let it remember your fixes.** Step 4 was you, putting your fixes back by hand, and it will happen again next week. Log in with `cub auth login` first.
 
+Use these commands as the manual route, or use `DEMO_SPACE=my-workshop-space ./run.sh 6` and the same value with `./run.sh 7` as the script route. Do not mix them: the manual route does not write the local record that lets script step 7 continue, and script step 6 refuses a Space the manual route already created.
+
 ```sh
 export DEMO_SPACE=my-workshop-space
 cub space create "$DEMO_SPACE"
@@ -67,13 +69,14 @@ The assistant's output lives in one Unit and your copy is cloned from it. Your t
 
 ```sh
 export DEMO_SPACE=my-workshop-space
+mkdir -p work
 cub unit update --space "$DEMO_SPACE" shop-web-generated app-regenerated.yaml --change-desc "add a readiness probe"
 cub unit update --space "$DEMO_SPACE" shop-web --upgrade
 cub unit data --space "$DEMO_SPACE" shop-web > work/from-confighub.yaml
 cub config diff app-committed.yaml work/from-confighub.yaml
 ```
 
-Look for one changed field, the probe. Your three fixes are still there, and nobody put them back by hand. ConfigHub did step 4 for you. The local diff from step 3 is what proves it.
+Look for one changed field, the probe. Your three fixes are still there, and nobody put them back by hand. ConfigHub did step 4 for you. This step 7 comparison proves that it retained your configuration and added only the probe.
 
 These two steps write to a new Space you choose in the organization your current `cub` context points at. Set a name you own with `DEMO_SPACE=my-workshop-space ./run.sh 6`, then use the same value for step 7. The script creates the Space once and stops if that name already exists; it never deletes or reuses an existing Space. It records the Space ID and server identity locally, and step 7 checks both before changing anything. `DEMO_CONTEXT=name` picks another context. `./run.sh --reset` removes local `work/` only and leaves the Space unchanged.
 
