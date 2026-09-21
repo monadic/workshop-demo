@@ -16,21 +16,65 @@ STEPS=(
   "With ConfigHub: let the assistant rewrite it again"
 )
 
-# Steps 6 and 7 write to ConfigHub, in one Space that --reset deletes.
-# They use your current cub context. DEMO_CONTEXT=name picks another.
-SPACE="workshop-demo-shop"
+# Steps 6 and 7 write to a caller-named ConfigHub Space. They use your current
+# cub context; DEMO_CONTEXT=name picks another. There is no default Space name:
+# a named Space makes the server work an intentional, personal continuation.
+SPACE="${DEMO_SPACE:-}"
+SPACE_MARKER="$WORK/demo-space"
 hub() {
   if [ -n "${DEMO_CONTEXT:-}" ]; then cub --context "$DEMO_CONTEXT" "$@"; else cub "$@"; fi
+}
+space_selected() {
+  if [ -n "$SPACE" ]; then return 0; fi
+  say "Steps 6 and 7 need a new Space name that you choose. The local steps are complete."
+  dim "    To continue, run DEMO_SPACE=my-workshop-space ./run.sh 6, then use the same name for step 7."
+  return 1
+}
+identity_valid() {
+  local first second
+  case "$1" in
+    *'|'*) first=${1%%|*}; second=${1#*|} ;;
+    *) return 1 ;;
+  esac
+  [ -n "$first" ] && [ -n "$second" ] && [ "$second" != "$1" ] && [[ "$second" != *'|'* ]]
+}
+context_identity() {
+  local identity
+  identity="$(hub context get -o 'jq=[.coordinate.serverURL, .coordinate.organizationID] | join("|")')" || return 1
+  identity_valid "$identity" || { echo "ConfigHub returned an incomplete server identity." >&2; return 1; }
+  printf '%s\n' "$identity"
+}
+space_identity() {
+  local identity
+  identity="$(hub space get "$SPACE" -o 'jq=[.Space.OrganizationID, .Space.SpaceID] | join("|")')" || return 1
+  identity_valid "$identity" || { echo "ConfigHub returned an incomplete Space identity." >&2; return 1; }
+  printf '%s\n' "$identity"
+}
+record_space_marker() {
+  local context_id space_id
+  context_id="$(context_identity)" || return 1
+  space_id="$(space_identity)" || return 1
+  printf '%s\n%s\n' "$context_id" "$space_id" > "$SPACE_MARKER"
+}
+space_created_here() {
+  local marker_context marker_space current_context current_space
+  [ -f "$SPACE_MARKER" ] || return 1
+  marker_context="$(sed -n '1p' "$SPACE_MARKER")"
+  marker_space="$(sed -n '2p' "$SPACE_MARKER")"
+  identity_valid "$marker_context" && identity_valid "$marker_space" || return 1
+  current_context="$(context_identity)" || return 2
+  current_space="$(space_identity)" || return 2
+  [ "$marker_context" = "$current_context" ] && [ "$marker_space" = "$current_space" ]
 }
 HUB_READY=""
 hub_ready() {
   if [ -z "$HUB_READY" ]; then
-    if hub space list >/dev/null 2>&1; then HUB_READY=yes; else HUB_READY=no; fi
+    if hub space list >/dev/null; then HUB_READY=yes; else HUB_READY=no; fi
   fi
   [ "$HUB_READY" = "yes" ] && return 0
   if [ -z "${HUB_TOLD:-}" ]; then
-    say "Steps 6 and 7 use ConfigHub, and this terminal is not logged in. Steps 1 to 5 stand on their own without it."
-    dim "    To run them, log in with cub auth login, then ./run.sh 6 and ./run.sh 7."
+    say "Steps 6 and 7 use ConfigHub, but cub could not list Spaces in this context. Steps 1 to 5 stand on their own without it."
+    dim "    Check the error above, then run cub auth login if needed and retry. No demo Space was created or changed."
     HUB_TOLD=yes
   else
     dim "    Skipped, for the same reason."
@@ -76,11 +120,17 @@ step_5() {
 }
 
 step_6() {
-  hub_ready || return 0
+  space_selected || return 0
+  hub_ready || return 1
   say "Step 4 was you, putting your fixes back by hand. It will happen again next week. ConfigHub can remember them."
-  hub space delete --recursive-force "$SPACE" >/dev/null 2>&1
-  explain "cub space create makes a Space in ConfigHub, a place to keep configuration. This is the first command today that needs an account."
+  explain "cub space create makes the new Space you named in ConfigHub, a place to keep configuration. It fails if that name already exists, so this demo never replaces a Space."
   show hub space create "$SPACE"
+  if ! record_space_marker; then
+    echo
+    bold "The new Space was created, but its server identity could not be recorded. No Units were created."
+    dim "    Check the error above before using or deleting the Space."
+    exit 1
+  fi
   explain "cub unit create stores a file as a Unit. This one is what the assistant wrote two weeks ago, before you touched it. The assistant owns this Unit."
   show hub unit create --space "$SPACE" shop-web-generated app-generated.yaml
   explain "This makes your own copy, cloned from the assistant's. ConfigHub keeps the link between the two."
@@ -93,7 +143,19 @@ step_6() {
 }
 
 step_7() {
-  hub_ready || return 0
+  local continuation_status=0
+  space_selected || return 0
+  hub_ready || return 1
+  space_created_here || continuation_status=$?
+  if [ "$continuation_status" -ne 0 ]; then
+    case "$continuation_status" in
+      1) say "Step 7 only continues the Space that step 6 created from this folder with this DEMO_SPACE value."
+         dim "    Run DEMO_SPACE=$SPACE ./run.sh 6 first, or choose a new Space name. No existing Space was changed." ;;
+      2) say "Step 7 could not confirm the saved server and Space identities."
+         dim "    Check the error above. No existing Space was changed."
+    esac
+    return 1
+  fi
   say "Today the assistant rewrites the file, exactly as in step 2. This time it lands in the assistant's Unit, and yours is untouched."
   explain "cub unit update replaces the assistant's Unit with today's rewrite, the one that adds the probe and undoes your fixes."
   show hub unit update --space "$SPACE" shop-web-generated app-regenerated.yaml --change-desc "add a readiness probe"
@@ -108,7 +170,9 @@ step_7() {
 
 reset_demo() {
   rm -rf "$WORK"
-  if hub space list >/dev/null 2>&1; then hub space delete --recursive-force "$SPACE" >/dev/null 2>&1; fi
+  if [ -n "$SPACE" ]; then
+    dim "    Reset removed local work only. The ConfigHub Space $SPACE remains unchanged."
+  fi
   return 0
 }
 
