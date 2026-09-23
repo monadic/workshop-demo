@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "scope": "local-configuration-diff",
+  "before": {
+    "sha256": "sha256:1958a91b574dea51a7b128460f41fd0f356183823bde5573bdadc4bde64e91b1",
+    "objectCount": 2
+  },
+  "after": {
+    "sha256": "sha256:44350f974d0c32f6b804a6395967f6e8a1f504fd8a0c73502725dd9f11db6575",
+    "objectCount": 2
+  },
+  "equal": false,
+  "summary": {
+    "added": 0,
+    "removed": 0,
+    "changed": 1,
+    "unchanged": 1
+  },
+  "changes": [
+    {
+      "object": {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "namespace": "billing",
+        "name": "invoice-api"
+      },
+      "change": "changed",
+      "fields": [
+        {
+          "path": "/spec/replicas",
+          "operation": "replace",
+          "before": 4,
+          "after": 2
+        },
+        {
+          "path": "/spec/template/spec/containers/api/env/DATABASE_URL/value",
+          "operation": "replace",
+          "before": "postgres://invoices-primary.billing.svc:5432/invoices",
+          "after": "postgres://invoices.billing.svc:5432/invoices"
+        },
+        {
+          "path": "/spec/template/spec/containers/api/env/PDF_RENDER_TIMEOUT/value",
+          "operation": "replace",
+          "before": "45s",
+          "after": "10s"
+        },
+        {
+          "path": "/spec/template/spec/containers/api/livenessProbe",
+          "operation": "add",
+          "after": {
+            "httpGet": {
+              "path": "/healthz",
+              "port": 8080
+            },
+            "initialDelaySeconds": 10,
+            "periodSeconds": 15
+          }
+        },
+        {
+          "path": "/spec/template/spec/containers/api/resources/limits/memory",
+          "operation": "replace",
+          "before": "768Mi",
+          "after": "256Mi"
+        },
+        {
+          "path": "/spec/template/spec/containers/api/resources/requests/memory",
+          "operation": "replace",
+          "before": "512Mi",
+          "after": "256Mi"
+        },
+        {
+          "path": "/spec/template/spec/nodeSelector",
+          "operation": "remove",
+          "before": {
+            "workload": "general"
+          }
+        }
+      ]
+    }
+  ],
+  "comparison": "Object identity includes API version and explicit namespace; mapping and document order ignored, lists of uniquely named items compared item by item by name, every other list compared as a whole value, missing and null distinct. No Kubernetes defaulting or schema interpretation. Secret data and stringData values are replaced by a short hash of each value.",
+  "notChecked": [
+    "Kubernetes schema or admission validity",
+    "upstream merge and protected-field preservation",
+    "target readiness or live drift",
+    "application availability"
+  ]
+}
