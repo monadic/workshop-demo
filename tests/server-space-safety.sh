@@ -103,6 +103,8 @@ grep -Fq 'space create owned-demo-space' "$test_dir/cub.log"
 grep -Fq 'unit create --space owned-demo-space shop-web-generated app-generated.yaml' "$test_dir/cub.log"
 assert_not_called 'space delete'
 
+grep -Fq 'unit update --space owned-demo-space shop-web app-committed.yaml --protect' "$test_dir/cub.log"
+
 # The same bound server and fresh Space can continue through step 7.
 : > "$test_dir/cub.log"
 DEMO_SPACE=owned-demo-space run_demo "$demo_dir/run.sh" 7 > /dev/null

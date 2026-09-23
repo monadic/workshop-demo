@@ -55,7 +55,7 @@ Space named workshop-demo-shop, and tell me before you create it.
 6. app-generated.yaml is what the assistant wrote two weeks ago, before I touched it.
    Create the Space. Store app-generated.yaml as a Unit named shop-web-generated. Create
    my own Unit, shop-web, cloned from it with --upstream-unit and --upstream-space. Then
-   update shop-web with app-committed.yaml, described as "my three hand fixes", and
+   update shop-web with app-committed.yaml using --protect, described as "my three hand fixes", and
    show me its revisions.
 7. Today's rewrite arrives: update shop-web-generated with app-regenerated.yaml. Then
    bring that into my copy with cub unit update --upgrade. Save my copy's data to
@@ -100,3 +100,8 @@ deployment or health. Do not contact a cluster or ConfigHub server, create
 resources, or publish anything. Show me the evidence, unresolved decisions, and the
 exact candidate artifact or review record produced from my supplied files.
 ```
+
+For the Server continuation, a plain update does not newly protect changed paths.
+Use `--protect` when recording the reviewed local edits. A later upstream change
+to a protected field keeps the local choice; review that choice deliberately
+rather than treating protection as a conflict-resolution decision made for you.

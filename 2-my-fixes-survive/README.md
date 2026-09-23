@@ -59,11 +59,11 @@ export DEMO_SPACE=my-workshop-space
 cub space create "$DEMO_SPACE"
 cub unit create --space "$DEMO_SPACE" shop-web-generated app-generated.yaml
 cub unit create --space "$DEMO_SPACE" shop-web --upstream-unit shop-web-generated --upstream-space "$DEMO_SPACE"
-cub unit update --space "$DEMO_SPACE" shop-web app-committed.yaml --change-desc "my three hand fixes"
+cub unit update --space "$DEMO_SPACE" shop-web app-committed.yaml --protect --change-desc "my three hand fixes"
 cub revision list --space "$DEMO_SPACE" shop-web
 ```
 
-The assistant's output lives in one Unit and your copy is cloned from it. Your three fixes are now a recorded revision on your side of that link.
+The assistant's output lives in one Unit and your copy is cloned from it. `--protect` records the paths changed by your three fixes as local overrides. A plain update records a revision but does not newly protect those paths from a competing upstream edit.
 
 **7. Let the assistant rewrite it again.** Today's rewrite lands in the assistant's Unit, and one command brings it into yours.
 
@@ -108,3 +108,11 @@ The [receipt and hashed files](expected/invoice-preservation/receipt.json) retai
 the exact input and output. The pre-rewrite upstream is a synthetic test baseline,
 not recovered historical configuration. This test did not deploy the application
 or exercise a same-field conflict.
+
+A [same-field follow-up](expected/invoice-protection/receipt.json) changed upstream
+replicas from 2 to 5 while the downstream choice was 4. Without `--protect`, the
+upgrade returned success and wrote 5. With `--protect` when recording the local
+edits, it kept 4 and added the new probe. The other five edits survived both runs.
+Protection means retaining the local choice; this is not a promise of a conflict
+dialog or a general-purpose semantic merge. Review intended upstream changes to
+protected fields before deciding whether to change the local override.

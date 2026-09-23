@@ -135,8 +135,8 @@ step_6() {
   show hub unit create --space "$SPACE" shop-web-generated app-generated.yaml
   explain "This makes your own copy, cloned from the assistant's. ConfigHub keeps the link between the two."
   show hub unit create --space "$SPACE" shop-web --upstream-unit shop-web-generated --upstream-space "$SPACE"
-  explain "cub unit update puts the file you are running into your copy. ConfigHub records your three fixes as edits made on your side of that link."
-  show hub unit update --space "$SPACE" shop-web app-committed.yaml --change-desc "my three hand fixes"
+  explain "cub unit update puts the file you are running into your copy. --protect records your three fixes as protected local overrides, including when upstream later changes the same fields."
+  show hub unit update --space "$SPACE" shop-web app-committed.yaml --protect --change-desc "my three hand fixes"
   explain "cub revision list shows the history of your copy."
   show hub revision list --space "$SPACE" shop-web
   look "the top line, your three hand fixes, with your description on it. Under it is the copy cloned from what the assistant wrote. ConfigHub now knows which edits are yours."
