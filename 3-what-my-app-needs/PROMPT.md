@@ -67,3 +67,34 @@ Start the script with `./run.sh`, with the dot and the slash. It pauses before e
 The one real difference is step 4. By hand you read a fix that is already written, `shop-web-adapted.yaml` and `platform.yaml`. The assistant proposes its own, and the check decides at step 5 whether it holds.
 
 The README in this folder says what a good run looks like. Read it yourself; the assistant is told not to.
+
+## Own-app mission
+
+Paste this as a separate request after the seven steps.
+
+```text
+Work only in 3-what-my-app-needs/work/own-app. I will give you rendered Kubernetes
+YAML for my app. Copy it to a fresh app.yaml, run `cub app check`, and show every
+reported platform need. For each, run `cub config list --role ROLE` and inspect the
+real candidates and evidence. Never invent a listing ID or digest, delete a reported
+requirement, or substitute an unrelated service just to obtain CHECKED.
+
+Use `cub stack compose` only with exact IDs you selected. `born-flat` and
+`safe-to-flatten` entries may compose from retained objects. A `flatten-with-routes`
+entry may compose only when its listing supplies a published digest-pinned
+literal-config bundle and a hash-verified CertifiedBundleReceipt with declared route
+companions. Let the command verify that evidence; record its route companions as
+`declared-unexecuted`, and never say a route ran. An `unsafe-to-flatten`, unpublished,
+or mismatched route-bundle refusal is the correct stopping point: report it and
+preserve the requirement. Do not claim a complete platform in that case.
+
+If composition is allowed, copy app.yaml into its new components directory. For a
+route-backed selection, use only a fresh workspace made by workshop 0.6.44, then append
+one new uniquely named `authored` component at the end of stack.yaml; never reorder or
+edit its existing components. Run `cub stack check`, then save a fresh workspace with
+`cub stack sandbox --workspace`. Show each command and the material output. This is a
+static check only: do not contact ConfigHub or a cluster, and do not claim readiness or
+application health. Keep the original composition and its provenance.json alongside the
+saved workspace. Stop after any compose or check failure. If `stack compose` is missing,
+say that workshop 0.6.44 is required and ask me to install it before continuing.
+```
