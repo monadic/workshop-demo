@@ -79,16 +79,22 @@ reported platform need. For each, run `cub config list --role ROLE` and inspect 
 real candidates and evidence. Never invent a listing ID or digest, delete a reported
 requirement, or substitute an unrelated service just to obtain CHECKED.
 
-Use `cub stack compose` only with exact IDs you selected and only when every selected
-listing is `born-flat` or `safe-to-flatten`. A `flatten-with-routes` or
-`unsafe-to-flatten` refusal is the correct stopping point: report it and preserve the
-requirement. Do not claim a complete platform in that case. If composition is allowed,
-copy app.yaml into its new components directory, add it to stack.yaml as an `authored`
-component, run `cub stack check`, then save a fresh workspace with `cub stack sandbox
---workspace`. Show each command and the material output. This is a static check only:
-do not contact ConfigHub or a cluster, and do not claim readiness or application health.
-Keep the original composition and its provenance.json alongside the saved workspace.
-Stop after any compose or check failure. If `stack compose` is missing, say that the
-installed plugin lacks the command tested at source revision `be9275d` (0.6.38); ask me to
-install that source before continuing.
+Use `cub stack compose` only with exact IDs you selected. `born-flat` and
+`safe-to-flatten` entries may compose from retained objects. A `flatten-with-routes`
+entry may compose only when its listing supplies a published digest-pinned
+literal-config bundle and a hash-verified CertifiedBundleReceipt with declared route
+companions. Let the command verify that evidence; record its route companions as
+`declared-unexecuted`, and never say a route ran. An `unsafe-to-flatten`, unpublished,
+or mismatched route-bundle refusal is the correct stopping point: report it and
+preserve the requirement. Do not claim a complete platform in that case.
+
+If composition is allowed, copy app.yaml into its new components directory. For a
+route-backed selection, use only a fresh workspace made by workshop 0.6.44, then append
+one new uniquely named `authored` component at the end of stack.yaml; never reorder or
+edit its existing components. Run `cub stack check`, then save a fresh workspace with
+`cub stack sandbox --workspace`. Show each command and the material output. This is a
+static check only: do not contact ConfigHub or a cluster, and do not claim readiness or
+application health. Keep the original composition and its provenance.json alongside the
+saved workspace. Stop after any compose or check failure. If `stack compose` is missing,
+say that workshop 0.6.44 is required and ask me to install it before continuing.
 ```

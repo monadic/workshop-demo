@@ -92,16 +92,20 @@ cub config list --role certificates
 cub config list --role metrics
 ```
 
-For every need the app check reports, inspect the candidate and evidence.
-Choose an exact listing ID only when its retained-object verdict permits composition.
-If a candidate requires routes or is unsafe to flatten, `cub stack compose` refuses
-it. Keep that refusal: do not substitute an unrelated service or delete an app
-requirement to make a check pass.
+For every need the app check reports, inspect the candidate and evidence. Choose
+an exact listing ID yourself; the command never chooses one for you.
 
-When every chosen entry is `born-flat` or `safe-to-flatten`, set each ID from the list
-output and compose it explicitly. `cub stack compose` is tested here with [source
-revision `be9275d`](https://github.com/confighub/cub-workshop/blob/be9275de7034240239987e03e7685035924fb60a/docs/catalog-compose.md)
-(0.6.38); check that your installed plugin provides the command:
+`born-flat` and `safe-to-flatten` entries compose from their retained objects. A
+`flatten-with-routes` entry may compose only when its listing records a published,
+digest-pinned literal-config bundle and a hash-verified CertifiedBundleReceipt with
+its declared route companions. `cub stack compose` verifies that binding and saves
+those companions as `declared-unexecuted` evidence. It does not run a route. Keep an
+`unsafe-to-flatten` or unpublished/mismatched route-bundle refusal: do not substitute
+an unrelated service or delete an app requirement to make a check pass.
+
+Set each exact chosen ID from the list output and compose it explicitly. This flow
+uses [workshop 0.6.44](https://github.com/confighub/cub-workshop/blob/55ce72de74decd2c64261196100935c60be06469/docs/catalog-compose.md);
+check that your installed plugin provides the command:
 
 ```sh
 : "${CHOSEN_ID:?set this to an exact ID from cub config list}"
@@ -109,8 +113,9 @@ cub stack compose --entry "$CHOSEN_ID" --name own-app-platform --out work/own-ap
 cp work/own-app/app.yaml work/own-app/platform/components/99-my-app.yaml
 ```
 
-Add this under `spec.components` in `work/own-app/platform/stack.yaml`, then check
-and save a new editable copy:
+For a route-backed selection, this must be a fresh 0.6.44 workspace made by that
+compose command. Append this entry at the end of `spec.components` in
+`work/own-app/platform/stack.yaml`; do not reorder or edit the existing entries:
 
 ```yaml
     - name: my-app
