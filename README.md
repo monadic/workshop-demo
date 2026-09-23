@@ -25,8 +25,9 @@ curl -fsSL https://hub.confighub.com/cub/install.sh | bash
 
 # 2. the workshop plugin: cub config, cub app, cub stack, cub fleet
 #    it needs node, oras and helm on your PATH
-cub plugin install confighub/cub-workshop
-#    already installed? cub plugin upgrade workshop
+#    exact tested source pin for workshop 0.6.41
+cub plugin install confighub/cub-workshop@22f272cb771e55a0161c557429fe3817ac2d8012 --source-repo
+#    already installed? reinstall this same pinned source to reproduce the test
 
 # 3. check this machine is ready
 ./check.sh
