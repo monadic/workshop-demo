@@ -48,6 +48,20 @@ names. Then stop and wait for me to say "next".
 5. Find what the Workshop Catalog reviewed for MySQL instead, render it, and run the
    same check. Remember that helm leaves a chart's CRDs out of a template render unless
    you ask for them. What would the move cost me?
+
+After step 5, show me how to use the new strict image check on a render from my own
+repository. Give me this command with the placeholders left clear, and explain its
+exit codes:
+
+    cub config check path/to/rendered.yaml --images --exit-code
+
+Explain that exit 0 means every discovered image manifest was checked anonymously, exit 1 means
+an image was confirmed missing, and exit 2 means the check was incomplete or the
+command was invalid. Say that this gates image availability at check time but does not
+prove startup, scheduling, chart compatibility or application health; it only checks
+images found by the static image extractor. Keep the
+operator-versus-database distinction from step 5. Do not contact a cluster or run
+live operations.
 ```
 
 ## The same steps by hand

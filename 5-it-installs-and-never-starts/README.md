@@ -2,7 +2,7 @@
 
 **The point.** A chart can name an image that no longer exists. The chart downloads, the values are right, every local check passes, and `helm install` reports success. The pods then sit in `ImagePullBackOff`. One command asks the registry first.
 
-**Time.** About five minutes, or eight with the live proof. **Needs.** `cub`, the workshop plugin (0.6.27 or later), `helm`, `curl`, and a network. Steps 1 to 5 need no cluster. Step 6 builds a throwaway one with `kind`, and only if you ask for it.
+**Time.** About five minutes, or eight with the live proof. **Needs.** `cub`, the workshop plugin (0.6.41 or later), `helm`, `curl`, and a network. Steps 1 to 5 need no cluster. Step 6 builds a throwaway one with `kind`, and only if you ask for it.
 
 ```sh
 ./run.sh
@@ -62,6 +62,16 @@ DEMO_CLUSTER=1 ./run.sh 6
 ```
 
 It builds a throwaway cluster with `kind`, installs the chart that passed every local check, and shows the pods. Look for `ImagePullBackOff` on the same image `--images` called `NOT FOUND`, and for the fact that `helm install` said nothing. `./run.sh --reset` deletes the cluster. It touches no other cluster or kubeconfig you have.
+
+## Use the image check in your own CI
+
+The same strict check works on any rendered configuration your repository produces. Once your normal render step has written a file, make the image check the gate:
+
+```sh
+cub config check path/to/rendered.yaml --images --exit-code
+```
+
+Exit 0 means every discovered image manifest was checked anonymously. Exit 1 means a registry confirmed that at least one image is missing. Exit 2 means the check was incomplete, such as a network or authentication failure, or the command was invalid. The ordinary `cub config check ... --images` command in step 3 remains advisory and does not fail the build. This gate checks images found by the static image extractor at the time it runs; it does not prove startup, scheduling, chart compatibility, or application health.
 
 ## How it knows
 
