@@ -74,3 +74,22 @@ Start the script with `./run.sh`, with the dot and the slash. It pauses before e
 The one real difference is step 6. By hand you read the entry named in this folder. The assistant finds it in the Catalog listings on its own, and steps 7 and 8 check what it chose.
 
 The README in this folder says what a good run looks like. Read it yourself; the assistant is told not to.
+
+## Independent mission: bring your own inputs
+
+Add your real migration problem and file paths, then paste this prompt:
+
+```text
+Help me prepare my configuration for Flux or Argo CD. I will provide the current
+manifests, values, candidate files, and controller sources I have. Preserve the
+existing deployment intent and my edits; do not invent absent input, chart behavior,
+or ownership. Determine whether Flux or Argo currently has authority from the
+supplied sources, name semantic choices for me, and refuse an unapproved handoff or
+takeover. You may read public Catalog or registry information, but keep source
+inputs and external systems read-only. You may write a candidate and evidence record
+only in a fresh local work directory. Separate static render and registry
+observations from runtime proofs about reconciliation, drift, or health. Do not
+contact a cluster or server, change controller ownership, apply resources, or
+publish anything. Show me evidence, unresolved decisions, and the proposed handoff
+boundary.
+```

@@ -82,3 +82,21 @@ Start the script with `./run.sh`, with the dot and the slash. It pauses before e
 Step 6 is the command line only. It installs the broken chart on a throwaway cluster, and the assistant is told not to install anything.
 
 The README in this folder says what a good run looks like. Read it yourself; the assistant is told not to.
+
+## Independent mission: bring your own inputs
+
+Add your real install or startup problem and file paths, then paste this prompt:
+
+```text
+Help me understand why my application installs but does not start. I will provide
+the values, manifests, chart metadata, image references, and any error output I
+have. Preserve my application intent; do not invent missing input, and name semantic
+choices I must decide. Treat an operator as the controller that manages a database,
+not as the database itself. You may perform public read-only Catalog or registry
+lookups, while keeping source inputs and external systems read-only. You may write a
+candidate and evidence record only in a fresh local work directory. Separate static
+image extraction and registry observations from runtime proofs such as scheduling,
+pulls, readiness, or health. Distinguish an image confirmed missing from
+authentication, network, or other unknown results. Do not install or contact a
+cluster or publish anything. Show me evidence, uncertainty, and the next decision.
+```

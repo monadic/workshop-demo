@@ -82,3 +82,21 @@ Start the script with `./run.sh`, with the dot and the slash. It pauses before e
 The one real difference is step 4. By hand you compare a restored file that is already written, `app-restored.yaml`. The assistant does the restoring itself, in `work/app-mine.yaml`, and the same diff checks its work.
 
 The README in this folder says what a good run looks like. Read it yourself; the assistant is told not to.
+
+## Independent mission: bring your own inputs
+
+Add your real problem and file paths, then paste this prompt:
+
+```text
+Help me make the change I describe without losing my existing fixes. I will provide
+the original, current, and candidate configuration files. Identify which requested
+intent and existing user edits must survive; do not invent missing input. Compare
+requested versus incidental changes, preserve my edits, and name semantic choices I
+must decide. You may read public Catalog or registry information when needed, but
+keep source inputs and external systems read-only. You may write a candidate and
+evidence record only in a fresh local work directory. Separate static configuration
+and registry observations from runtime proofs; a file comparison does not prove
+deployment or health. Do not contact a cluster or ConfigHub server, create
+resources, or publish anything. Show me the evidence, unresolved decisions, and the
+exact candidate artifact or review record produced from my supplied files.
+```
