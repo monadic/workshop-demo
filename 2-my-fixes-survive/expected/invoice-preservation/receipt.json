@@ -140,5 +140,13 @@
     0,
     0,
     0
-  ]
+  ],
+  "cubClient": {
+    "version": "v0.5.3",
+    "commit": "3eba642dc5ade21f2740e6cbcec80fa10ba52975"
+  },
+  "configHubServer": {
+    "version": "v0.5.1",
+    "commit": "26de1149e1e78eb3920021737434bbbe01763499"
+  }
 }
