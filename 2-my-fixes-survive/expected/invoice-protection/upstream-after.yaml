@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: invoice-api
+  name: invoice-api
+  namespace: billing
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: invoice-api
+  template:
+    metadata:
+      labels:
+        app: invoice-api
+    spec:
+      containers:
+      - env:
+        - name: DATABASE_URL
+          value: postgres://invoices.billing.svc:5432/invoices
+        - name: PDF_RENDER_TIMEOUT
+          value: 10s
+        image: ghcr.io/example/invoice-api:2.8.1
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        name: api
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: invoice-api
+  namespace: billing
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: invoice-api

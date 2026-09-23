@@ -1,0 +1,176 @@
+{
+  "kind": "ConfigHubProtectedOverrideObservation",
+  "cubClient": "v0.5.3",
+  "serverVersion": "v0.5.1",
+  "server": "http://localhost:32180",
+  "baseline": "../invoice-preservation/upstream-before.yaml",
+  "localEdits": "../invoice-preservation/downstream-before.yaml",
+  "expectedProtected": "../invoice-preservation/expected-downstream-after.yaml",
+  "upstreamBaselineSynthetic": true,
+  "cases": [
+    {
+      "protected": false,
+      "space": "workshop-conflict-7c60cbb178",
+      "startedAt": "2026-09-23T16:08:55.058437+00:00",
+      "finishedAt": "2026-09-23T16:08:55.783425+00:00",
+      "commands": [
+        [
+          "space",
+          "create",
+          "workshop-conflict-7c60cbb178"
+        ],
+        [
+          "unit",
+          "create",
+          "--space",
+          "workshop-conflict-7c60cbb178",
+          "invoice-generated",
+          "upstream-before.yaml"
+        ],
+        [
+          "unit",
+          "create",
+          "--space",
+          "workshop-conflict-7c60cbb178",
+          "invoice-retained",
+          "--upstream-unit",
+          "invoice-generated",
+          "--upstream-space",
+          "workshop-conflict-7c60cbb178"
+        ],
+        [
+          "unit",
+          "update",
+          "--space",
+          "workshop-conflict-7c60cbb178",
+          "invoice-retained",
+          "downstream-before.yaml",
+          "--change-desc",
+          "local replicas four and five other reviewed edits"
+        ],
+        [
+          "unit",
+          "update",
+          "--space",
+          "workshop-conflict-7c60cbb178",
+          "invoice-generated",
+          "upstream-after.yaml",
+          "--change-desc",
+          "upstream replicas five plus liveness probe"
+        ],
+        [
+          "unit",
+          "update",
+          "--space",
+          "workshop-conflict-7c60cbb178",
+          "invoice-retained",
+          "--upgrade"
+        ],
+        [
+          "unit",
+          "data",
+          "--space",
+          "workshop-conflict-7c60cbb178",
+          "invoice-retained"
+        ]
+      ],
+      "exitCodes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "replicasAfter": 5
+    },
+    {
+      "protected": true,
+      "space": "workshop-protect-7bf0f4e540",
+      "startedAt": "2026-09-23T16:09:31.620486+00:00",
+      "finishedAt": "2026-09-23T16:09:32.374979+00:00",
+      "commands": [
+        [
+          "space",
+          "create",
+          "workshop-protect-7bf0f4e540"
+        ],
+        [
+          "unit",
+          "create",
+          "--space",
+          "workshop-protect-7bf0f4e540",
+          "invoice-generated",
+          "upstream-before.yaml"
+        ],
+        [
+          "unit",
+          "create",
+          "--space",
+          "workshop-protect-7bf0f4e540",
+          "invoice-retained",
+          "--upstream-unit",
+          "invoice-generated",
+          "--upstream-space",
+          "workshop-protect-7bf0f4e540"
+        ],
+        [
+          "unit",
+          "update",
+          "--space",
+          "workshop-protect-7bf0f4e540",
+          "invoice-retained",
+          "downstream-before.yaml",
+          "--protect",
+          "--change-desc",
+          "protect six reviewed local edits"
+        ],
+        [
+          "unit",
+          "update",
+          "--space",
+          "workshop-protect-7bf0f4e540",
+          "invoice-generated",
+          "upstream-after.yaml",
+          "--change-desc",
+          "upstream replicas five plus liveness probe"
+        ],
+        [
+          "unit",
+          "update",
+          "--space",
+          "workshop-protect-7bf0f4e540",
+          "invoice-retained",
+          "--upgrade"
+        ],
+        [
+          "unit",
+          "data",
+          "--space",
+          "workshop-protect-7bf0f4e540",
+          "invoice-retained"
+        ]
+      ],
+      "exitCodes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "replicasAfter": 4
+    }
+  ],
+  "files": {
+    "upstream-after.yaml": "bcdc44a86c3455e25967b8687662c7084a970fa5c7bc09744bb9721eef41f8dd",
+    "unprotected-after.yaml": "f08a7cd2f314cfa70d0c4e95dc4ca11325f708782ac3eb83810ecea389dade5a",
+    "protected-after.yaml": "0a55e0a5d06739518957df20bc1e950d7d8f380096e270293acb31e5eed89a6c",
+    "../invoice-preservation/upstream-before.yaml": "8e8c92dfcc4929d50e3c3cc2468946902ea7d1c68b3a71aa7ac53e6a98384364",
+    "../invoice-preservation/downstream-before.yaml": "1958a91b574dea51a7b128460f41fd0f356183823bde5573bdadc4bde64e91b1",
+    "../invoice-preservation/expected-downstream-after.yaml": "91a3233ad1cf5d55d3b53d9b3545c40cfc03177ed007eb76cf6e753b09ac5680"
+  },
+  "boundary": "Observed stored-configuration behavior for this fixture and versions. No deployment or general conflict-handling guarantee."
+}
