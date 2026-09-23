@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "scope": "local-configuration-diff",
+  "before": {
+    "sha256": "sha256:1958a91b574dea51a7b128460f41fd0f356183823bde5573bdadc4bde64e91b1",
+    "objectCount": 2
+  },
+  "after": {
+    "sha256": "sha256:0a55e0a5d06739518957df20bc1e950d7d8f380096e270293acb31e5eed89a6c",
+    "objectCount": 2
+  },
+  "equal": false,
+  "summary": {
+    "added": 0,
+    "removed": 0,
+    "changed": 1,
+    "unchanged": 1
+  },
+  "changes": [
+    {
+      "object": {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "namespace": "billing",
+        "name": "invoice-api"
+      },
+      "change": "changed",
+      "fields": [
+        {
+          "path": "/spec/template/spec/containers/api/livenessProbe",
+          "operation": "add",
+          "after": {
+            "httpGet": {
+              "path": "/healthz",
+              "port": 8080
+            },
+            "initialDelaySeconds": 10,
+            "periodSeconds": 15
+          }
+        }
+      ]
+    }
+  ],
+  "comparison": "Object identity includes API version and explicit namespace; mapping and document order ignored, lists of uniquely named items compared item by item by name, every other list compared as a whole value, missing and null distinct. No Kubernetes defaulting or schema interpretation. Secret data and stringData values are replaced by a short hash of each value.",
+  "notChecked": [
+    "Kubernetes schema or admission validity",
+    "upstream merge and protected-field preservation",
+    "target readiness or live drift",
+    "application availability"
+  ]
+}

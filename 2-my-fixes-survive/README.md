@@ -97,3 +97,14 @@ A run has gone wrong if the assistant eyeballs the two files in place of running
 ```
 
 This removes the local review files and the record that allows step 7 to continue. It does not delete anything from ConfigHub.
+
+## Recorded independent preservation test
+
+A separate invoice application was tested against a local ConfigHub server on
+2026-09-23. Its generated rewrite reverted six reviewed fields while adding a
+liveness probe. Linked Units and `cub unit update --upgrade` preserved all six
+edits; the exported result differed from the reviewed input only by that probe.
+The [receipt and hashed files](expected/invoice-preservation/receipt.json) retain
+the exact input and output. The pre-rewrite upstream is a synthetic test baseline,
+not recovered historical configuration. This test did not deploy the application
+or exercise a same-field conflict.

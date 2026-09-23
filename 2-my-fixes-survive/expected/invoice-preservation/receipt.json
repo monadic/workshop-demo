@@ -1,0 +1,152 @@
+{
+  "status": "passed",
+  "server": "http://localhost:32180",
+  "space": "workshop-invoice-d30afbd671",
+  "startedAt": "2026-09-23T14:31:01.741342+00:00",
+  "finishedAt": "2026-09-23T14:31:13.543303+00:00",
+  "assertions": {
+    "sixLocalEditsPreserved": true,
+    "onlyRequestedLivenessProbeAdded": true,
+    "matchesExpectedSemantically": true,
+    "kubernetesDelivery": "not-run",
+    "sameFieldConflict": "not-tested",
+    "upstreamBaseline": "synthetic fixture, not historical source"
+  },
+  "kind": "ConfigHubPreservationObservation",
+  "pluginSource": "55ce72de74decd2c64261196100935c60be06469",
+  "files": {
+    "upstream-before.yaml": "8e8c92dfcc4929d50e3c3cc2468946902ea7d1c68b3a71aa7ac53e6a98384364",
+    "upstream-after.yaml": "44350f974d0c32f6b804a6395967f6e8a1f504fd8a0c73502725dd9f11db6575",
+    "downstream-before.yaml": "1958a91b574dea51a7b128460f41fd0f356183823bde5573bdadc4bde64e91b1",
+    "expected-downstream-after.yaml": "91a3233ad1cf5d55d3b53d9b3545c40cfc03177ed007eb76cf6e753b09ac5680",
+    "server-downstream-before.yaml": "1958a91b574dea51a7b128460f41fd0f356183823bde5573bdadc4bde64e91b1",
+    "server-downstream-after.yaml": "0a55e0a5d06739518957df20bc1e950d7d8f380096e270293acb31e5eed89a6c",
+    "rewrite-review.json": "b2a2e8ff289b41e1a152680fea666428b9e37cd7f1f79f35e508698638e0a52e",
+    "server-before.json": "7751d41940a1dc1fdf77391e48f8a8e7f8bbc914674a48eaa5e0f5fea65d0591",
+    "server-change.json": "75fd4cbaf53fce05488bf15d2950f394b1fd4eb53a3d66f565e9058dd861473d",
+    "server-expected.json": "f856b681f356e83109f1e8e2674acf050518d748344067e6b2e8498f48064f74"
+  },
+  "commands": [
+    [
+      "cub",
+      "--context",
+      "LOCAL_CONTEXT",
+      "space",
+      "create",
+      "workshop-invoice-d30afbd671"
+    ],
+    [
+      "cub",
+      "--context",
+      "LOCAL_CONTEXT",
+      "unit",
+      "create",
+      "--space",
+      "workshop-invoice-d30afbd671",
+      "invoice-generated",
+      "upstream-before.yaml"
+    ],
+    [
+      "cub",
+      "--context",
+      "LOCAL_CONTEXT",
+      "unit",
+      "create",
+      "--space",
+      "workshop-invoice-d30afbd671",
+      "invoice-retained",
+      "--upstream-unit",
+      "invoice-generated",
+      "--upstream-space",
+      "workshop-invoice-d30afbd671"
+    ],
+    [
+      "cub",
+      "--context",
+      "LOCAL_CONTEXT",
+      "unit",
+      "update",
+      "--space",
+      "workshop-invoice-d30afbd671",
+      "invoice-retained",
+      "downstream-before.yaml",
+      "--change-desc",
+      "retain six reviewed configuration edits"
+    ],
+    [
+      "cub",
+      "--context",
+      "LOCAL_CONTEXT",
+      "unit",
+      "data",
+      "--space",
+      "workshop-invoice-d30afbd671",
+      "invoice-retained"
+    ],
+    [
+      "cub",
+      "--context",
+      "LOCAL_CONTEXT",
+      "unit",
+      "update",
+      "--space",
+      "workshop-invoice-d30afbd671",
+      "invoice-generated",
+      "upstream-after.yaml",
+      "--change-desc",
+      "add liveness probe in generated source"
+    ],
+    [
+      "cub",
+      "--context",
+      "LOCAL_CONTEXT",
+      "unit",
+      "update",
+      "--space",
+      "workshop-invoice-d30afbd671",
+      "invoice-retained",
+      "--upgrade"
+    ],
+    [
+      "cub",
+      "--context",
+      "LOCAL_CONTEXT",
+      "unit",
+      "data",
+      "--space",
+      "workshop-invoice-d30afbd671",
+      "invoice-retained"
+    ],
+    [
+      "cub",
+      "--context",
+      "LOCAL_CONTEXT",
+      "revision",
+      "list",
+      "--space",
+      "workshop-invoice-d30afbd671",
+      "invoice-retained",
+      "-o",
+      "json"
+    ]
+  ],
+  "exitCodes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "cubClient": {
+    "version": "v0.5.3",
+    "commit": "3eba642dc5ade21f2740e6cbcec80fa10ba52975"
+  },
+  "configHubServer": {
+    "version": "v0.5.1",
+    "commit": "26de1149e1e78eb3920021737434bbbe01763499"
+  }
+}
