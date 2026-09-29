@@ -2,7 +2,7 @@
 
 **The point.** A chart can name an image that no longer exists. The chart downloads, the values are right, every local check passes, and `helm install` reports success. The pods then sit in `ImagePullBackOff`. One command asks the registry first.
 
-**Time.** About five minutes, or eight with the live proof. **Needs.** `cub`, the workshop plugin (0.6.41 or later), `helm`, `curl`, and a network. Steps 1 to 5 need no cluster. Step 6 builds a throwaway one with `kind`, and only if you ask for it.
+**Time.** About five minutes, or eight with the live proof. **Needs.** `cub`, the workshop plugin 0.6.41 or later, `helm`, `curl`, and a network. `--images --exit-code` first shipped in workshop 0.6.41, and v0.6.50 is the first published release that has it. If `cub config check --help` does not list `--exit-code`, run `cub plugin upgrade workshop`. Steps 1 to 5 need no cluster. Step 6 builds a throwaway one with `kind`, and only if you ask for it.
 
 ```sh
 ./run.sh
@@ -21,6 +21,7 @@ Type it with the dot and the slash. It pauses before each command, and Enter run
 **2. Render it and run the usual checks.**
 
 ```sh
+mkdir -p work
 helm template shop-db oci://registry-1.docker.io/bitnamicharts/mysql --version 14.0.3 --namespace shop -f values.yaml > work/mysql.yaml
 cub config check work/mysql.yaml
 ```

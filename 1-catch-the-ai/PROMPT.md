@@ -57,12 +57,12 @@ Start the script with `./run.sh`, with the dot and the slash. It pauses before e
 | Step | By hand, from this folder | With the script |
 | --- | --- | --- |
 | 1 | `cat values.yaml` | `./run.sh 1` |
-| 2 | `helm template shop-redis oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --namespace shop -f values.yaml > work/redis.yaml` then `cub config check work/redis.yaml` | `./run.sh 2` |
-| 3 | `cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --values values.yaml` | `./run.sh 3` |
+| 2 | `mkdir -p work` then `helm template shop-redis oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --namespace shop -f values.yaml > work/redis.yaml` then `cub config check work/redis.yaml` | `./run.sh 2` |
+| 3 | `cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --release shop-redis --namespace shop --values values.yaml` | `./run.sh 3` |
 | 4 | `diff values.yaml values-fixed.yaml` | `./run.sh 4` |
-| 5 | `cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --values values-fixed.yaml` | `./run.sh 5` |
+| 5 | `cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --release shop-redis --namespace shop --values values-fixed.yaml` | `./run.sh 5` |
 | 6 | `helm template shop-redis oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --namespace shop -f values-fixed.yaml > work/redis-fixed.yaml` then `cub config diff work/redis.yaml work/redis-fixed.yaml` | `./run.sh 6` |
-| 7 | `cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --values values.yaml --exit-code` | `./run.sh 7` |
+| 7 | `cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --release shop-redis --namespace shop --values values.yaml --exit-code` | `./run.sh 7` |
 
 The one real difference is step 4. By hand you read a fix that is already written, `values-fixed.yaml`. The assistant writes its own, `work/values-mine.yaml`, and steps 5 and 6 then check the assistant's work.
 

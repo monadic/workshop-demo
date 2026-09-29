@@ -3,21 +3,27 @@ Ask the same question about the corrected file.
 
     This is the step 3 command again, pointed at values-fixed.yaml.
 
-$ cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --values values-fixed.yaml
+$ cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --release shop-redis --namespace shop --values values-fixed.yaml
 
 Values: 7 set, checked against oci://registry-1.docker.io/cloudpirates/redis 0.34.11
 
-  [APPLIED]    architecture             changed 2 objects: StatefulSet release-redis, Service release-redis-master
+  [APPLIED]    architecture             changed 2 objects: StatefulSet shop-redis, Service shop-redis-master
   [DEFAULT]    auth.enabled             is what the chart already uses
-  [APPLIED]    auth.password            changed 1 object: Secret release-redis
-  [APPLIED]    persistence.size         changed 1 object: StatefulSet release-redis
-  [APPLIED]    resources.limits.memory  changed 1 object: StatefulSet release-redis
+  [APPLIED]    auth.password            changed 1 object: Secret shop-redis
+  [APPLIED]    persistence.size         changed 1 object: StatefulSet shop-redis
+  [APPLIED]    resources.limits.memory  changed 1 object: StatefulSet shop-redis
   [DEFAULT]    replicaCount             is what the chart already uses
-  [APPLIED]    metrics.enabled          changed 2 objects: StatefulSet release-redis, Service release-redis-metrics
+  [APPLIED]    metrics.enabled          changed 2 objects: StatefulSet shop-redis, Service shop-redis-metrics
 
   Every value you set changed the result or matches the default.
 
+What the chart does that you did not write
+  [NOTE]  literal source lookup callsites: 2; no target cluster was queried.
+          charts/common/templates/_secrets.tpl:16 v1 Secret; unresolved namespace, name in named template cloudpirates.secrets.lookup; source call not evaluated.
+          templates/secret.yaml:15 v1 Secret; unresolved namespace, name; source call not evaluated.
+
   Rendered locally with Helm. A value that changes nothing here may still matter under other settings, capabilities or Kubernetes versions. No value is printed.
+  Checks container resource fields only; other Kubernetes fields and cluster admission are not checked.
 
 
     Look for no IGNORED lines, and the last line, Every value you set changed 

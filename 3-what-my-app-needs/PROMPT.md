@@ -61,7 +61,7 @@ Start the script with `./run.sh`, with the dot and the slash. It pauses before e
 | 3 | `cub stack check platform-first-try.yaml` | `./run.sh 3` |
 | 4 | `diff shop-web.yaml shop-web-adapted.yaml` then `diff platform-first-try.yaml platform.yaml` | `./run.sh 4` |
 | 5 | `cub stack check platform.yaml` | `./run.sh 5` |
-| 6 | `cub stack sandbox platform.yaml --out work/platform.yaml` | `./run.sh 6` |
+| 6 | `mkdir -p work` then `cub stack sandbox platform.yaml --out work/platform.yaml` | `./run.sh 6` |
 | 7 | `cub stack sandbox platform.yaml --workspace work/shop-platform` | `./run.sh 7` |
 
 The one real difference is step 4. By hand you read a fix that is already written, `shop-web-adapted.yaml` and `platform.yaml`. The assistant proposes its own, and the check decides at step 5 whether it holds.

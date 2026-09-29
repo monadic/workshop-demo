@@ -18,7 +18,7 @@ Saved work/review.json
 
     grep pulls the main parts out of that record.
 
-$ grep -E ""sha256"|"changed"|"path"" work/review.json
+$ grep -e '"sha256"' -e '"changed"' -e '"path"' work/review.json
     "sha256": "sha256:52e80bec15c4c468f13a57c01fe88b567c91b6c472f3225087ea5684d7b3439c",
     "sha256": "sha256:7d2bf9588991d956dbfc7bcff840d2e8876ef21252304f553fd333823a079b36",
     "changed": 1,

@@ -70,7 +70,7 @@ step_3() {
   chart_ready
   say "So which of your values did anything?"
   explain "cub config values renders the chart with your values, then once more for each value with that one value taken out. If the objects come out the same either way, that value did nothing. It also reads the chart's own defaults, to say where the chart does read that setting. No value is printed."
-  show cub config values "${CHART[@]}" --values values.yaml
+  show cub config values "${CHART[@]}" --release shop-redis --namespace shop --values values.yaml
   look "the three IGNORED lines, and the last line, 3 of 7 values did nothing. Your disk size, memory limit and replica count never reached Redis."
 }
 
@@ -85,7 +85,7 @@ step_5() {
   chart_ready
   say "Ask the same question about the corrected file."
   explain "This is the step 3 command again, pointed at values-fixed.yaml."
-  show cub config values "${CHART[@]}" --values values-fixed.yaml
+  show cub config values "${CHART[@]}" --release shop-redis --namespace shop --values values-fixed.yaml
   look "no IGNORED lines, and the last line, Every value you set changed the result or matches the default."
 }
 
@@ -103,7 +103,7 @@ step_7() {
   chart_ready
   say "One line in CI, and this cannot happen again."
   explain "This is the step 3 command with --exit-code added. It exits 1 when any value did nothing, which fails a build."
-  show_refusal cub config values "${CHART[@]}" --values values.yaml --exit-code
+  show_refusal cub config values "${CHART[@]}" --release shop-redis --namespace shop --values values.yaml --exit-code
   look "the line saying it was refused. In CI that is a red build, before anything is installed."
 }
 
