@@ -20,6 +20,9 @@ else fail "the workshop plugin is missing" "run: cub plugin install confighub/cu
 if cub config 2>&1 | grep -q "config values"; then pass "cub config values is available (step 1)"
 else fail "this workshop plugin is older than 0.6.22, and step 1 needs cub config values" "run: cub plugin upgrade workshop"; fi
 
+if cub config values --help 2>&1 | grep -q -- "--exit-code"; then pass "cub config values --exit-code is available (step 1's gate)"
+else fail "this workshop plugin cannot gate the values check" "run: cub plugin install confighub/cub-workshop@v0.6.51"; fi
+
 if cub config 2>&1 | grep -q "config diff"; then pass "cub config diff is available (steps 1 and 2)"
 else fail "this workshop plugin has no cub config diff" "run: cub plugin upgrade workshop"; fi
 

@@ -78,7 +78,9 @@ cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.1
 
 Look for `images tagged latest or not tagged: 0`, because the image is pinned by digest. Every value applies, and there is no preset and no field that changes on every render.
 
-Look also at what the check does not say. The `reuse-existing-secret` base reads the password from a Secret named `redis-existing-secret`, key `redis-password`, and the chart does not create it. `cub config check` names the `shop` namespace that must already exist, but it does not warn about the missing Secret, and without it the Redis pod cannot start. Create the Secret before you install.
+Look also at what the check does not say. The `reuse-existing-secret` base reads the password from a Secret named `redis-existing-secret`, key `redis-password`, and the chart does not create it. `cub config check` names the `shop` namespace that must already exist, but it does not warn about the missing Secret, and without it the Redis pod cannot start. The local walkthrough stops at checking the files; it does not create this Secret.
+
+**Optional, before a real deployment.** Skip this command for the local demo. It writes to your selected Kubernetes cluster and requires `kubectl`, `openssl`, permission to create Secrets, and an existing `shop` namespace. Create the Secret before installing the alternative:
 
 ```sh
 kubectl create secret generic redis-existing-secret --namespace shop --from-literal=redis-password="$(openssl rand -base64 24)"
