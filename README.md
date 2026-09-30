@@ -7,7 +7,7 @@ You are building a small shop app with an AI assistant. These five demos follow 
 | [1. Catch the AI](1-catch-the-ai/) | The assistant wrote my Helm values. Did they do anything? | Three of seven values did nothing, and Helm never said so |
 | [2. My fixes survive the AI](2-my-fixes-survive/) | The assistant rewrote my app. Are my fixes still there? | One change you asked for, and three of your fixes undone. Then ConfigHub carries your fixes through the rewrite for you |
 | [3. What my app needs](3-what-my-app-needs/) | Will my app run on the platform I picked? | Refused for two real reasons, fixed on both sides, then checked |
-| [4. Before Argo CD takes over](4-before-argo-takes-over/) | My Redis has run fine for a month. Is it safe to hand to GitOps? | A password that changes on every sync, a floating image and a memory preset nobody chose. Then a reviewed alternative from the Catalog with none of them |
+| [4. Before Argo CD takes over](4-before-argo-takes-over/) | My Redis has run fine for a month. Is it safe to hand to GitOps? | A password that changes under Argo-style rendering, a floating image and a memory preset nobody chose. Then a reviewed alternative, with an explicit Secret and a data migration to plan |
 | [5. It installs and never starts](5-it-installs-and-never-starts/) | Every check passes. Should I install it? | The image this chart runs no longer exists, said before the install rather than by a pod stuck in ImagePullBackOff |
 
 Nothing here needs an account, a server or a cluster, with one exception that you choose. Everything runs on your machine and writes only to a `work/` folder inside each demo. The exception is the last two steps of part 2, which show what ConfigHub adds once you log in. Without a login the script skips them, and the first five steps stand on their own.
@@ -25,13 +25,15 @@ curl -fsSL https://hub.confighub.com/cub/install.sh | bash
 
 # 2. the workshop plugin: cub config, cub app, cub stack, cub fleet
 #    it needs node, oras and helm on your PATH
-#    exact tested source pin for workshop 0.6.44
-cub plugin install confighub/cub-workshop@55ce72de74decd2c64261196100935c60be06469 --source-repo
-#    already installed? reinstall this same pinned source to reproduce the test
+#    local walkthrough commands and refreshed recordings checked with 0.6.51
+cub plugin install confighub/cub-workshop@v0.6.51
+#    already installed? use this same release pin to reproduce the local checks
 
 # 3. check this machine is ready
 ./check.sh
 ```
+
+The server and cluster recordings retain their earlier evidence; they were not rerun for the 0.6.51 documentation refresh. Local checks do not establish deployment or runtime success.
 
 ## Run a demo
 

@@ -17,6 +17,7 @@ Check
   [WARN] 4 admission webhook(s) need a caBundle — cert-manager is in the stack and can issue it
   [WARN] namespaces: 0 created, 5 must already exist (cert-manager, kube-system, monitoring, shop, traefik)
   [WARN] target prerequisite unknown: ClusterIssuer/letsencrypt; Include ClusterIssuer/letsencrypt in the stack, or verify it exists on the selected target before delivery.
+  [WARN] schema validation not run: the flux schema plugin is not installed; next: `flux plugin install schema` (Flux 2.9 or later)
   => CHECKED
 
 Sandbox render  (free, no infrastructure)
@@ -29,7 +30,7 @@ Sandbox render  (free, no infrastructure)
 
   Wrote 215 objects in plane order to work/platform.yaml
 
-  Ready. `cub stack upload platform.yaml --run` builds the base Spaces and links in ConfigHub.
+  Ready. `cub stack upload platform.yaml --run` uploads the base Spaces and links the declared path bindings in ConfigHub.
 
 
     grep counts the objects in that file.

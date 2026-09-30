@@ -1,6 +1,6 @@
 # 4. Before Argo CD takes over
 
-**The point.** A chart can decide things you never wrote, and `helm install` hides some of them. This Redis has run for a month from three lines of values. Under Argo CD or Flux its password changes on every sync, its image is tagged `latest`, and a preset you never chose sets its memory. You can see all three before the move, and the Workshop Catalog has a reviewed alternative with none of them.
+**The point.** A chart can decide things you never wrote, and `helm install` hides some of them. This Redis has run for a month from three lines of values. Under Argo CD its password changes on every sync, its image is tagged `latest`, and a preset you never chose sets its memory. A Flux HelmRelease runs Helm against the cluster, where this chart can read its password back, but the image and the preset are the same there. You can see all three before the move. The Workshop Catalog has a reviewed alternative without those three problems, but it is a different chart, `cloudpirates/redis`, so moving to it is a migration and not an upgrade. Your existing data, the PVC and the Service names do not carry over, and it needs a Secret that you create first.
 
 **Time.** About six minutes. **Needs.** `cub`, the workshop plugin (0.6.26 or later), `helm`, `oras`, `curl`, and a network. No server, no account, no cluster.
 
@@ -23,6 +23,7 @@ Type it with the dot and the slash. It pauses before each command, and Enter run
 **2. See what it installs.**
 
 ```sh
+mkdir -p work
 helm template shop-redis oci://registry-1.docker.io/bitnamicharts/redis --version 25.5.3 --namespace shop -f values.yaml > work/bitnami.yaml
 cub config check work/bitnami.yaml
 ```
@@ -76,6 +77,18 @@ cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.1
 ```
 
 Look for `images tagged latest or not tagged: 0`, because the image is pinned by digest. Every value applies, and there is no preset and no field that changes on every render.
+
+Look also at what the check does not say. The `reuse-existing-secret` base reads the password from a Secret named `redis-existing-secret`, key `redis-password`, and the chart does not create it. `cub config check` names the `shop` namespace that must already exist, but it does not warn about the missing Secret, and without it the Redis pod cannot start. The local walkthrough stops at checking the files; it does not create this Secret.
+
+**Optional, before a real deployment.** Skip this command for the local demo. It writes to your selected Kubernetes cluster and requires `kubectl`, `openssl`, permission to create Secrets, and an existing `shop` namespace. Create the Secret before installing the alternative:
+
+```sh
+kubectl create secret generic redis-existing-secret --namespace shop --from-literal=redis-password="$(openssl rand -base64 24)"
+```
+
+Point the shop app at the same Secret, so both read one password that no sync changes.
+
+This is a different chart, so the move is a migration. The Bitnami chart's Service is `shop-redis-master` and its PVC is `redis-data-shop-redis-master-0`. This chart's Service is `shop-redis` and its PVC is `data-shop-redis-0`. The new Redis starts on an empty volume, so copy any data you need to keep, and change the host the shop app connects to.
 
 **8. Render the alternative twice.**
 

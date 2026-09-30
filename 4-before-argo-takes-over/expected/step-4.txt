@@ -16,9 +16,19 @@ Values: 2 set, checked against oci://registry-1.docker.io/bitnamicharts/redis 25
 What the chart does that you did not write
   [NOTE]  master.resourcesPreset is "nano". The chart sets CPU and memory for StatefulSet shop-redis-master. Setting master.resources replaces the whole preset.
   [NOTE]  1 field changes on every render: Secret shop-redis /data/redis-password.
-          Argo CD, Flux and helm template render without your cluster, so they get a new value every time. helm upgrade keeps a value only if the chart reads it back from the cluster.
+          Argo CD and offline helm template render without your target cluster, so a generated value may change every time. A Flux HelmRelease runs Helm against its target cluster, where chart lookups can observe existing values; whether that preserves a generated value depends on the chart.
+  [NOTE]  literal source lookup callsites: 8; no target cluster was queried.
+          charts/common/templates/_secrets.tpl:103 v1 Secret; unresolved namespace, name in named template common.secrets.passwords.manage; source call not evaluated.
+          charts/common/templates/_secrets.tpl:166 v1 Secret; unresolved namespace, name in named template common.secrets.lookup; source call not evaluated.
+          charts/common/templates/_secrets.tpl:188 v1 Secret; unresolved namespace, name in named template common.secrets.exists; source call not evaluated.
+          templates/_helpers.tpl:228 v1 Secret; unresolved namespace, name in named template common.secrets.get; source call not evaluated.
+          templates/sentinel/node-services.yaml:10 v1 ConfigMap; unresolved namespace, name; source call not evaluated.
+          templates/sentinel/ports-configmap.yaml:12 v1 Service; source call not evaluated.
+          templates/sentinel/ports-configmap.yaml:81 v1 ConfigMap; unresolved namespace, name; source call not evaluated.
+          templates/sentinel/service.yaml:8 v1 ConfigMap; unresolved namespace, name; source call not evaluated.
 
   Rendered locally with Helm. A value that changes nothing here may still matter under other settings, capabilities or Kubernetes versions. No value is printed.
+  Checks container resource fields only; other Kubernetes fields and cluster admission are not checked.
 
 
     Look for two NOTE lines. A resource preset called nano sets Redis's memory, 

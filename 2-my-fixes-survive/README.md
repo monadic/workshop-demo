@@ -24,6 +24,12 @@ You did not create an environment for this. The other copy is the version that w
 
 **1. Look at the three fixes you made by hand.** `grep` shows the three lines in `app-committed.yaml`.
 
+```sh
+grep -n -e "replicas:" -e "db.shop.internal" -e "memory: 512Mi" app-committed.yaml
+```
+
+Look for three replicas, the real database host, and a 512Mi memory limit.
+
 **2. Look at the file the assistant wrote today.**
 
 ```sh
@@ -49,6 +55,14 @@ cub config diff app-committed.yaml app-restored.yaml
 Look for one changed field, the probe. That is the change you asked for, and nothing else.
 
 **5. Keep a record of the review, and make it a gate.** With `--exit-code` any change stops for a review, and `--out` writes both file hashes and every changed field to `work/review.json`.
+
+```sh
+mkdir -p work
+cub config diff app-committed.yaml app-regenerated.yaml --exit-code --out work/review.json
+grep -e '"sha256"' -e '"changed"' -e '"path"' work/review.json
+```
+
+The diff exits 1 because fields changed, which is what stops a build. Look for two `sha256` lines, which pin the record to these exact files, and one `path` line for each field that changed.
 
 **6. With ConfigHub, let it remember your fixes.** Step 4 was you, putting your fixes back by hand, and it will happen again next week. Log in with `cub auth login` first.
 

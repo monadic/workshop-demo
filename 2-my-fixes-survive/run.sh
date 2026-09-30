@@ -85,7 +85,7 @@ hub_ready() {
 step_1() {
   say "This is the shop app you are running. Over two weeks you set the replicas, the database host and the memory limit."
   explain "grep prints the three lines you fixed by hand in app-committed.yaml, the file you are running today."
-  show grep -n -E "replicas:|db.shop.internal|memory: 512Mi" app-committed.yaml
+  show grep -n -e "replicas:" -e "db.shop.internal" -e "memory: 512Mi" app-committed.yaml
   look "three replicas, the real database host, and a 512Mi memory limit. Remember them."
 }
 
@@ -115,7 +115,7 @@ step_5() {
   explain "This is the step 3 comparison with two flags. --exit-code makes it exit 1 when anything changed, so CI stops for a review. --out writes the review to work/review.json."
   show_refusal cub config diff app-committed.yaml app-regenerated.yaml --exit-code --out "$WORK/review.json"
   explain "grep pulls the main parts out of that record."
-  show grep -E '"sha256"|"changed"|"path"' "$WORK/review.json"
+  show grep -e '"sha256"' -e '"changed"' -e '"path"' "$WORK/review.json"
   look "two sha256 lines, which pin the record to these exact files, and one path line for each field that changed."
 }
 

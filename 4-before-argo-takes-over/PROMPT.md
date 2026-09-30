@@ -63,7 +63,7 @@ Start the script with `./run.sh`, with the dot and the slash. It pauses before e
 | Step | By hand, from this folder | With the script |
 | --- | --- | --- |
 | 1 | `cat values.yaml` | `./run.sh 1` |
-| 2 | `helm template shop-redis oci://registry-1.docker.io/bitnamicharts/redis --version 25.5.3 --namespace shop -f values.yaml > work/bitnami.yaml` then `cub config check work/bitnami.yaml` | `./run.sh 2` |
+| 2 | `mkdir -p work` then `helm template shop-redis oci://registry-1.docker.io/bitnamicharts/redis --version 25.5.3 --namespace shop -f values.yaml > work/bitnami.yaml` then `cub config check work/bitnami.yaml` | `./run.sh 2` |
 | 3 | `helm template shop-redis oci://registry-1.docker.io/bitnamicharts/redis --version 25.5.3 --namespace shop -f values.yaml > work/bitnami-again.yaml` then `cub config diff work/bitnami.yaml work/bitnami-again.yaml` | `./run.sh 3` |
 | 4 | `cub config values oci://registry-1.docker.io/bitnamicharts/redis --version 25.5.3 --release shop-redis --namespace shop --values values.yaml` | `./run.sh 4` |
 | 5 | `oras manifest fetch docker.io/bitnami/redis:7.4.1-debian-12-r2` then `oras manifest fetch --descriptor docker.io/bitnamilegacy/redis:7.4.1-debian-12-r2` | `./run.sh 5` |

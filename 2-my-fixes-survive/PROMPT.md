@@ -71,11 +71,11 @@ Start the script with `./run.sh`, with the dot and the slash. It pauses before e
 
 | Step | By hand, from this folder | With the script |
 | --- | --- | --- |
-| 1 | `grep -n -E "replicas:\|db.shop.internal\|memory: 512Mi" app-committed.yaml` | `./run.sh 1` |
+| 1 | `grep -n -e "replicas:" -e "db.shop.internal" -e "memory: 512Mi" app-committed.yaml` | `./run.sh 1` |
 | 2 | `cub config check app-regenerated.yaml` | `./run.sh 2` |
 | 3 | `cub config diff app-committed.yaml app-regenerated.yaml` | `./run.sh 3` |
 | 4 | `cub config diff app-committed.yaml app-restored.yaml` | `./run.sh 4` |
-| 5 | `cub config diff app-committed.yaml app-regenerated.yaml --exit-code --out work/review.json` | `./run.sh 5` |
+| 5 | `mkdir -p work` then `cub config diff app-committed.yaml app-regenerated.yaml --exit-code --out work/review.json` then `grep -e '"sha256"' -e '"changed"' -e '"path"' work/review.json` | `./run.sh 5` |
 | 6 | the five `cub space`, `cub unit` and `cub revision` commands under step 6 of the [README](README.md) | `./run.sh 6` |
 | 7 | the four commands under step 7 of the [README](README.md) | `./run.sh 7` |
 

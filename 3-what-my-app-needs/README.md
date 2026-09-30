@@ -2,7 +2,7 @@
 
 **The point.** An app assumes things about the cluster it lands on: an ingress controller of a certain class, something that issues certificates, something that scrapes metrics. You can find out whether the platform you picked provides them before anything is applied, and fix whichever side is wrong.
 
-**Time.** About six minutes. **Needs.** `cub` and the workshop plugin. No server, no account, no cluster.
+**Time.** About six minutes. **Needs.** `cub`, the workshop plugin, `oras`, and a network that can reach `europe-west1-docker.pkg.dev`. Steps 3, 5, 6 and 7 use `oras` to pull each Catalog bundle by digest from that registry, anonymously, and keep a copy under `$TMPDIR/cub-stack-bundles` for later runs. No server, no account, no cluster.
 
 ```sh
 ./run.sh
@@ -30,6 +30,12 @@ Look for three `NEEDS` lines: an ingress controller, cert-manager, and a Prometh
 
 **2. Look at the platform you picked first.** Three Catalog parts and the app.
 
+```sh
+grep -E "^  name:|- name:|authored:" platform-first-try.yaml
+```
+
+Look for cert-manager, traefik and metrics-server, each a Catalog bundle pinned by digest, then your own `shop-web` file.
+
 **3. Certify the app on that platform, and get refused.**
 
 ```sh
@@ -39,6 +45,13 @@ cub stack check platform-first-try.yaml
 Look for `=> REFUSED` and the two reasons. The Ingress asks for class `nginx` and this platform's controller is Traefik. The ServiceMonitor needs a Prometheus operator and nothing here provides one. Both would have failed quietly on a real cluster.
 
 **4. Fix both sides.** The app changes one line and moves to the `traefik` ingress class, because the platform already has that controller. The platform gains one part from the Catalog, kube-prometheus-stack, because the app asked for a Prometheus operator and should keep its monitoring. Two diffs show every line.
+
+```sh
+diff shop-web.yaml shop-web-adapted.yaml
+diff platform-first-try.yaml platform.yaml
+```
+
+Lines marked `<` are before and lines marked `>` are after. Each `diff` exits 1 because the files differ.
 
 **5. Certify again.**
 
@@ -51,12 +64,22 @@ Look for `=> CHECKED`: no conflicts across 215 objects, CRDs ordered before the 
 **6. Render the platform with the app on it.**
 
 ```sh
+mkdir -p work
 cub stack sandbox platform.yaml --out work/platform.yaml
+grep -c "^kind:" work/platform.yaml
 ```
 
-Every object, in the order it has to be applied. kubectl, Argo CD and Flux all take that file as it is.
+Every object, in the order it has to be applied. kubectl, Argo CD and Flux all take that file as it is. Look for 215, the same count the check read.
 
 **7. Save it as a workspace you can edit and check again.** The workspace holds the editable parts, the manifest, the render and the verdict.
+
+```sh
+rm -rf work/shop-platform
+cub stack sandbox platform.yaml --workspace work/shop-platform
+ls work/shop-platform
+```
+
+Look for `components`, `stack.yaml`, `rendered.yaml` and `result.json`. Edit a component, then run `cub stack check work/shop-platform/stack.yaml` to check it again.
 
 ## The assistant track
 
@@ -83,6 +106,7 @@ Start with rendered Kubernetes YAML. Use fresh directories:
 ```sh
 set -eu
 umask 077
+mkdir -p work
 mkdir work/own-app
 APP_YAML='/absolute/path/to/my-rendered-app.yaml'
 cp "$APP_YAML" work/own-app/app.yaml

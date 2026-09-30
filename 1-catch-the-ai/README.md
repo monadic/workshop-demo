@@ -23,6 +23,7 @@ The chart is `cloudpirates/redis` 0.34.11, which is in the Workshop Catalog.
 **2. Let Helm render it, and see what it would install.**
 
 ```sh
+mkdir -p work
 helm template shop-redis oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --namespace shop -f values.yaml > work/redis.yaml
 cub config check work/redis.yaml
 ```
@@ -32,32 +33,45 @@ Helm exits 0 and the objects look healthy. This is the trap.
 **3. Ask which of those values did anything.**
 
 ```sh
-cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --values values.yaml
+cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --release shop-redis --namespace shop --values values.yaml
 ```
 
 Look for `3 of 7 values did nothing.` The disk size, the memory limit and the replica count are all `IGNORED`, because this chart has no `master` or `replica` section. For each one the report says where this chart does read that setting.
 
+`--release shop-redis --namespace shop` gives the objects the same names as the step 2 render, such as `StatefulSet shop-redis`. Without them the report still counts the same values, but it names the objects `release-redis`.
+
 **4. Put each setting where this chart reads it.** `diff values.yaml values-fixed.yaml` shows the three settings moved. One of them also changes its number. The assistant wrote `replicaCount: 2` in another chart's meaning, two replicas beside a master. This chart counts every pod, so two replicas is `replicaCount: 3`. The right place is not enough when the same word means something else.
 
-**5. Ask again.** The same command on `values-fixed.yaml` ends with `Every value you set changed the result or matches the default.` The replica count reads `DEFAULT`: three pods is what this chart does anyway.
+**5. Ask again.** Run the step 3 command on the corrected file.
+
+```sh
+cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --release shop-redis --namespace shop --values values-fixed.yaml
+```
+
+It ends with `Every value you set changed the result or matches the default.` The replica count reads `DEFAULT`, because three pods is what this chart does anyway.
 
 **6. See what the fix changes in the objects.**
 
 ```sh
+helm template shop-redis oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --namespace shop -f values-fixed.yaml > work/redis-fixed.yaml
 cub config diff work/redis.yaml work/redis-fixed.yaml
 ```
 
 Look at what you were really getting. You asked for a 1Gi disk and had 8Gi. You asked for a memory limit and had none. Your two replicas were there, and only because the chart's default happens to be three pods. Nothing you wrote put them there.
 
-**7. Make it a gate.** With `--exit-code` the check fails a build when a value did nothing.
+**7. Make it a gate.** This is the step 3 command with `--exit-code` added, and it fails a build when a value did nothing.
+
+```sh
+cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --release shop-redis --namespace shop --values values.yaml --exit-code
+```
+
+It exits 1 here, because three values did nothing. It also exits 1 when a value was `NOT CHECKED` because the chart needed more renders than `--max-renders` allows. It exits 0 when every value changed the result or matches the default, as `values-fixed.yaml` does. It exits 2 when the check could not run, for example because the chart could not be fetched, so a build can tell a real finding from a broken check.
 
 ## Continue with your own chart
 After this five-minute example, fix your own chart and retain its exact candidate and diagnosis
-so the next session can continue from that result. This needs unreleased cub-workshop 0.6.38. An ordinary
-installed plugin updates with `cub plugin upgrade workshop`; check `cub config values --help`
-for `--out` and `--render-out`. If they are absent, replace the installed plugin with updated
-source (`cub plugin uninstall workshop && cub plugin install --source-repo confighub/cub-workshop`)
-or a local checkout (`cub plugin uninstall workshop && cub plugin install /absolute/path/to/cub-workshop`).
+so the next session can continue from that result. This needs the workshop plugin 0.6.38 or later,
+and the v0.6.50 release is the first published release that has it. `cub plugin upgrade workshop`
+brings an installed plugin up to the latest release. Then `cub config values --help` lists `--out` and `--render-out`.
 
 Start fresh so no earlier review is overwritten. Replace every quoted `<...>` placeholder below;
 use only settings you already use, omit optional flags you do not use, and use an absolute path for a local chart or values file after `cd`.
@@ -71,7 +85,7 @@ cub config values "<your-chart-or-absolute-local-chart-path>" --version "<your-e
 ```
 
 The candidate is the explicit, flattened configuration the chart rendered from those inputs.
-Exit 1 means some values had no effect; investigate before accepting. Exit 2 means the command
+Exit 1 means some values had no effect or were not checked; investigate before accepting. Exit 2 means the command
 could not complete; resolve that error before drawing conclusions about the values. Keep `values.yaml` and `candidate.yaml`
 private: the candidate can contain Secrets. The diagnosis keeps requested inputs and hashes;
 the candidate is the exact render to inspect next time. If settings need repair, change a copied values
