@@ -2,7 +2,7 @@
 
 **The point.** An app assumes things about the cluster it lands on: an ingress controller of a certain class, something that issues certificates, something that scrapes metrics. You can find out whether the platform you picked provides them before anything is applied, and fix whichever side is wrong.
 
-**Time.** About six minutes. **Needs.** `cub`, the workshop plugin, `oras`, and a network that can reach `europe-west1-docker.pkg.dev`. Steps 3, 5, 6 and 7 use `oras` to pull each Catalog bundle by digest from that registry, anonymously. No server, no account, no cluster.
+**Time.** About six minutes. **Needs.** `cub`, the workshop plugin, `oras`, and a network that can reach `europe-west1-docker.pkg.dev`. Steps 3, 5, 6 and 7 use `oras` to pull each Catalog bundle by digest from that registry, anonymously, and keep a copy under `$TMPDIR/cub-stack-bundles` for later runs. No server, no account, no cluster.
 
 ```sh
 ./run.sh

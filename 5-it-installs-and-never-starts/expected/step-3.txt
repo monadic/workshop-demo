@@ -20,7 +20,7 @@ Lifecycle work
   [PASS] setup Jobs: 0
   [PASS] admission webhooks needing a certificate: 0
   [PASS] images tagged latest or not tagged: 0
-  [NOTE] images that pull anonymously: 0 of 1
+  [FAIL] images that pull anonymously: 0 of 1
          NOT FOUND: docker.io/bitnami/mysql:9.4.0-debian-12-r1
 
   Free look before you install. Compose it into a cub stack, or run it as a cub app.

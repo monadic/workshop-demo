@@ -1,6 +1,6 @@
 # 4. Before Argo CD takes over
 
-**The point.** A chart can decide things you never wrote, and `helm install` hides some of them. This Redis has run for a month from three lines of values. Under Argo CD or Flux its password changes on every sync, its image is tagged `latest`, and a preset you never chose sets its memory. You can see all three before the move. The Workshop Catalog has a reviewed alternative without those three problems, but it is a different chart, `cloudpirates/redis`, so moving to it is a migration and not an upgrade. Your existing data, the PVC and the Service names do not carry over, and it needs a Secret that you create first.
+**The point.** A chart can decide things you never wrote, and `helm install` hides some of them. This Redis has run for a month from three lines of values. Under Argo CD its password changes on every sync, its image is tagged `latest`, and a preset you never chose sets its memory. A Flux HelmRelease runs Helm against the cluster, where this chart can read its password back, but the image and the preset are the same there. You can see all three before the move. The Workshop Catalog has a reviewed alternative without those three problems, but it is a different chart, `cloudpirates/redis`, so moving to it is a migration and not an upgrade. Your existing data, the PVC and the Service names do not carry over, and it needs a Secret that you create first.
 
 **Time.** About six minutes. **Needs.** `cub`, the workshop plugin (0.6.26 or later), `helm`, `oras`, `curl`, and a network. No server, no account, no cluster.
 

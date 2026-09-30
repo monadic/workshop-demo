@@ -65,7 +65,7 @@ Look at what you were really getting. You asked for a 1Gi disk and had 8Gi. You 
 cub config values oci://registry-1.docker.io/cloudpirates/redis --version 0.34.11 --release shop-redis --namespace shop --values values.yaml --exit-code
 ```
 
-It exits 1 here, because three values did nothing. It exits 0 when every value changed the result or matches the default, as `values-fixed.yaml` does. It exits 2 when the check could not run, for example because the chart could not be fetched, so a build can tell a real finding from a broken check.
+It exits 1 here, because three values did nothing. It also exits 1 when a value was `NOT CHECKED` because the chart needed more renders than `--max-renders` allows. It exits 0 when every value changed the result or matches the default, as `values-fixed.yaml` does. It exits 2 when the check could not run, for example because the chart could not be fetched, so a build can tell a real finding from a broken check.
 
 ## Continue with your own chart
 After this five-minute example, fix your own chart and retain its exact candidate and diagnosis
@@ -85,7 +85,7 @@ cub config values "<your-chart-or-absolute-local-chart-path>" --version "<your-e
 ```
 
 The candidate is the explicit, flattened configuration the chart rendered from those inputs.
-Exit 1 means some values had no effect; investigate before accepting. Exit 2 means the command
+Exit 1 means some values had no effect or were not checked; investigate before accepting. Exit 2 means the command
 could not complete; resolve that error before drawing conclusions about the values. Keep `values.yaml` and `candidate.yaml`
 private: the candidate can contain Secrets. The diagnosis keeps requested inputs and hashes;
 the candidate is the exact render to inspect next time. If settings need repair, change a copied values

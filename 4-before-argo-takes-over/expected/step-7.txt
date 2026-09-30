@@ -43,7 +43,13 @@ Values: 5 set, checked against oci://registry-1.docker.io/cloudpirates/redis 0.3
 
   Every value you set changed the result or matches the default.
 
+What the chart does that you did not write
+  [NOTE]  literal source lookup callsites: 2; no target cluster was queried.
+          charts/common/templates/_secrets.tpl:16 v1 Secret; unresolved namespace, name in named template cloudpirates.secrets.lookup; source call not evaluated.
+          templates/secret.yaml:15 v1 Secret; unresolved namespace, name; source call not evaluated.
+
   Rendered locally with Helm. A value that changes nothing here may still matter under other settings, capabilities or Kubernetes versions. No value is printed.
+  Checks container resource fields only; other Kubernetes fields and cluster admission are not checked.
 
 
     Look for images tagged latest: 0, because the image is pinned by digest. 

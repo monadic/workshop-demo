@@ -23,6 +23,7 @@ Check
   [WARN] namespaces: 0 created, 4 must already exist (cert-manager, kube-system, shop, traefik)
   [WARN] target prerequisite unknown: ClusterIssuer/letsencrypt; Include ClusterIssuer/letsencrypt in the stack, or verify it exists on the selected target before delivery.
   [WARN] target prerequisite unknown: IngressClass/nginx; Include IngressClass/nginx in the stack, or verify it exists on the selected target before delivery.
+  [WARN] schema validation not run: the flux schema plugin is not installed; next: `flux plugin install schema` (Flux 2.9 or later)
   => REFUSED
 
       (refused, exit code non-zero, as intended)
