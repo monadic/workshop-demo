@@ -6,7 +6,7 @@
 source "$(dirname "$0")/../lib/demo.sh"
 
 OLD=(oci://registry-1.docker.io/bitnamicharts/mysql --version 14.0.3)
-SUCCESSOR=(mysql-operator --repo https://mysql.github.io/mysql-operator/ --version 2.3.0)
+SUCCESSOR=(mysql-operator --repo https://mysql.github.io/mysql-operator/ --version 2.3.1)
 RECEIPT="https://raw.githubusercontent.com/confighub/helm-expt/main/runs/bitnami-source-fetch/all-originals-receipt.json"
 CLUSTER="workshop-demo-trial"
 

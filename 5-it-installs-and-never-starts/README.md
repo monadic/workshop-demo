@@ -48,11 +48,11 @@ For each pinned Bitnami chart the Workshop keeps, the receipt records the image 
 **5. Check what the Catalog offers instead.**
 
 ```sh
-helm template shop-db mysql-operator --repo https://mysql.github.io/mysql-operator/ --version 2.3.0 --namespace shop --include-crds > work/successor.yaml
+helm template shop-db mysql-operator --repo https://mysql.github.io/mysql-operator/ --version 2.3.1 --namespace shop --include-crds > work/successor.yaml
 cub config check work/successor.yaml --images
 ```
 
-The Catalog's reviewed successor for MySQL is the operator from Oracle's own MySQL team. Its images pull, and the check names the five CRDs it carries.
+The Catalog's reviewed successor for MySQL is the operator from Oracle's own MySQL team. Its images pull, and the check names the five CRDs it carries. The Catalog reviewed version 2.3.0, which the upstream chart repository no longer serves, so this renders 2.3.1, the release that replaced it.
 
 `--include-crds` matters: `helm template` leaves a chart's CRDs out unless you ask for them, so without it this render is 8 objects and the check reads `CRDs: 0` for a chart that ships five. Say plainly what the move costs. This is an operator, so it installs a controller and not a database, and the shop then needs a custom resource and a Secret you write. None of the old values carry over.
 

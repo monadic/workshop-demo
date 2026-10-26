@@ -5,7 +5,7 @@ So ask the Catalog what it reviewed instead for MySQL.
     team. Render it with --include-crds, because helm leaves a chart's CRDs out 
     of a template render unless you ask for them.
 
-$ helm template shop-db mysql-operator --repo https://mysql.github.io/mysql-operator/ --version 2.3.0 --namespace shop --include-crds > work/successor.yaml
+$ helm template shop-db mysql-operator --repo https://mysql.github.io/mysql-operator/ --version 2.3.1 --namespace shop --include-crds > work/successor.yaml
 
     The same two checks.
 
@@ -25,8 +25,11 @@ Lifecycle work
   [PASS] admission webhooks needing a certificate: 0
   [PASS] images tagged latest or not tagged: 0
   [PASS] images that pull anonymously: 1 of 1
-         resolves container-registry.oracle.com/mysql/community-operator:26.7.0-2.3.0 -> sha256:01ecaa57bf952850ff9ffd7caeb231a9c3335764fdb12488f132ea4605d8f364
+         resolves container-registry.oracle.com/mysql/community-operator:26.10.0-2.3.1 -> sha256:a3291f215b15f07d822917569d89965fa0e442ffff71e855355a371076854f69
          1 image is named by tag. Pin with name@digest to keep the bytes checked here.
+
+Schema
+  [PASS] schema validation: 12 object(s) valid against the default and ecosystem catalogs (flux-schema/0.16.0); 1 without a catalog schema skipped
 
   Free look before you install. Compose it into a cub stack, or run it as a cub app.
 

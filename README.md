@@ -33,7 +33,7 @@ cub plugin install confighub/cub-workshop@v0.6.61
 ./check.sh
 ```
 
-The server and cluster recordings retain their earlier evidence; they were not rerun for the 0.6.61 refresh. Demo 5 step 5 also keeps its earlier recording, because the chart it pins, mysql-operator 2.3.0, is no longer in its upstream repository. Local checks do not establish deployment or runtime success.
+The server and cluster recordings retain their earlier evidence; they were not rerun for the 0.6.61 refresh. Demo 5 step 5 now renders mysql-operator 2.3.1, because the upstream repository no longer serves 2.3.0. Local checks do not establish deployment or runtime success.
 
 ## Run a demo
 
