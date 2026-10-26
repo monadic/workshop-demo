@@ -25,15 +25,15 @@ curl -fsSL https://hub.confighub.com/cub/install.sh | bash
 
 # 2. the workshop plugin: cub config, cub app, cub stack, cub fleet
 #    it needs node, oras and helm on your PATH
-#    local walkthrough commands and refreshed recordings checked with 0.6.51
-cub plugin install confighub/cub-workshop@v0.6.51
+#    local walkthrough commands and refreshed recordings checked with 0.6.61
+cub plugin install confighub/cub-workshop@v0.6.61
 #    already installed? use this same release pin to reproduce the local checks
 
 # 3. check this machine is ready
 ./check.sh
 ```
 
-The server and cluster recordings retain their earlier evidence; they were not rerun for the 0.6.51 documentation refresh. Local checks do not establish deployment or runtime success.
+The server and cluster recordings retain their earlier evidence; they were not rerun for the 0.6.61 refresh. Demo 5 step 5 now renders mysql-operator 2.3.1, because the upstream repository no longer serves 2.3.0. Local checks do not establish deployment or runtime success.
 
 ## Run a demo
 
