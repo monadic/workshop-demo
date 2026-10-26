@@ -21,8 +21,8 @@ Dependencies (this app needs a platform to provide these)
   [NEEDS] a Prometheus operator (kube-prometheus-stack)
              ServiceMonitor shop-web
 
-  Install onto a platform that carries those services (for example a cub stack such
-  as web-platform), then your Argo CD or Flux reconciles it.
+  Install onto a platform that carries those services. cub stack sandbox shop-platform
+  checks one that already places shop-web; then your Argo CD or Flux reconciles it.
 
 
     Look for three NEEDS lines: an ingress controller, cert-manager, and a 

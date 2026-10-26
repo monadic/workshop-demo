@@ -27,6 +27,9 @@ Lifecycle work
   [PASS] admission webhooks needing a certificate: 0
   [NOTE] images tagged latest or not tagged: 1 (registry-1.docker.io/bitnami/redis:latest). The same name can pull different bytes later
 
+Schema
+  [PASS] schema validation: 10 object(s) valid against the default and ecosystem catalogs (flux-schema/0.16.0)
+
   Free look before you install. Compose it into a cub stack, or run it as a cub app.
 
 
